@@ -60,7 +60,7 @@ from tensorpack.RL.simulator import SimulatorProcess, SimulatorMaster, Transitio
 IMAGE_SIZE = (84, 84)
 FRAME_HISTORY = 4
 GAMMA = 0.99
-CHANNEL = FRAME_HISTORY * 3
+CHANNEL = FRAME_HISTORY# * 3
 IMAGE_SHAPE3 = IMAGE_SIZE + (CHANNEL,)
 
 LOCAL_TIME_MAX = 5
