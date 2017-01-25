@@ -14,17 +14,48 @@ from collections import deque
 import six
 from six.moves import queue
 
-from tensorpack import *
-from tensorpack.utils.concurrency import *
-from tensorpack.utils.serialize import *
-from tensorpack.utils.timer import *
-from tensorpack.utils.stat import  *
 from tensorpack.tfutils import symbolic_functions as symbf
 
-from tensorpack.RL import *
+import argparse
+from tensorpack.predict.common import PredictConfig
+from tensorpack import *
+from tensorpack.models.model_desc import ModelDesc, InputVar
+from tensorpack.train.config import TrainConfig
+from tensorpack.tfutils.common import *
+from tensorpack.tfutils.tower import get_current_tower_context
+from tensorpack.callbacks.group import Callbacks
+from tensorpack.callbacks.stat import StatPrinter
+from tensorpack.callbacks.common import ModelSaver, Callback
+from tensorpack.callbacks.param import ScheduledHyperParamSetter, HumanHyperParamSetter
+from tensorpack.tfutils.summary import add_moving_summary, add_param_summary
+from tensorpack.RL.expreplay import ExpReplay
+from tensorpack.tfutils.sessinit import SaverRestore
+from tensorpack.train.queue import QueueInputTrainer
+from tensorpack.RL.common import MapPlayerState
+from tensorpack.RL.gymenv import GymEnv
+from tensorpack.RL.common import LimitLengthPlayer, PreventStuckPlayer
+from tensorpack.RL.history import HistoryFramePlayer
+from tensorpack.tfutils.argscope import argscope
+from tensorpack.models.conv2d import Conv2D
+from tensorpack.models.pool import MaxPooling
+from tensorpack.models.nonlin import LeakyReLU, PReLU
+from tensorpack.models.fc import FullyConnected
+import tensorpack.tfutils.summary as summary
+from tensorpack.tfutils.gradproc import MapGradient, SummaryGradient
+from tensorpack.callbacks.graph import RunOp
+from tensorpack.callbacks.base import PeriodicCallback
+from tensorpack.predict.concurrency import MultiThreadAsyncPredictor
+from tensorpack.utils.concurrency import ensure_proc_terminate, start_proc_mask_signal
+from tensorpack.utils.gpu import get_nr_gpu
+from tensorpack.dataflow.common import BatchData
+from tensorpack.dataflow.raw import DataFromQueue
+from tensorpack.train.multigpu import AsyncMultiGPUTrainer
+from tensorpack.utils.serialize import dumps
+import gym
+import numpy as np
 import common
 from common import (play_model, Evaluator, eval_model_multithread)
-from tensorpack.RL.simulator import SimulatorProcess, SimulatorMaster
+from tensorpack.RL.simulator import SimulatorProcess, SimulatorMaster, TransitionExperience
 
 IMAGE_SIZE = (84, 84)
 FRAME_HISTORY = 4
@@ -180,7 +211,7 @@ class MySimulatorMaster(SimulatorMaster, Callback):
             client.memory = []
 
 def get_config():
-    logger.set_logger_dir(os.path.join('train_log', LOG_DIR))
+    logger.set_logger_dir(LOG_DIR)
     M = Model()
 
     name_base = str(uuid.uuid1())[:6]
