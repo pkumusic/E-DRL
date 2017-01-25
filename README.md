@@ -11,5 +11,7 @@ I'll implemented counter-based approach on both tasks.
 I'll try my approach on that.
 
 Some ideas:
+
 1. Do we really need time discount on reward since the reward are generally all long-term?
+
 2. Since it gets a lot of negative rewards before it is possible to get to a positive reward, current models tend to punish these policies: which means it would not go any direction, and just stay at the starting point. How to overcome this? Is it good to clip or reduce the negative reward? Or how to improve the possibility of coming to a positive reward point? Or how to strengthen the experience when getting a positive reward?
