@@ -15,3 +15,7 @@ Some ideas:
 1. Do we really need time discount on reward since the reward are generally all long-term?
 
 2. Since it gets a lot of negative rewards before it is possible to get to a positive reward, current models tend to punish these policies: which means it would not go any direction, and just stay at the starting point. How to overcome this? Is it good to clip or reduce the negative reward? Or how to improve the possibility of coming to a positive reward point? Or how to strengthen the experience when getting a positive reward?
+
+3. Based on count-based methods, what we actually need is a density estimator for an unseen image. Could we use Variational Autoencoder, Generative Adversarial Nets, Bolzman Machines or any other approaches to build the estimator?
+
+4. Is it possible to directly embed the exploration strategy into DQN training?
