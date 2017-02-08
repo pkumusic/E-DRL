@@ -1,5 +1,5 @@
 # E-DRL
-
+Exploration Strategies for Deep Reinforcement Learning
 ## Weely Discussion
 1. Experiment Count-based Exploration on pitfall and montezuma's Revenge. [Link](https://github.com/Itsukara/async_deep_reinforce)
 2. Improve density models for count-based exploration (PixelCNN, GANs, VAEs, etc)
@@ -8,7 +8,7 @@
 5. Novel ideas to incorporate exploration into network structure
 
 
-Exploration Strategies for Deep Reinforcement Learning
+## Plans
 
 We plan to explore the exploration strategies for DRL to overcome sparse reward games such as MONTEZUMA's REVENGE and PITFALL.
 PITFALL is actually unsolved and all current models resulting in pessimistic behaviors (e.g., jumping around the starting point)
