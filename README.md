@@ -4,7 +4,7 @@ Exploration Strategies for Deep Reinforcement Learning
 1. Experiment Count-based Exploration on pitfall and montezuma's Revenge. [Link](https://github.com/Itsukara/async_deep_reinforce)
 2. Improve density models for count-based exploration (PixelCNN, GANs, VAEs, etc)
 3. Other exploration strategies [paper](http://www.cs.mcgill.ca/~cs526/roger.pdf) (e.g., Competence Maps, Multiple-Hypothesis Heuristics)
-4. Baselines and possible improvements [VIME](https://arxiv.org/abs/1605.09674) [MBIE-EB](https://pdfs.semanticscholar.org/a357/75802eddbcc96001b25a0fbf69895b994219.pdf)
+4. Baselines and possible improvements [VIME](https://arxiv.org/abs/1605.09674) [Incentivizing](https://arxiv.org/pdf/1507.00814.pdf) [MBIE-EB](https://pdfs.semanticscholar.org/a357/75802eddbcc96001b25a0fbf69895b994219.pdf)
 5. Novel ideas to incorporate exploration into network structure
 
 
