@@ -1,0 +1,6 @@
+
+pkill -f a3c; pkill -f report ; pkill -f avconv; pkill sleep
+
+
+rm -r screen.* tmp checkpoints *.log log.*
+

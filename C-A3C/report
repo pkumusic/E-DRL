@@ -1,0 +1,23 @@
+#!/bin/sh
+
+if [ $# -ne 1 ]; then
+    echo "Usage: $0 log-file"
+    exit 1
+fi
+
+while true
+do
+  cp $1 /tmp
+  cp `hostname`.yaml /tmp/$1.yaml
+  head -200 $1 | grep "option=" > /tmp/$1.option
+  egrep "(Data saved)|Average|options" $1 > /tmp/$1.avg
+  # grep ROOM $1 > /tmp/$1.ROOMS
+  python rooms.py $1 > /tmp/$1.rooms
+  grep OHL  $1 > /tmp/$1.OHL
+  python plot.py $1 --save
+  mv $1*png /tmp
+  ls -d screen*/* > /tmp/$1.screen
+
+  echo "sleep 300"
+  sleep 300
+done

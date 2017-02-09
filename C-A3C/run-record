@@ -1,0 +1,3 @@
+#!/bin/bash
+. activate tensorflow
+python a3c_display.py --record-screen-dir=screen $*

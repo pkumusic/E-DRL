@@ -1,0 +1,28 @@
+#!/bin/bash
+# You have to change following lines
+export home_dir=/home/itsukara
+
+# dont' have to change following lines
+MY_COMMAND="python a3c.py"
+
+cd $home_dir
+
+echo "`export TZ=JST-9;date +%Y/%m/%d-%H:%M:%S` Shutting down!  Seeing if ${MY_COMMAND} is running." >> shutdown.log
+
+# Find the process with command line $MY_COMMAND
+PID="$(pgrep -f "$MY_COMMAND")"
+
+if [[ "$?" -ne 0 ]]; then
+  echo "`export TZ=JST-9;date +%Y/%m/%d-%H:%M:%S` ${MY_COMMAND} not running, shutting down immediately." >> shutdown.log
+  exit 0
+fi
+
+echo "`export TZ=JST-9;date +%Y/%m/%d-%H:%M:%S` Sending SIGINT to $PID"
+kill -2 "$PID"
+
+# Portable waitpid equivalent
+while kill -0 "$PID"; do
+   sleep 1
+done
+
+echo "`export TZ=JST-9;date +%Y/%m/%d-%H:%M:%S` $PID is done, shutdown" >> shutdown.log

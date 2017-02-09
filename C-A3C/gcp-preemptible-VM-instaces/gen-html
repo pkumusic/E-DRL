@@ -1,0 +1,31 @@
+#!/bin/bash
+
+files=($*)
+
+cat << EOS
+<html>
+<head>
+<body>
+
+EOS
+
+for (( i = 0; i < ${#files[@]}; ++i ))
+do
+    file=${files[$i]}
+    runset=${file%.rooms}
+    echo "<img src=\"$runset.r.png\"><br>"
+    
+    echo -n "rooms="
+    cat $runset.rooms
+    echo "<pre>"
+    cat $runset.yaml
+    echo "</pre>"
+    echo "<br> "
+done
+
+cat << EOS
+
+</body>
+</head>
+</html>
+EOS

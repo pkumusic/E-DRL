@@ -1,0 +1,1808 @@
+*** command to execute ***
+
+======================================================================================
+======================================================================================
+$ sudo apt-get install git
+$ git clone https://github.com/Itsukara/async_deep_reinforce.git
+$ mkdir Download
+$ cp async_deep_reinforce/gcp-install/gcp-install-a3c-env.tgz Download/
+$ cd Download/
+$ tar zxvf gcp-install-a3c-env.tgz
+$ bash -x install-Anaconda.sh
+$ . ~/.bashrc
+$ bash -x install-tensorflow.sh
+$ bash -x install-opencv3.sh
+$ bash -x install-ALE.sh
+$ bash -x install-additionals.sh
+$ cd ../async_deep_reinforce
+$ mv checkpoints checkpoints.old
+$ ./run-option-gym montezuma-c-max-greedy-rar025
+
+
+*** the follwing is the log of each command ***
+
+======================================================================================
+======================================================================================
+itsukara@azvm30:~$ sudo apt-get install git
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+The following extra packages will be installed:
+  git-man liberror-perl
+Suggested packages:
+  git-daemon-run git-daemon-sysvinit git-doc git-el git-email git-gui gitk
+  gitweb git-arch git-bzr git-cvs git-mediawiki git-svn
+The following NEW packages will be installed:
+  git git-man liberror-perl
+0 upgraded, 3 newly installed, 0 to remove and 0 not upgraded.
+Need to get 3,306 kB of archives.
+After this operation, 21.9 MB of additional disk space will be used.
+Do you want to continue? [Y/n] y
+Get:1 http://azure.archive.ubuntu.com/ubuntu/ trusty/main liberror-perl all 0.17-1.1 [21.1 kB]
+Get:2 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main git-man all 1:1.9.1-1ubuntu0.3 [699 kB]
+Get:3 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main git amd64 1:1.9.1-1ubuntu0.3 [2,586 kB]
+Fetched 3,306 kB in 0s (24.8 MB/s)
+Selecting previously unselected package liberror-perl.
+(Reading database ... 28585 files and directories currently installed.)
+Preparing to unpack .../liberror-perl_0.17-1.1_all.deb ...
+Unpacking liberror-perl (0.17-1.1) ...
+Selecting previously unselected package git-man.
+Preparing to unpack .../git-man_1%3a1.9.1-1ubuntu0.3_all.deb ...
+Unpacking git-man (1:1.9.1-1ubuntu0.3) ...
+Selecting previously unselected package git.
+Preparing to unpack .../git_1%3a1.9.1-1ubuntu0.3_amd64.deb ...
+Unpacking git (1:1.9.1-1ubuntu0.3) ...
+Processing triggers for man-db (2.6.7.1-1ubuntu1) ...
+Setting up liberror-perl (0.17-1.1) ...
+Setting up git-man (1:1.9.1-1ubuntu0.3) ...
+Setting up git (1:1.9.1-1ubuntu0.3) ...
+
+itsukara@azvm30:~$ git clone https://github.com/Itsukara/async_deep_reinforce.git
+Cloning into 'async_deep_reinforce'...
+remote: Counting objects: 758, done.
+remote: Compressing objects: 100% (37/37), done.
+remote: Total 758 (delta 14), reused 0 (delta 0), pack-reused 721
+Receiving objects: 100% (758/758), 77.92 MiB | 25.19 MiB/s, done.
+Resolving deltas: 100% (452/452), done.
+Checking connectivity... done.
+
+itsukara@azvm30:~$ mkdir Download
+itsukara@azvm30:~$ cp async_deep_reinforce/gcp-install/gcp-install-a3c-env.tgz Download/
+itsukara@azvm30:~$ cd Download/
+itsukara@azvm30:~/Download$ tar zxvf gcp-install-a3c-env.tgz 
+install-ALE.sh
+install-Anaconda.sh
+install-additionals.sh
+install-opencv3.sh
+install-tensorflow.sh
+install-and-run.log
+itsukara@azvm30:~/Download$ 
+
+
+======================================================================================
+======================================================================================
+itsukara@azvm30:~/Download$ bash -x install-Anaconda.sh 
++ curl https://repo.continuum.io/archive/Anaconda3-4.1.1-Linux-x86_64.sh
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+100  406M  100  406M    0     0  70.2M      0  0:00:05  0:00:05 --:--:-- 77.6M
++ bash Anaconda3-4.1.1-Linux-x86_64.sh
+
+Welcome to Anaconda3 4.1.1 (by Continuum Analytics, Inc.)
+
+In order to continue the installation process, please review the license
+agreement.
+Please, press ENTER to continue
+>>> 
+================
+Anaconda License
+================
+
+Copyright 2016, Continuum Analytics, Inc.
+
+All rights reserved under the 3-clause BSD License:
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+* Redistributions of source code must retain the above copyright notice,
+this list of conditions and the following disclaimer.
+
+* Redistributions in binary form must reproduce the above copyright notice,
+this list of conditions and the following disclaimer in the documentation
+and/or other materials provided with the distribution.
+
+* Neither the name of Continuum Analytics, Inc. nor the names of its
+contributors may be used to endorse or promote products derived from this
+software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+ARE DISCLAIMED. IN NO EVENT SHALL CONTINUUM ANALYTICS, INC. BE LIABLE FOR
+ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
+LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY
+OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
+DAMAGE.
+
+
+Notice of Third Party Software Licenses
+=======================================
+
+Anaconda contains open source software packages from third parties. These
+are available on an "as is" basis and subject to their individual license
+agreements. These licenses are available in Anaconda or at
+http://docs.continuum.io/anaconda/pkg-docs . Any binary packages of these
+third party tools you obtain via Anaconda are subject to their individual
+licenses as well as the Anaconda license. Continuum reserves the right to
+change which third party tools are provided in Anaconda.
+
+In particular, Anaconda contains re-distributable, run-time, shared-library
+files from the Intel (TM) Math Kernel Library ("MKL binaries").  You are
+specifically authorized to use the MKL binaries with your installation of
+Anaconda.  You are also authorized to redistribute the MKL binaries with
+Anaconda or in the conda package that contains them.  If needed,
+instructions for removing the MKL binaries after installation of Anaconda
+are available at http://www.continuum.io.
+
+Cryptography Notice
+===================
+
+Do you approve the license terms? [yes|no]
+>>> yes
+
+Anaconda3 will now be installed into this location:
+/home/itsukara/anaconda3
+
+  - Press ENTER to confirm the location
+  - Press CTRL-C to abort the installation
+  - Or specify a different location below
+
+[/home/itsukara/anaconda3] >>> 
+PREFIX=/home/itsukara/anaconda3
+installing: python-3.5.2-0 ...
+installing: _nb_ext_conf-0.2.0-py35_0 ...
+installing: alabaster-0.7.8-py35_0 ...
+installing: anaconda-client-1.4.0-py35_0 ...
+installing: anaconda-navigator-1.2.1-py35_0 ...
+installing: argcomplete-1.0.0-py35_1 ...
+installing: astropy-1.2.1-np111py35_0 ...
+installing: babel-2.3.3-py35_0 ...
+installing: backports-1.0-py35_0 ...
+installing: beautifulsoup4-4.4.1-py35_0 ...
+installing: bitarray-0.8.1-py35_0 ...
+installing: blaze-0.10.1-py35_0 ...
+installing: bokeh-0.12.0-py35_0 ...
+installing: boto-2.40.0-py35_0 ...
+installing: bottleneck-1.1.0-np111py35_0 ...
+installing: cffi-1.6.0-py35_0 ...
+installing: chest-0.2.3-py35_0 ...
+installing: click-6.6-py35_0 ...
+installing: cloudpickle-0.2.1-py35_0 ...
+installing: clyent-1.2.2-py35_0 ...
+installing: colorama-0.3.7-py35_0 ...
+installing: configobj-5.0.6-py35_0 ...
+installing: contextlib2-0.5.3-py35_0 ...
+installing: cryptography-1.4-py35_0 ...
+installing: curl-7.49.0-0 ...
+installing: cycler-0.10.0-py35_0 ...
+installing: cython-0.24-py35_0 ...
+installing: cytoolz-0.8.0-py35_0 ...
+installing: dask-0.10.0-py35_0 ...
+installing: datashape-0.5.2-py35_0 ...
+installing: decorator-4.0.10-py35_0 ...
+installing: dill-0.2.5-py35_0 ...
+installing: docutils-0.12-py35_2 ...
+installing: dynd-python-0.7.2-py35_0 ...
+installing: entrypoints-0.2.2-py35_0 ...
+installing: et_xmlfile-1.0.1-py35_0 ...
+installing: fastcache-1.0.2-py35_1 ...
+installing: flask-0.11.1-py35_0 ...
+installing: flask-cors-2.1.2-py35_0 ...
+installing: fontconfig-2.11.1-6 ...
+installing: freetype-2.5.5-1 ...
+installing: get_terminal_size-1.0.0-py35_0 ...
+installing: gevent-1.1.1-py35_0 ...
+installing: greenlet-0.4.10-py35_0 ...
+installing: h5py-2.6.0-np111py35_1 ...
+installing: hdf5-1.8.16-0 ...
+installing: heapdict-1.0.0-py35_1 ...
+installing: idna-2.1-py35_0 ...
+installing: imagesize-0.7.1-py35_0 ...
+installing: ipykernel-4.3.1-py35_0 ...
+installing: ipython-4.2.0-py35_0 ...
+installing: ipython_genutils-0.1.0-py35_0 ...
+installing: ipywidgets-4.1.1-py35_0 ...
+installing: itsdangerous-0.24-py35_0 ...
+installing: jbig-2.1-0 ...
+installing: jdcal-1.2-py35_1 ...
+installing: jedi-0.9.0-py35_1 ...
+installing: jinja2-2.8-py35_1 ...
+installing: jpeg-8d-1 ...
+installing: jsonschema-2.5.1-py35_0 ...
+installing: jupyter-1.0.0-py35_3 ...
+installing: jupyter_client-4.3.0-py35_0 ...
+installing: jupyter_console-4.1.1-py35_0 ...
+installing: jupyter_core-4.1.0-py35_0 ...
+installing: libdynd-0.7.2-0 ...
+installing: libffi-3.2.1-0 ...
+installing: libgfortran-3.0.0-1 ...
+installing: libpng-1.6.22-0 ...
+installing: libsodium-1.0.10-0 ...
+installing: libtiff-4.0.6-2 ...
+installing: libxml2-2.9.2-0 ...
+installing: libxslt-1.1.28-0 ...
+installing: llvmlite-0.11.0-py35_0 ...
+installing: locket-0.2.0-py35_1 ...
+installing: lxml-3.6.0-py35_0 ...
+installing: markupsafe-0.23-py35_2 ...
+installing: matplotlib-1.5.1-np111py35_0 ...
+installing: mistune-0.7.2-py35_0 ...
+installing: mkl-11.3.3-0 ...
+installing: mkl-service-1.1.2-py35_2 ...
+installing: mpmath-0.19-py35_1 ...
+installing: multipledispatch-0.4.8-py35_0 ...
+installing: nb_anacondacloud-1.1.0-py35_0 ...
+installing: nb_conda-1.1.0-py35_0 ...
+installing: nb_conda_kernels-1.0.3-py35_0 ...
+installing: nbconvert-4.2.0-py35_0 ...
+installing: nbformat-4.0.1-py35_0 ...
+installing: nbpresent-3.0.2-py35_0 ...
+installing: networkx-1.11-py35_0 ...
+installing: nltk-3.2.1-py35_0 ...
+installing: nose-1.3.7-py35_1 ...
+installing: notebook-4.2.1-py35_0 ...
+installing: numba-0.26.0-np111py35_0 ...
+installing: numexpr-2.6.0-np111py35_0 ...
+installing: numpy-1.11.1-py35_0 ...
+installing: odo-0.5.0-py35_1 ...
+installing: openpyxl-2.3.2-py35_0 ...
+installing: openssl-1.0.2h-1 ...
+installing: pandas-0.18.1-np111py35_0 ...
+installing: partd-0.3.4-py35_0 ...
+installing: patchelf-0.9-0 ...
+installing: path.py-8.2.1-py35_0 ...
+installing: pathlib2-2.1.0-py35_0 ...
+installing: patsy-0.4.1-py35_0 ...
+installing: pep8-1.7.0-py35_0 ...
+installing: pexpect-4.0.1-py35_0 ...
+installing: pickleshare-0.7.2-py35_0 ...
+installing: pillow-3.2.0-py35_1 ...
+installing: pip-8.1.2-py35_0 ...
+installing: ply-3.8-py35_0 ...
+installing: psutil-4.3.0-py35_0 ...
+installing: ptyprocess-0.5.1-py35_0 ...
+installing: py-1.4.31-py35_0 ...
+installing: pyasn1-0.1.9-py35_0 ...
+installing: pycosat-0.6.1-py35_1 ...
+installing: pycparser-2.14-py35_1 ...
+installing: pycrypto-2.6.1-py35_4 ...
+installing: pycurl-7.43.0-py35_0 ...
+installing: pyflakes-1.2.3-py35_0 ...
+installing: pygments-2.1.3-py35_0 ...
+installing: pyopenssl-0.16.0-py35_0 ...
+installing: pyparsing-2.1.4-py35_0 ...
+installing: pyqt-4.11.4-py35_3 ...
+installing: pytables-3.2.2-np111py35_4 ...
+installing: pytest-2.9.2-py35_0 ...
+installing: python-dateutil-2.5.3-py35_0 ...
+installing: pytz-2016.4-py35_0 ...
+installing: pyyaml-3.11-py35_4 ...
+installing: pyzmq-15.2.0-py35_1 ...
+installing: qt-4.8.7-3 ...
+installing: qtconsole-4.2.1-py35_0 ...
+installing: qtpy-1.0.2-py35_0 ...
+installing: readline-6.2-2 ...
+installing: redis-3.2.0-0 ...
+installing: redis-py-2.10.5-py35_0 ...
+installing: requests-2.10.0-py35_0 ...
+installing: rope-0.9.4-py35_1 ...
+installing: ruamel_yaml-0.11.7-py35_0 ...
+installing: scikit-image-0.12.3-np111py35_1 ...
+installing: scikit-learn-0.17.1-np111py35_2 ...
+installing: scipy-0.17.1-np111py35_1 ...
+installing: setuptools-23.0.0-py35_0 ...
+installing: simplegeneric-0.8.1-py35_1 ...
+installing: singledispatch-3.4.0.3-py35_0 ...
+installing: sip-4.16.9-py35_0 ...
+installing: six-1.10.0-py35_0 ...
+installing: snowballstemmer-1.2.1-py35_0 ...
+installing: sockjs-tornado-1.0.3-py35_0 ...
+installing: sphinx-1.4.1-py35_0 ...
+installing: sphinx_rtd_theme-0.1.9-py35_0 ...
+installing: spyder-2.3.9-py35_0 ...
+installing: sqlalchemy-1.0.13-py35_0 ...
+installing: sqlite-3.13.0-0 ...
+installing: statsmodels-0.6.1-np111py35_1 ...
+installing: sympy-1.0-py35_0 ...
+installing: terminado-0.6-py35_0 ...
+installing: tk-8.5.18-0 ...
+installing: toolz-0.8.0-py35_0 ...
+installing: tornado-4.3-py35_1 ...
+installing: traitlets-4.2.1-py35_0 ...
+installing: unicodecsv-0.14.1-py35_0 ...
+installing: werkzeug-0.11.10-py35_0 ...
+installing: wheel-0.29.0-py35_0 ...
+installing: xlrd-1.0.0-py35_0 ...
+installing: xlsxwriter-0.9.2-py35_0 ...
+installing: xlwt-1.1.2-py35_0 ...
+installing: xz-5.2.2-0 ...
+installing: yaml-0.1.6-0 ...
+installing: zeromq-4.1.4-0 ...
+installing: zlib-1.2.8-3 ...
+installing: anaconda-4.1.1-np111py35_0 ...
+installing: conda-4.1.6-py35_0 ...
+installing: conda-build-1.21.3-py35_0 ...
+installing: conda-env-2.5.1-py35_0 ...
+Python 3.5.2 :: Continuum Analytics, Inc.
+creating default environment...
+installation finished.
+Do you wish the installer to prepend the Anaconda3 install location
+to PATH in your /home/itsukara/.bashrc ? [yes|no]
+[no] >>> yes
+
+Prepending PATH=/home/itsukara/anaconda3/bin to PATH in /home/itsukara/.bashrc
+A backup will be made to: /home/itsukara/.bashrc-anaconda3.bak
+
+
+For this change to become active, you have to open a new terminal.
+
+Thank you for installing Anaconda3!
+
+Share your notebooks and packages on Anaconda Cloud!
+Sign up for free: https://anaconda.org
+
+itsukara@azvm30:~/Download$ 
+
+
+
+======================================================================================
+======================================================================================
+itsukara@azvm30:~/Download$ . ~/.bashrc
+itsukara@azvm30:~/Download$ 
+
+
+
+======================================================================================
+======================================================================================
+itsukara@azvm30:~/Download$ bash -x install-tensorflow.sh
++ conda install -c conda-forge tensorflow
+Using Anaconda Cloud api site https://api.anaconda.org
+Fetching package metadata .........
+Solving package specifications: ..........
+
+Package plan for installation in environment /home/itsukara/anaconda3:
+
+The following packages will be downloaded:
+
+    package                    |            build
+    ---------------------------|-----------------
+    conda-env-2.5.2            |           py35_0          27 KB  conda-forge
+    conda-4.1.11               |           py35_1         390 KB  conda-forge
+    protobuf-3.0.0b2           |           py35_0         171 KB  conda-forge
+    pbr-1.10.0                 |           py35_0          99 KB  conda-forge
+    mock-2.0.0                 |           py35_0         101 KB  conda-forge
+    tensorflow-0.10.0          |           py35_0        28.6 MB  conda-forge
+    ------------------------------------------------------------
+                                           Total:        29.3 MB
+
+The following NEW packages will be INSTALLED:
+
+    mock:       2.0.0-py35_0   conda-forge
+    pbr:        1.10.0-py35_0  conda-forge
+    protobuf:   3.0.0b2-py35_0 conda-forge
+    tensorflow: 0.10.0-py35_0  conda-forge
+
+The following packages will be UPDATED:
+
+    conda:      4.1.6-py35_0               --> 4.1.11-py35_1 conda-forge
+    conda-env:  2.5.1-py35_0               --> 2.5.2-py35_0  conda-forge
+
+Proceed ([y]/n)? y
+
+Fetching packages ...
+conda-env-2.5. 100% |############################################################| Time: 0:00:00   4.08 MB/s
+conda-4.1.11-p 100% |############################################################| Time: 0:00:00   7.51 MB/s
+protobuf-3.0.0 100% |############################################################| Time: 0:00:00   5.16 MB/s
+pbr-1.10.0-py3 100% |############################################################| Time: 0:00:00   3.75 MB/s
+mock-2.0.0-py3 100% |############################################################| Time: 0:00:00   4.16 MB/s
+tensorflow-0.1 100% |############################################################| Time: 0:00:00  49.67 MB/s
+Extracting packages ...
+[      COMPLETE      ]|###############################################################################| 100%
+Unlinking packages ...
+[      COMPLETE      ]|###############################################################################| 100%
+Linking packages ...
+[      COMPLETE      ]|###############################################################################| 100%
+itsukara@azvm30:~/Download$
+
+
+======================================================================================
+======================================================================================
+itsukara@azvm30:~/Download$ bash -x install-opencv3.sh
++ conda install --channel https://conda.anaconda.org/menpo opencv3
+Using Anaconda Cloud api site https://api.anaconda.org
+Fetching package metadata .........
+Solving package specifications: ..........
+
+Package plan for installation in environment /home/itsukara/anaconda3:
+
+The following packages will be downloaded:
+
+    package                    |            build
+    ---------------------------|-----------------
+    conda-env-2.6.0            |                0          502 B
+    anaconda-custom            |           py35_0           3 KB
+    ruamel_yaml-0.11.14        |           py35_0         377 KB
+    conda-4.2.9                |           py35_0         374 KB
+    opencv3-3.1.0              |           py35_0        36.9 MB  menpo
+    ------------------------------------------------------------
+                                           Total:        37.6 MB
+
+The following NEW packages will be INSTALLED:
+
+    opencv3:     3.1.0-py35_0      menpo      
+
+The following packages will be UPDATED:
+
+    anaconda:    4.1.1-np111py35_0             --> custom-py35_0 
+    conda:       4.1.11-py35_1     conda-forge --> 4.2.9-py35_0  
+    conda-env:   2.5.2-py35_0      conda-forge --> 2.6.0-0       
+    ruamel_yaml: 0.11.7-py35_0                 --> 0.11.14-py35_0
+
+Proceed ([y]/n)? y
+
+Fetching packages ...
+conda-env-2.6. 100% |################################################################| Time: 0:00:00 609.07 kB/s
+anaconda-custo 100% |################################################################| Time: 0:00:00   2.55 MB/s
+ruamel_yaml-0. 100% |################################################################| Time: 0:00:00   7.90 MB/s
+conda-4.2.9-py 100% |################################################################| Time: 0:00:00   8.83 MB/s
+opencv3-3.1.0- 100% |################################################################| Time: 0:00:00  49.78 MB/s
+Extracting packages ...
+[      COMPLETE      ]|###################################################################################| 100%
+Unlinking packages ...
+[      COMPLETE      ]|###################################################################################| 100%
+Linking packages ...
+[      COMPLETE      ]|###################################################################################| 100%
++ sudo apt-get update
+Ign http://azure.archive.ubuntu.com trusty InRelease
+Get:1 http://azure.archive.ubuntu.com trusty-updates InRelease [65.9 kB]
+Get:2 http://azure.archive.ubuntu.com trusty-backports InRelease [65.9 kB]
+Hit http://azure.archive.ubuntu.com trusty Release.gpg                         
+Hit http://azure.archive.ubuntu.com trusty Release                             
+Get:3 http://security.ubuntu.com trusty-security InRelease [65.9 kB]           
+Get:4 http://azure.archive.ubuntu.com trusty-updates/main Sources [383 kB]     
+Get:5 http://azure.archive.ubuntu.com trusty-updates/restricted Sources [5,360 B]
+Get:6 http://azure.archive.ubuntu.com trusty-updates/universe Sources [166 kB] 
+Get:7 http://azure.archive.ubuntu.com trusty-updates/multiverse Sources [7,520 B]
+Get:8 http://azure.archive.ubuntu.com trusty-updates/main amd64 Packages [901 kB]
+Get:9 http://security.ubuntu.com trusty-security/main Sources [120 kB]        
+Get:10 http://azure.archive.ubuntu.com trusty-updates/restricted amd64 Packages [15.9 kB]
+Get:11 http://azure.archive.ubuntu.com trusty-updates/universe amd64 Packages [376 kB]
+Get:12 http://azure.archive.ubuntu.com trusty-updates/multiverse amd64 Packages [15.0 kB]
+Get:13 http://azure.archive.ubuntu.com trusty-updates/main Translation-en [437 kB]
+Get:14 http://security.ubuntu.com trusty-security/universe Sources [43.6 kB]   
+Get:15 http://azure.archive.ubuntu.com trusty-updates/multiverse Translation-en [7,931 B]
+Get:16 http://azure.archive.ubuntu.com trusty-updates/restricted Translation-en [3,699 B]
+Get:17 http://azure.archive.ubuntu.com trusty-updates/universe Translation-en [199 kB]
+Get:18 http://security.ubuntu.com trusty-security/main amd64 Packages [531 kB] 
+Get:19 http://azure.archive.ubuntu.com trusty-backports/main Sources [9,653 B] 
+Get:20 http://azure.archive.ubuntu.com trusty-backports/restricted Sources [28 B]
+Get:21 http://azure.archive.ubuntu.com trusty-backports/universe Sources [35.2 kB]
+Get:22 http://azure.archive.ubuntu.com trusty-backports/multiverse Sources [1,898 B]
+Get:23 http://azure.archive.ubuntu.com trusty-backports/main amd64 Packages [13.3 kB]
+Get:24 http://azure.archive.ubuntu.com trusty-backports/restricted amd64 Packages [28 B]
+Get:25 http://azure.archive.ubuntu.com trusty-backports/universe amd64 Packages [43.1 kB]
+Get:26 http://azure.archive.ubuntu.com trusty-backports/multiverse amd64 Packages [1,571 B]
+Get:27 http://azure.archive.ubuntu.com trusty-backports/main Translation-en [7,493 B]
+Get:28 http://azure.archive.ubuntu.com trusty-backports/multiverse Translation-en [1,215 B]
+Get:29 http://azure.archive.ubuntu.com trusty-backports/restricted Translation-en [28 B]
+Get:30 http://azure.archive.ubuntu.com trusty-backports/universe Translation-en [36.8 kB]
+Get:31 http://azure.archive.ubuntu.com trusty/main Sources [1,064 kB]          
+Get:32 http://security.ubuntu.com trusty-security/universe amd64 Packages [138 kB]
+Get:33 http://azure.archive.ubuntu.com trusty/restricted Sources [5,433 B]     
+Get:34 http://azure.archive.ubuntu.com trusty/universe Sources [6,399 kB]   
+Get:35 http://security.ubuntu.com trusty-security/main Translation-en [292 kB]
+Get:36 http://security.ubuntu.com trusty-security/universe Translation-en [82.7 kB]
+Get:37 http://azure.archive.ubuntu.com trusty/multiverse Sources [174 kB]      
+Hit http://azure.archive.ubuntu.com trusty/main amd64 Packages
+Hit http://azure.archive.ubuntu.com trusty/restricted amd64 Packages
+Hit http://azure.archive.ubuntu.com trusty/universe amd64 Packages
+Hit http://azure.archive.ubuntu.com trusty/multiverse amd64 Packages
+Hit http://azure.archive.ubuntu.com trusty/main Translation-en
+Hit http://azure.archive.ubuntu.com trusty/multiverse Translation-en
+Hit http://azure.archive.ubuntu.com trusty/restricted Translation-en
+Hit http://azure.archive.ubuntu.com trusty/universe Translation-en
+Ign http://azure.archive.ubuntu.com trusty/main Translation-en_US
+Ign http://azure.archive.ubuntu.com trusty/multiverse Translation-en_US
+Ign http://azure.archive.ubuntu.com trusty/restricted Translation-en_US
+Ign http://azure.archive.ubuntu.com trusty/universe Translation-en_US
+Fetched 11.7 MB in 3s (3,348 kB/s)                         
+Reading package lists... Done
++ sudo apt-get install libgomp1
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+The following NEW packages will be installed:
+  libgomp1
+0 upgraded, 1 newly installed, 0 to remove and 23 not upgraded.
+Need to get 23.1 kB of archives.
+After this operation, 95.2 kB of additional disk space will be used.
+Get:1 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main libgomp1 amd64 4.8.4-2ubuntu1~14.04.3 [23.1 kB]
+Fetched 23.1 kB in 0s (0 B/s)       
+Selecting previously unselected package libgomp1:amd64.
+(Reading database ... 28585 files and directories currently installed.)
+Preparing to unpack .../libgomp1_4.8.4-2ubuntu1~14.04.3_amd64.deb ...
+Unpacking libgomp1:amd64 (4.8.4-2ubuntu1~14.04.3) ...
+Setting up libgomp1:amd64 (4.8.4-2ubuntu1~14.04.3) ...
+Processing triggers for libc-bin (2.19-0ubuntu6.9) ...
++ sudo apt-get install libgtk2.0-0
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+The following extra packages will be installed:
+  fontconfig fontconfig-config fonts-dejavu-core hicolor-icon-theme
+  libatk1.0-0 libatk1.0-data libcairo2 libdatrie1 libfontconfig1
+  libgdk-pixbuf2.0-0 libgdk-pixbuf2.0-common libgraphite2-3 libgtk2.0-bin
+  libgtk2.0-common libharfbuzz0b libjasper1 libjbig0 libjpeg-turbo8 libjpeg8
+  libpango-1.0-0 libpangocairo-1.0-0 libpangoft2-1.0-0 libpixman-1-0
+  libthai-data libthai0 libtiff5 libxcb-render0 libxcb-shm0 libxcomposite1
+  libxcursor1 libxdamage1 libxfixes3 libxi6 libxinerama1 libxrandr2
+  libxrender1
+Suggested packages:
+  librsvg2-common gvfs libjasper-runtime ttf-baekmuk ttf-arphic-gbsn00lp
+  ttf-arphic-bsmi00lp ttf-arphic-gkai00mp ttf-arphic-bkai00mp
+The following NEW packages will be installed:
+  fontconfig fontconfig-config fonts-dejavu-core hicolor-icon-theme
+  libatk1.0-0 libatk1.0-data libcairo2 libdatrie1 libfontconfig1
+  libgdk-pixbuf2.0-0 libgdk-pixbuf2.0-common libgraphite2-3 libgtk2.0-0
+  libgtk2.0-bin libgtk2.0-common libharfbuzz0b libjasper1 libjbig0
+  libjpeg-turbo8 libjpeg8 libpango-1.0-0 libpangocairo-1.0-0 libpangoft2-1.0-0
+  libpixman-1-0 libthai-data libthai0 libtiff5 libxcb-render0 libxcb-shm0
+  libxcomposite1 libxcursor1 libxdamage1 libxfixes3 libxi6 libxinerama1
+  libxrandr2 libxrender1
+0 upgraded, 37 newly installed, 0 to remove and 23 not upgraded.
+Need to get 5,347 kB of archives.
+After this operation, 21.2 MB of additional disk space will be used.
+Do you want to continue? [Y/n] y
+Get:1 http://azure.archive.ubuntu.com/ubuntu/ trusty/main libatk1.0-data all 2.10.0-2ubuntu2 [13.7 kB]
+Get:2 http://azure.archive.ubuntu.com/ubuntu/ trusty/main libatk1.0-0 amd64 2.10.0-2ubuntu2 [50.9 kB]
+Get:3 http://azure.archive.ubuntu.com/ubuntu/ trusty/main fonts-dejavu-core all 2.34-1ubuntu1 [1,024 kB]
+Get:4 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main fontconfig-config all 2.11.0-0ubuntu4.2 [47.4 kB]
+Get:5 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main libfontconfig1 amd64 2.11.0-0ubuntu4.2 [123 kB]
+Get:6 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main libpixman-1-0 amd64 0.30.2-2ubuntu1.1 [225 kB]
+Get:7 http://azure.archive.ubuntu.com/ubuntu/ trusty/main libxcb-render0 amd64 1.10-2ubuntu1 [11.0 kB]
+Get:8 http://azure.archive.ubuntu.com/ubuntu/ trusty/main libxcb-shm0 amd64 1.10-2ubuntu1 [5,432 B]
+Get:9 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main libxrender1 amd64 1:0.9.8-1build0.14.04.1 [17.9 kB]
+Get:10 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main libcairo2 amd64 1.13.0~20140204-0ubuntu1.1 [535 kB]
+Get:11 http://azure.archive.ubuntu.com/ubuntu/ trusty/main libdatrie1 amd64 0.2.8-1 [16.7 kB]
+Get:12 http://azure.archive.ubuntu.com/ubuntu/ trusty/main libjpeg-turbo8 amd64 1.3.0-0ubuntu2 [104 kB]
+Get:13 http://azure.archive.ubuntu.com/ubuntu/ trusty/main libjpeg8 amd64 8c-2ubuntu8 [2,194 B]
+Get:14 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main libjasper1 amd64 1.900.1-14ubuntu3.3 [130 kB]
+Get:15 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main libjbig0 amd64 2.0-2ubuntu4.1 [26.1 kB]
+Get:16 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main libtiff5 amd64 4.0.3-7ubuntu0.4 [143 kB]
+Get:17 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main libgdk-pixbuf2.0-common all 2.30.7-0ubuntu1.6 [9,066 B]
+Get:18 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main libgdk-pixbuf2.0-0 amd64 2.30.7-0ubuntu1.6 [160 kB]
+Get:19 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main libgraphite2-3 amd64 1.3.6-1ubuntu0.14.04.1 [71.3 kB]
+Get:20 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main libgtk2.0-common all 2.24.23-0ubuntu1.4 [121 kB]
+Get:21 http://azure.archive.ubuntu.com/ubuntu/ trusty/main libthai-data all 0.1.20-3 [130 kB]
+Get:22 http://azure.archive.ubuntu.com/ubuntu/ trusty/main libthai0 amd64 0.1.20-3 [16.9 kB]
+Get:23 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main fontconfig amd64 2.11.0-0ubuntu4.2 [176 kB]
+Get:24 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main libpango-1.0-0 amd64 1.36.3-1ubuntu1.1 [149 kB]
+Get:25 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main libharfbuzz0b amd64 0.9.27-1ubuntu1.1 [127 kB]
+Get:26 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main libpangoft2-1.0-0 amd64 1.36.3-1ubuntu1.1 [32.7 kB]
+Get:27 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main libpangocairo-1.0-0 amd64 1.36.3-1ubuntu1.1 [20.0 kB]
+Get:28 http://azure.archive.ubuntu.com/ubuntu/ trusty/main libxcomposite1 amd64 1:0.4.4-1 [7,714 B]
+Get:29 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main libxfixes3 amd64 1:5.0.1-1ubuntu1.1 [10.4 kB]
+Get:30 http://azure.archive.ubuntu.com/ubuntu/ trusty/main libxcursor1 amd64 1:1.1.14-1 [22.8 kB]
+Get:31 http://azure.archive.ubuntu.com/ubuntu/ trusty/main libxdamage1 amd64 1:1.1.4-1ubuntu1 [7,612 B]
+Get:32 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main libxi6 amd64 2:1.7.1.901-1ubuntu1.1 [27.9 kB]
+Get:33 http://azure.archive.ubuntu.com/ubuntu/ trusty/main libxinerama1 amd64 2:1.1.3-1 [7,908 B]
+Get:34 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main libxrandr2 amd64 2:1.5.0-1~trusty1 [17.5 kB]
+Get:35 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main libgtk2.0-0 amd64 2.24.23-0ubuntu1.4 [1,739 kB]
+Get:36 http://azure.archive.ubuntu.com/ubuntu/ trusty/main hicolor-icon-theme all 0.13-1 [7,140 B]
+Get:37 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main libgtk2.0-bin amd64 2.24.23-0ubuntu1.4 [9,774 B]
+Fetched 5,347 kB in 0s (23.9 MB/s)          
+Extracting templates from packages: 100%
+Selecting previously unselected package libatk1.0-data.
+(Reading database ... 28588 files and directories currently installed.)
+Preparing to unpack .../libatk1.0-data_2.10.0-2ubuntu2_all.deb ...
+Unpacking libatk1.0-data (2.10.0-2ubuntu2) ...
+Selecting previously unselected package libatk1.0-0:amd64.
+Preparing to unpack .../libatk1.0-0_2.10.0-2ubuntu2_amd64.deb ...
+Unpacking libatk1.0-0:amd64 (2.10.0-2ubuntu2) ...
+Selecting previously unselected package fonts-dejavu-core.
+Preparing to unpack .../fonts-dejavu-core_2.34-1ubuntu1_all.deb ...
+Unpacking fonts-dejavu-core (2.34-1ubuntu1) ...
+Selecting previously unselected package fontconfig-config.
+Preparing to unpack .../fontconfig-config_2.11.0-0ubuntu4.2_all.deb ...
+Unpacking fontconfig-config (2.11.0-0ubuntu4.2) ...
+Selecting previously unselected package libfontconfig1:amd64.
+Preparing to unpack .../libfontconfig1_2.11.0-0ubuntu4.2_amd64.deb ...
+Unpacking libfontconfig1:amd64 (2.11.0-0ubuntu4.2) ...
+Selecting previously unselected package libpixman-1-0:amd64.
+Preparing to unpack .../libpixman-1-0_0.30.2-2ubuntu1.1_amd64.deb ...
+Unpacking libpixman-1-0:amd64 (0.30.2-2ubuntu1.1) ...
+Selecting previously unselected package libxcb-render0:amd64.
+Preparing to unpack .../libxcb-render0_1.10-2ubuntu1_amd64.deb ...
+Unpacking libxcb-render0:amd64 (1.10-2ubuntu1) ...
+Selecting previously unselected package libxcb-shm0:amd64.
+Preparing to unpack .../libxcb-shm0_1.10-2ubuntu1_amd64.deb ...
+Unpacking libxcb-shm0:amd64 (1.10-2ubuntu1) ...
+Selecting previously unselected package libxrender1:amd64.
+Preparing to unpack .../libxrender1_1%3a0.9.8-1build0.14.04.1_amd64.deb ...
+Unpacking libxrender1:amd64 (1:0.9.8-1build0.14.04.1) ...
+Selecting previously unselected package libcairo2:amd64.
+Preparing to unpack .../libcairo2_1.13.0~20140204-0ubuntu1.1_amd64.deb ...
+Unpacking libcairo2:amd64 (1.13.0~20140204-0ubuntu1.1) ...
+Selecting previously unselected package libdatrie1:amd64.
+Preparing to unpack .../libdatrie1_0.2.8-1_amd64.deb ...
+Unpacking libdatrie1:amd64 (0.2.8-1) ...
+Selecting previously unselected package libjpeg-turbo8:amd64.
+Preparing to unpack .../libjpeg-turbo8_1.3.0-0ubuntu2_amd64.deb ...
+Unpacking libjpeg-turbo8:amd64 (1.3.0-0ubuntu2) ...
+Selecting previously unselected package libjpeg8:amd64.
+Preparing to unpack .../libjpeg8_8c-2ubuntu8_amd64.deb ...
+Unpacking libjpeg8:amd64 (8c-2ubuntu8) ...
+Selecting previously unselected package libjasper1:amd64.
+Preparing to unpack .../libjasper1_1.900.1-14ubuntu3.3_amd64.deb ...
+Unpacking libjasper1:amd64 (1.900.1-14ubuntu3.3) ...
+Selecting previously unselected package libjbig0:amd64.
+Preparing to unpack .../libjbig0_2.0-2ubuntu4.1_amd64.deb ...
+Unpacking libjbig0:amd64 (2.0-2ubuntu4.1) ...
+Selecting previously unselected package libtiff5:amd64.
+Preparing to unpack .../libtiff5_4.0.3-7ubuntu0.4_amd64.deb ...
+Unpacking libtiff5:amd64 (4.0.3-7ubuntu0.4) ...
+Selecting previously unselected package libgdk-pixbuf2.0-common.
+Preparing to unpack .../libgdk-pixbuf2.0-common_2.30.7-0ubuntu1.6_all.deb ...
+Unpacking libgdk-pixbuf2.0-common (2.30.7-0ubuntu1.6) ...
+Selecting previously unselected package libgdk-pixbuf2.0-0:amd64.
+Preparing to unpack .../libgdk-pixbuf2.0-0_2.30.7-0ubuntu1.6_amd64.deb ...
+Unpacking libgdk-pixbuf2.0-0:amd64 (2.30.7-0ubuntu1.6) ...
+Selecting previously unselected package libgraphite2-3:amd64.
+Preparing to unpack .../libgraphite2-3_1.3.6-1ubuntu0.14.04.1_amd64.deb ...
+Unpacking libgraphite2-3:amd64 (1.3.6-1ubuntu0.14.04.1) ...
+Selecting previously unselected package libgtk2.0-common.
+Preparing to unpack .../libgtk2.0-common_2.24.23-0ubuntu1.4_all.deb ...
+Unpacking libgtk2.0-common (2.24.23-0ubuntu1.4) ...
+Selecting previously unselected package libthai-data.
+Preparing to unpack .../libthai-data_0.1.20-3_all.deb ...
+Unpacking libthai-data (0.1.20-3) ...
+Selecting previously unselected package libthai0:amd64.
+Preparing to unpack .../libthai0_0.1.20-3_amd64.deb ...
+Unpacking libthai0:amd64 (0.1.20-3) ...
+Selecting previously unselected package fontconfig.
+Preparing to unpack .../fontconfig_2.11.0-0ubuntu4.2_amd64.deb ...
+Unpacking fontconfig (2.11.0-0ubuntu4.2) ...
+Selecting previously unselected package libpango-1.0-0:amd64.
+Preparing to unpack .../libpango-1.0-0_1.36.3-1ubuntu1.1_amd64.deb ...
+Unpacking libpango-1.0-0:amd64 (1.36.3-1ubuntu1.1) ...
+Selecting previously unselected package libharfbuzz0b:amd64.
+Preparing to unpack .../libharfbuzz0b_0.9.27-1ubuntu1.1_amd64.deb ...
+Unpacking libharfbuzz0b:amd64 (0.9.27-1ubuntu1.1) ...
+Selecting previously unselected package libpangoft2-1.0-0:amd64.
+Preparing to unpack .../libpangoft2-1.0-0_1.36.3-1ubuntu1.1_amd64.deb ...
+Unpacking libpangoft2-1.0-0:amd64 (1.36.3-1ubuntu1.1) ...
+Selecting previously unselected package libpangocairo-1.0-0:amd64.
+Preparing to unpack .../libpangocairo-1.0-0_1.36.3-1ubuntu1.1_amd64.deb ...
+Unpacking libpangocairo-1.0-0:amd64 (1.36.3-1ubuntu1.1) ...
+Selecting previously unselected package libxcomposite1:amd64.
+Preparing to unpack .../libxcomposite1_1%3a0.4.4-1_amd64.deb ...
+Unpacking libxcomposite1:amd64 (1:0.4.4-1) ...
+Selecting previously unselected package libxfixes3:amd64.
+Preparing to unpack .../libxfixes3_1%3a5.0.1-1ubuntu1.1_amd64.deb ...
+Unpacking libxfixes3:amd64 (1:5.0.1-1ubuntu1.1) ...
+Selecting previously unselected package libxcursor1:amd64.
+Preparing to unpack .../libxcursor1_1%3a1.1.14-1_amd64.deb ...
+Unpacking libxcursor1:amd64 (1:1.1.14-1) ...
+Selecting previously unselected package libxdamage1:amd64.
+Preparing to unpack .../libxdamage1_1%3a1.1.4-1ubuntu1_amd64.deb ...
+Unpacking libxdamage1:amd64 (1:1.1.4-1ubuntu1) ...
+Selecting previously unselected package libxi6:amd64.
+Preparing to unpack .../libxi6_2%3a1.7.1.901-1ubuntu1.1_amd64.deb ...
+Unpacking libxi6:amd64 (2:1.7.1.901-1ubuntu1.1) ...
+Selecting previously unselected package libxinerama1:amd64.
+Preparing to unpack .../libxinerama1_2%3a1.1.3-1_amd64.deb ...
+Unpacking libxinerama1:amd64 (2:1.1.3-1) ...
+Selecting previously unselected package libxrandr2:amd64.
+Preparing to unpack .../libxrandr2_2%3a1.5.0-1~trusty1_amd64.deb ...
+Unpacking libxrandr2:amd64 (2:1.5.0-1~trusty1) ...
+Selecting previously unselected package libgtk2.0-0:amd64.
+Preparing to unpack .../libgtk2.0-0_2.24.23-0ubuntu1.4_amd64.deb ...
+Unpacking libgtk2.0-0:amd64 (2.24.23-0ubuntu1.4) ...
+Selecting previously unselected package hicolor-icon-theme.
+Preparing to unpack .../hicolor-icon-theme_0.13-1_all.deb ...
+Unpacking hicolor-icon-theme (0.13-1) ...
+Selecting previously unselected package libgtk2.0-bin.
+Preparing to unpack .../libgtk2.0-bin_2.24.23-0ubuntu1.4_amd64.deb ...
+Unpacking libgtk2.0-bin (2.24.23-0ubuntu1.4) ...
+Processing triggers for man-db (2.6.7.1-1ubuntu1) ...
+Setting up libatk1.0-data (2.10.0-2ubuntu2) ...
+Setting up libatk1.0-0:amd64 (2.10.0-2ubuntu2) ...
+Setting up fonts-dejavu-core (2.34-1ubuntu1) ...
+Setting up fontconfig-config (2.11.0-0ubuntu4.2) ...
+Setting up libfontconfig1:amd64 (2.11.0-0ubuntu4.2) ...
+Setting up libpixman-1-0:amd64 (0.30.2-2ubuntu1.1) ...
+Setting up libxcb-render0:amd64 (1.10-2ubuntu1) ...
+Setting up libxcb-shm0:amd64 (1.10-2ubuntu1) ...
+Setting up libxrender1:amd64 (1:0.9.8-1build0.14.04.1) ...
+Setting up libcairo2:amd64 (1.13.0~20140204-0ubuntu1.1) ...
+Setting up libdatrie1:amd64 (0.2.8-1) ...
+Setting up libjpeg-turbo8:amd64 (1.3.0-0ubuntu2) ...
+Setting up libjpeg8:amd64 (8c-2ubuntu8) ...
+Setting up libjasper1:amd64 (1.900.1-14ubuntu3.3) ...
+Setting up libjbig0:amd64 (2.0-2ubuntu4.1) ...
+Setting up libtiff5:amd64 (4.0.3-7ubuntu0.4) ...
+Setting up libgdk-pixbuf2.0-common (2.30.7-0ubuntu1.6) ...
+Setting up libgdk-pixbuf2.0-0:amd64 (2.30.7-0ubuntu1.6) ...
+Setting up libgraphite2-3:amd64 (1.3.6-1ubuntu0.14.04.1) ...
+Setting up libgtk2.0-common (2.24.23-0ubuntu1.4) ...
+Setting up libthai-data (0.1.20-3) ...
+Setting up libthai0:amd64 (0.1.20-3) ...
+Setting up fontconfig (2.11.0-0ubuntu4.2) ...
+Regenerating fonts cache... done.
+Setting up libpango-1.0-0:amd64 (1.36.3-1ubuntu1.1) ...
+Setting up libharfbuzz0b:amd64 (0.9.27-1ubuntu1.1) ...
+Setting up libpangoft2-1.0-0:amd64 (1.36.3-1ubuntu1.1) ...
+Setting up libpangocairo-1.0-0:amd64 (1.36.3-1ubuntu1.1) ...
+Setting up libxcomposite1:amd64 (1:0.4.4-1) ...
+Setting up libxfixes3:amd64 (1:5.0.1-1ubuntu1.1) ...
+Setting up libxcursor1:amd64 (1:1.1.14-1) ...
+Setting up libxdamage1:amd64 (1:1.1.4-1ubuntu1) ...
+Setting up libxi6:amd64 (2:1.7.1.901-1ubuntu1.1) ...
+Setting up libxinerama1:amd64 (2:1.1.3-1) ...
+Setting up libxrandr2:amd64 (2:1.5.0-1~trusty1) ...
+Setting up libgtk2.0-0:amd64 (2.24.23-0ubuntu1.4) ...
+Setting up hicolor-icon-theme (0.13-1) ...
+Setting up libgtk2.0-bin (2.24.23-0ubuntu1.4) ...
+Processing triggers for libc-bin (2.19-0ubuntu6.9) ...
+itsukara@azvm30:~/Download$ 
+
+
+
+======================================================================================
+======================================================================================
+itsukara@azvm30:~/Download$ bash -x install-ALE.sh
++ sudo apt-get install cmake
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+The following extra packages will be installed:
+  binutils cmake-data cpp cpp-4.8 gcc gcc-4.8 libarchive13 libasan0 libatomic1
+  libc-dev-bin libc6-dev libcloog-isl4 libgcc-4.8-dev libisl10 libitm1
+  liblzo2-2 libmpc3 libmpfr4 libnettle4 libquadmath0 libtsan0 linux-libc-dev
+  make manpages-dev
+Suggested packages:
+  binutils-doc codeblocks eclipse cpp-doc gcc-4.8-locales gcc-multilib
+  autoconf automake1.9 libtool flex bison gdb gcc-doc gcc-4.8-multilib
+  gcc-4.8-doc libgcc1-dbg libgomp1-dbg libitm1-dbg libatomic1-dbg libasan0-dbg
+  libtsan0-dbg libquadmath0-dbg lrzip glibc-doc make-doc
+The following NEW packages will be installed:
+  binutils cmake cmake-data cpp cpp-4.8 gcc gcc-4.8 libarchive13 libasan0
+  libatomic1 libc-dev-bin libc6-dev libcloog-isl4 libgcc-4.8-dev libisl10
+  libitm1 liblzo2-2 libmpc3 libmpfr4 libnettle4 libquadmath0 libtsan0
+  linux-libc-dev make manpages-dev
+0 upgraded, 25 newly installed, 0 to remove and 23 not upgraded.
+Need to get 22.9 MB of archives.
+After this operation, 88.2 MB of additional disk space will be used.
+Do you want to continue? [Y/n] y
+Get:1 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main liblzo2-2 amd64 2.06-1.2ubuntu1.1 [46.1 kB]
+Get:2 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main libnettle4 amd64 2.7.1-1ubuntu0.1 [102 kB]
+Get:3 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main libarchive13 amd64 3.1.2-7ubuntu2.3 [261 kB]
+Get:4 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main libasan0 amd64 4.8.4-2ubuntu1~14.04.3 [63.1 kB]
+Get:5 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main libatomic1 amd64 4.8.4-2ubuntu1~14.04.3 [8,636 B]
+Get:6 http://azure.archive.ubuntu.com/ubuntu/ trusty/main libisl10 amd64 0.12.2-1 [419 kB]
+Get:7 http://azure.archive.ubuntu.com/ubuntu/ trusty/main libcloog-isl4 amd64 0.18.2-1 [57.5 kB]
+Get:8 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main libitm1 amd64 4.8.4-2ubuntu1~14.04.3 [28.5 kB]
+Get:9 http://azure.archive.ubuntu.com/ubuntu/ trusty/main libmpfr4 amd64 3.1.2-1 [203 kB]
+Get:10 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main libquadmath0 amd64 4.8.4-2ubuntu1~14.04.3 [126 kB]
+Get:11 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main libtsan0 amd64 4.8.4-2ubuntu1~14.04.3 [94.9 kB]
+Get:12 http://azure.archive.ubuntu.com/ubuntu/ trusty/main libmpc3 amd64 1.0.1-1ubuntu1 [38.4 kB]
+Get:13 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main binutils amd64 2.24-5ubuntu14.1 [2,081 kB]
+Get:14 http://azure.archive.ubuntu.com/ubuntu/ trusty/main cmake-data all 2.8.12.2-0ubuntu3 [676 kB]
+Get:15 http://azure.archive.ubuntu.com/ubuntu/ trusty/main cmake amd64 2.8.12.2-0ubuntu3 [2,618 kB]
+Get:16 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main cpp-4.8 amd64 4.8.4-2ubuntu1~14.04.3 [4,595 kB]
+Get:17 http://azure.archive.ubuntu.com/ubuntu/ trusty/main cpp amd64 4:4.8.2-1ubuntu6 [27.5 kB]
+Get:18 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main libgcc-4.8-dev amd64 4.8.4-2ubuntu1~14.04.3 [1,688 kB]
+Get:19 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main gcc-4.8 amd64 4.8.4-2ubuntu1~14.04.3 [5,047 kB]
+Get:20 http://azure.archive.ubuntu.com/ubuntu/ trusty/main gcc amd64 4:4.8.2-1ubuntu6 [5,098 B]
+Get:21 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main libc-dev-bin amd64 2.19-0ubuntu6.9 [69.0 kB]
+Get:22 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main linux-libc-dev amd64 3.13.0-96.143 [767 kB]
+Get:23 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main libc6-dev amd64 2.19-0ubuntu6.9 [1,910 kB]
+Get:24 http://azure.archive.ubuntu.com/ubuntu/ trusty/main make amd64 3.81-8.2ubuntu3 [119 kB]
+Get:25 http://azure.archive.ubuntu.com/ubuntu/ trusty/main manpages-dev all 3.54-1ubuntu1 [1,820 kB]
+Fetched 22.9 MB in 0s (25.3 MB/s)        
+Selecting previously unselected package liblzo2-2:amd64.
+(Reading database ... 29332 files and directories currently installed.)
+Preparing to unpack .../liblzo2-2_2.06-1.2ubuntu1.1_amd64.deb ...
+Unpacking liblzo2-2:amd64 (2.06-1.2ubuntu1.1) ...
+Selecting previously unselected package libnettle4:amd64.
+Preparing to unpack .../libnettle4_2.7.1-1ubuntu0.1_amd64.deb ...
+Unpacking libnettle4:amd64 (2.7.1-1ubuntu0.1) ...
+Selecting previously unselected package libarchive13:amd64.
+Preparing to unpack .../libarchive13_3.1.2-7ubuntu2.3_amd64.deb ...
+Unpacking libarchive13:amd64 (3.1.2-7ubuntu2.3) ...
+Selecting previously unselected package libasan0:amd64.
+Preparing to unpack .../libasan0_4.8.4-2ubuntu1~14.04.3_amd64.deb ...
+Unpacking libasan0:amd64 (4.8.4-2ubuntu1~14.04.3) ...
+Selecting previously unselected package libatomic1:amd64.
+Preparing to unpack .../libatomic1_4.8.4-2ubuntu1~14.04.3_amd64.deb ...
+Unpacking libatomic1:amd64 (4.8.4-2ubuntu1~14.04.3) ...
+Selecting previously unselected package libisl10:amd64.
+Preparing to unpack .../libisl10_0.12.2-1_amd64.deb ...
+Unpacking libisl10:amd64 (0.12.2-1) ...
+Selecting previously unselected package libcloog-isl4:amd64.
+Preparing to unpack .../libcloog-isl4_0.18.2-1_amd64.deb ...
+Unpacking libcloog-isl4:amd64 (0.18.2-1) ...
+Selecting previously unselected package libitm1:amd64.
+Preparing to unpack .../libitm1_4.8.4-2ubuntu1~14.04.3_amd64.deb ...
+Unpacking libitm1:amd64 (4.8.4-2ubuntu1~14.04.3) ...
+Selecting previously unselected package libmpfr4:amd64.
+Preparing to unpack .../libmpfr4_3.1.2-1_amd64.deb ...
+Unpacking libmpfr4:amd64 (3.1.2-1) ...
+Selecting previously unselected package libquadmath0:amd64.
+Preparing to unpack .../libquadmath0_4.8.4-2ubuntu1~14.04.3_amd64.deb ...
+Unpacking libquadmath0:amd64 (4.8.4-2ubuntu1~14.04.3) ...
+Selecting previously unselected package libtsan0:amd64.
+Preparing to unpack .../libtsan0_4.8.4-2ubuntu1~14.04.3_amd64.deb ...
+Unpacking libtsan0:amd64 (4.8.4-2ubuntu1~14.04.3) ...
+Selecting previously unselected package libmpc3:amd64.
+Preparing to unpack .../libmpc3_1.0.1-1ubuntu1_amd64.deb ...
+Unpacking libmpc3:amd64 (1.0.1-1ubuntu1) ...
+Selecting previously unselected package binutils.
+Preparing to unpack .../binutils_2.24-5ubuntu14.1_amd64.deb ...
+Unpacking binutils (2.24-5ubuntu14.1) ...
+Selecting previously unselected package cmake-data.
+Preparing to unpack .../cmake-data_2.8.12.2-0ubuntu3_all.deb ...
+Unpacking cmake-data (2.8.12.2-0ubuntu3) ...
+Selecting previously unselected package cmake.
+Preparing to unpack .../cmake_2.8.12.2-0ubuntu3_amd64.deb ...
+Unpacking cmake (2.8.12.2-0ubuntu3) ...
+Selecting previously unselected package cpp-4.8.
+Preparing to unpack .../cpp-4.8_4.8.4-2ubuntu1~14.04.3_amd64.deb ...
+Unpacking cpp-4.8 (4.8.4-2ubuntu1~14.04.3) ...
+Selecting previously unselected package cpp.
+Preparing to unpack .../cpp_4%3a4.8.2-1ubuntu6_amd64.deb ...
+Unpacking cpp (4:4.8.2-1ubuntu6) ...
+Selecting previously unselected package libgcc-4.8-dev:amd64.
+Preparing to unpack .../libgcc-4.8-dev_4.8.4-2ubuntu1~14.04.3_amd64.deb ...
+Unpacking libgcc-4.8-dev:amd64 (4.8.4-2ubuntu1~14.04.3) ...
+Selecting previously unselected package gcc-4.8.
+Preparing to unpack .../gcc-4.8_4.8.4-2ubuntu1~14.04.3_amd64.deb ...
+Unpacking gcc-4.8 (4.8.4-2ubuntu1~14.04.3) ...
+Selecting previously unselected package gcc.
+Preparing to unpack .../gcc_4%3a4.8.2-1ubuntu6_amd64.deb ...
+Unpacking gcc (4:4.8.2-1ubuntu6) ...
+Selecting previously unselected package libc-dev-bin.
+Preparing to unpack .../libc-dev-bin_2.19-0ubuntu6.9_amd64.deb ...
+Unpacking libc-dev-bin (2.19-0ubuntu6.9) ...
+Selecting previously unselected package linux-libc-dev:amd64.
+Preparing to unpack .../linux-libc-dev_3.13.0-96.143_amd64.deb ...
+Unpacking linux-libc-dev:amd64 (3.13.0-96.143) ...
+Selecting previously unselected package libc6-dev:amd64.
+Preparing to unpack .../libc6-dev_2.19-0ubuntu6.9_amd64.deb ...
+Unpacking libc6-dev:amd64 (2.19-0ubuntu6.9) ...
+Selecting previously unselected package make.
+Preparing to unpack .../make_3.81-8.2ubuntu3_amd64.deb ...
+Unpacking make (3.81-8.2ubuntu3) ...
+Selecting previously unselected package manpages-dev.
+Preparing to unpack .../manpages-dev_3.54-1ubuntu1_all.deb ...
+Unpacking manpages-dev (3.54-1ubuntu1) ...
+Processing triggers for man-db (2.6.7.1-1ubuntu1) ...
+Setting up liblzo2-2:amd64 (2.06-1.2ubuntu1.1) ...
+Setting up libnettle4:amd64 (2.7.1-1ubuntu0.1) ...
+Setting up libarchive13:amd64 (3.1.2-7ubuntu2.3) ...
+Setting up libasan0:amd64 (4.8.4-2ubuntu1~14.04.3) ...
+Setting up libatomic1:amd64 (4.8.4-2ubuntu1~14.04.3) ...
+Setting up libisl10:amd64 (0.12.2-1) ...
+Setting up libcloog-isl4:amd64 (0.18.2-1) ...
+Setting up libitm1:amd64 (4.8.4-2ubuntu1~14.04.3) ...
+Setting up libmpfr4:amd64 (3.1.2-1) ...
+Setting up libquadmath0:amd64 (4.8.4-2ubuntu1~14.04.3) ...
+Setting up libtsan0:amd64 (4.8.4-2ubuntu1~14.04.3) ...
+Setting up libmpc3:amd64 (1.0.1-1ubuntu1) ...
+Setting up binutils (2.24-5ubuntu14.1) ...
+Setting up cmake-data (2.8.12.2-0ubuntu3) ...
+Setting up cmake (2.8.12.2-0ubuntu3) ...
+Setting up cpp-4.8 (4.8.4-2ubuntu1~14.04.3) ...
+Setting up cpp (4:4.8.2-1ubuntu6) ...
+Setting up libgcc-4.8-dev:amd64 (4.8.4-2ubuntu1~14.04.3) ...
+Setting up gcc-4.8 (4.8.4-2ubuntu1~14.04.3) ...
+Setting up gcc (4:4.8.2-1ubuntu6) ...
+Setting up libc-dev-bin (2.19-0ubuntu6.9) ...
+Setting up linux-libc-dev:amd64 (3.13.0-96.143) ...
+Setting up libc6-dev:amd64 (2.19-0ubuntu6.9) ...
+Setting up make (3.81-8.2ubuntu3) ...
+Setting up manpages-dev (3.54-1ubuntu1) ...
+Processing triggers for libc-bin (2.19-0ubuntu6.9) ...
++ sudo apt-get install g++
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+The following extra packages will be installed:
+  g++-4.8 libstdc++-4.8-dev
+Suggested packages:
+  g++-multilib g++-4.8-multilib gcc-4.8-doc libstdc++6-4.8-dbg
+  libstdc++-4.8-doc
+The following NEW packages will be installed:
+  g++ g++-4.8 libstdc++-4.8-dev
+0 upgraded, 3 newly installed, 0 to remove and 23 not upgraded.
+Need to get 19.2 MB of archives.
+After this operation, 40.0 MB of additional disk space will be used.
+Do you want to continue? [Y/n] y
+Get:1 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main libstdc++-4.8-dev amd64 4.8.4-2ubuntu1~14.04.3 [1,053 kB]
+Get:2 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main g++-4.8 amd64 4.8.4-2ubuntu1~14.04.3 [18.1 MB]
+Get:3 http://azure.archive.ubuntu.com/ubuntu/ trusty/main g++ amd64 4:4.8.2-1ubuntu6 [1,490 B]
+Fetched 19.2 MB in 0s (52.2 MB/s)
+Selecting previously unselected package libstdc++-4.8-dev:amd64.
+(Reading database ... 33675 files and directories currently installed.)
+Preparing to unpack .../libstdc++-4.8-dev_4.8.4-2ubuntu1~14.04.3_amd64.deb ...
+Unpacking libstdc++-4.8-dev:amd64 (4.8.4-2ubuntu1~14.04.3) ...
+Selecting previously unselected package g++-4.8.
+Preparing to unpack .../g++-4.8_4.8.4-2ubuntu1~14.04.3_amd64.deb ...
+Unpacking g++-4.8 (4.8.4-2ubuntu1~14.04.3) ...
+Selecting previously unselected package g++.
+Preparing to unpack .../g++_4%3a4.8.2-1ubuntu6_amd64.deb ...
+Unpacking g++ (4:4.8.2-1ubuntu6) ...
+Processing triggers for man-db (2.6.7.1-1ubuntu1) ...
+Setting up libstdc++-4.8-dev:amd64 (4.8.4-2ubuntu1~14.04.3) ...
+Setting up g++-4.8 (4.8.4-2ubuntu1~14.04.3) ...
+Setting up g++ (4:4.8.2-1ubuntu6) ...
+update-alternatives: using /usr/bin/g++ to provide /usr/bin/c++ (c++) in auto mode
++ sudo apt-get install zlib1g-dev
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+The following NEW packages will be installed:
+  zlib1g-dev
+0 upgraded, 1 newly installed, 0 to remove and 23 not upgraded.
+Need to get 183 kB of archives.
+After this operation, 454 kB of additional disk space will be used.
+Get:1 http://azure.archive.ubuntu.com/ubuntu/ trusty/main zlib1g-dev amd64 1:1.2.8.dfsg-1ubuntu1 [183 kB]
+Fetched 183 kB in 0s (0 B/s)       
+Selecting previously unselected package zlib1g-dev:amd64.
+(Reading database ... 34455 files and directories currently installed.)
+Preparing to unpack .../zlib1g-dev_1%3a1.2.8.dfsg-1ubuntu1_amd64.deb ...
+Unpacking zlib1g-dev:amd64 (1:1.2.8.dfsg-1ubuntu1) ...
+Processing triggers for man-db (2.6.7.1-1ubuntu1) ...
+Setting up zlib1g-dev:amd64 (1:1.2.8.dfsg-1ubuntu1) ...
++ sudo apt-get install git
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+The following extra packages will be installed:
+  git-man liberror-perl
+Suggested packages:
+  git-daemon-run git-daemon-sysvinit git-doc git-el git-email git-gui gitk
+  gitweb git-arch git-bzr git-cvs git-mediawiki git-svn
+The following NEW packages will be installed:
+  git git-man liberror-perl
+0 upgraded, 3 newly installed, 0 to remove and 23 not upgraded.
+Need to get 3,306 kB of archives.
+After this operation, 21.9 MB of additional disk space will be used.
+Do you want to continue? [Y/n] y
+Get:1 http://azure.archive.ubuntu.com/ubuntu/ trusty/main liberror-perl all 0.17-1.1 [21.1 kB]
+Get:2 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main git-man all 1:1.9.1-1ubuntu0.3 [699 kB]
+Get:3 http://azure.archive.ubuntu.com/ubuntu/ trusty-updates/main git amd64 1:1.9.1-1ubuntu0.3 [2,586 kB]
+Fetched 3,306 kB in 0s (40.7 MB/s)
+Selecting previously unselected package liberror-perl.
+(Reading database ... 34484 files and directories currently installed.)
+Preparing to unpack .../liberror-perl_0.17-1.1_all.deb ...
+Unpacking liberror-perl (0.17-1.1) ...
+Selecting previously unselected package git-man.
+Preparing to unpack .../git-man_1%3a1.9.1-1ubuntu0.3_all.deb ...
+Unpacking git-man (1:1.9.1-1ubuntu0.3) ...
+Selecting previously unselected package git.
+Preparing to unpack .../git_1%3a1.9.1-1ubuntu0.3_amd64.deb ...
+Unpacking git (1:1.9.1-1ubuntu0.3) ...
+Processing triggers for man-db (2.6.7.1-1ubuntu1) ...
+Setting up liberror-perl (0.17-1.1) ...
+Setting up git-man (1:1.9.1-1ubuntu0.3) ...
+Setting up git (1:1.9.1-1ubuntu0.3) ...
++ git clone https://github.com/miyosuda/Arcade-Learning-Environment.git
+Cloning into 'Arcade-Learning-Environment'...
+remote: Counting objects: 3949, done.
+remote: Total 3949 (delta 0), reused 0 (delta 0), pack-reused 3949
+Receiving objects: 100% (3949/3949), 5.39 MiB | 9.66 MiB/s, done.
+Resolving deltas: 100% (2836/2836), done.
+Checking connectivity... done.
++ cd Arcade-Learning-Environment/
++ cmake -DUSE_SDL=OFF -DUSE_RLGLUE=OFF -DBUILD_EXAMPLES=OFF .
+-- The C compiler identification is GNU 4.8.4
+-- The CXX compiler identification is GNU 4.8.4
+-- Check for working C compiler: /usr/bin/cc
+-- Check for working C compiler: /usr/bin/cc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++
+-- Check for working CXX compiler: /usr/bin/c++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Configuring done
+-- Generating done
+-- Build files have been written to: /home/itsukara/Download/Arcade-Learning-Environment
++ make -j 4
+Scanning dependencies of target ale-bin
+Scanning dependencies of target ale-c-lib
+Scanning dependencies of target ale-lib
+[  0%] [  0%] [  1%] [  1%] Building CXX object CMakeFiles/ale-bin.dir/src/main.cpp.o
+Building CXX object CMakeFiles/ale-lib.dir/src/ale_interface.cpp.o
+Building CXX object CMakeFiles/ale-c-lib.dir/ale_python_interface/ale_c_wrapper.cpp.o
+Building CXX object CMakeFiles/ale-c-lib.dir/src/ale_interface.cpp.o
+[  1%] Building CXX object CMakeFiles/ale-bin.dir/src/ale_interface.cpp.o
+[  1%] Building CXX object CMakeFiles/ale-lib.dir/src/common/SoundExporter.cpp.o
+[  1%] Building CXX object CMakeFiles/ale-bin.dir/src/common/SoundExporter.cpp.o
+[  2%] Building CXX object CMakeFiles/ale-c-lib.dir/src/common/SoundExporter.cpp.o
+[  2%] Building CXX object CMakeFiles/ale-lib.dir/src/common/display_screen.cpp.o
+[  2%] Building CXX object CMakeFiles/ale-lib.dir/src/common/Constants.cpp.o
+[  2%] Building CXX object CMakeFiles/ale-c-lib.dir/src/common/display_screen.cpp.o
+[  2%] Building CXX object CMakeFiles/ale-c-lib.dir/src/common/Constants.cpp.o
+[  2%] Building CXX object CMakeFiles/ale-bin.dir/src/common/display_screen.cpp.o
+[  2%] Building CXX object CMakeFiles/ale-lib.dir/src/common/SoundNull.cxx.o
+[  3%] Building CXX object CMakeFiles/ale-lib.dir/src/common/ScreenExporter.cpp.o
+[  3%] Building CXX object CMakeFiles/ale-c-lib.dir/src/common/SoundNull.cxx.o
+[  4%] Building CXX object CMakeFiles/ale-bin.dir/src/common/Constants.cpp.o
+/home/itsukara/Download/Arcade-Learning-Environment/src/common/SoundNull.cxx: In member function ‘virtual bool SoundNull::load(Deserializer&)’:
+/home/itsukara/Download/Arcade-Learning-Environment/src/common/SoundNull.cxx:49:9: warning: variable ‘reg’ set but not used [-Wunused-but-set-variable]
+   uInt8 reg;
+         ^
+[  4%] Building CXX object CMakeFiles/ale-bin.dir/src/common/SoundNull.cxx.o
+/home/itsukara/Download/Arcade-Learning-Environment/src/common/SoundNull.cxx: In member function ‘virtual bool SoundNull::load(Deserializer&)’:
+/home/itsukara/Download/Arcade-Learning-Environment/src/common/SoundNull.cxx:49:9: warning: variable ‘reg’ set but not used [-Wunused-but-set-variable]
+   uInt8 reg;
+         ^
+[  4%] Building CXX object CMakeFiles/ale-c-lib.dir/src/common/ScreenExporter.cpp.o
+[  4%] Building CXX object CMakeFiles/ale-lib.dir/src/common/SoundSDL.cxx.o
+[  4%] Building CXX object CMakeFiles/ale-lib.dir/src/common/Log.cpp.o
+[  4%] Building CXX object CMakeFiles/ale-lib.dir/src/common/ColourPalette.cpp.o
+/home/itsukara/Download/Arcade-Learning-Environment/src/common/SoundNull.cxx: In member function ‘virtual bool SoundNull::load(Deserializer&)’:
+/home/itsukara/Download/Arcade-Learning-Environment/src/common/SoundNull.cxx:49:9: warning: variable ‘reg’ set but not used [-Wunused-but-set-variable]
+   uInt8 reg;
+         ^
+[  4%] Building CXX object CMakeFiles/ale-bin.dir/src/common/ScreenExporter.cpp.o
+[  5%] Building CXX object CMakeFiles/ale-c-lib.dir/src/common/SoundSDL.cxx.o
+[  5%] Building CXX object CMakeFiles/ale-c-lib.dir/src/common/Log.cpp.o
+[  6%] Building CXX object CMakeFiles/ale-lib.dir/src/controllers/ale_controller.cpp.o
+[  6%] Building CXX object CMakeFiles/ale-lib.dir/src/controllers/rlglue_controller.cpp.o
+[  6%] Building CXX object CMakeFiles/ale-c-lib.dir/src/common/ColourPalette.cpp.o
+[  6%] Building CXX object CMakeFiles/ale-bin.dir/src/common/SoundSDL.cxx.o
+[  6%] Building CXX object CMakeFiles/ale-bin.dir/src/common/Log.cpp.o
+[  7%] Building CXX object CMakeFiles/ale-bin.dir/src/common/ColourPalette.cpp.o
+[  7%] Building CXX object CMakeFiles/ale-bin.dir/src/controllers/ale_controller.cpp.o
+[  7%] Building CXX object CMakeFiles/ale-c-lib.dir/src/controllers/ale_controller.cpp.o
+[  7%] Building CXX object CMakeFiles/ale-lib.dir/src/controllers/fifo_controller.cpp.o
+[  7%] Building C object CMakeFiles/ale-lib.dir/src/emucore/unzip.c.o
+[  7%] Building CXX object CMakeFiles/ale-bin.dir/src/controllers/rlglue_controller.cpp.o
+[  8%] Building CXX object CMakeFiles/ale-c-lib.dir/src/controllers/rlglue_controller.cpp.o
+[  8%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/Joystick.cxx.o
+[  8%] Building CXX object CMakeFiles/ale-c-lib.dir/src/controllers/fifo_controller.cpp.o
+[  9%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/Booster.cxx.o
+[  9%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/Serializer.cxx.o
+[  9%] Building CXX object CMakeFiles/ale-bin.dir/src/controllers/fifo_controller.cpp.o
+[ 10%] Building C object CMakeFiles/ale-bin.dir/src/emucore/unzip.c.o
+[ 10%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/Settings.cxx.o
+[ 10%] Building C object CMakeFiles/ale-c-lib.dir/src/emucore/unzip.c.o
+[ 10%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/Props.cxx.o
+[ 10%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/Joystick.cxx.o
+[ 10%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/Booster.cxx.o
+[ 11%] [ 11%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/Serializer.cxx.o
+Building CXX object CMakeFiles/ale-bin.dir/src/emucore/Joystick.cxx.o
+[ 11%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/Booster.cxx.o
+[ 12%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/Event.cxx.o
+[ 12%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/Serializer.cxx.o
+[ 12%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/Settings.cxx.o
+[ 12%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/Keyboard.cxx.o
+[ 12%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/Settings.cxx.o
+[ 12%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/Cart2K.cxx.o
+[ 12%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/Control.cxx.o
+[ 12%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/Cart4A50.cxx.o
+[ 13%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/CartDPC.cxx.o
+[ 13%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/Cart3F.cxx.o
+[ 13%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/CartMC.cxx.o
+[ 13%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/CartUA.cxx.o
+[ 14%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/CartMB.cxx.o
+[ 14%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/CartFE.cxx.o
+[ 14%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/CartF4SC.cxx.o
+[ 14%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/Props.cxx.o
+[ 14%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/Switches.cxx.o
+[ 15%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/Props.cxx.o
+[ 15%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/Random.cxx.o
+[ 16%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/Driving.cxx.o
+[ 16%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/CartF4.cxx.o
+[ 16%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/Event.cxx.o
+[ 16%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/TIA.cxx.o
+[ 16%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/Event.cxx.o
+[ 17%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/Keyboard.cxx.o
+[ 17%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/Keyboard.cxx.o
+[ 17%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/Cart2K.cxx.o
+[ 17%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/Cart2K.cxx.o
+[ 18%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/Control.cxx.o
+[ 18%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/Cart4A50.cxx.o
+[ 18%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/CartDPC.cxx.o
+[ 18%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/Control.cxx.o
+[ 18%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/Cart3F.cxx.o
+[ 18%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/Cart4A50.cxx.o
+[ 18%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/CartMC.cxx.o
+[ 19%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/CartUA.cxx.o
+[ 19%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/CartDPC.cxx.o
+[ 19%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/CartMB.cxx.o
+[ 19%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/CartFE.cxx.o
+[ 19%] [ 20%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/CartFASC.cxx.o
+Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/Cart3F.cxx.o
+[ 20%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/CartF4SC.cxx.o
+[ 21%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/Switches.cxx.o
+[ 21%] [ 22%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/Cart0840.cxx.o
+Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/CartMC.cxx.o
+[ 22%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/Random.cxx.o
+[ 22%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/Driving.cxx.o
+[ 22%] [ 22%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/Paddles.cxx.o
+Building CXX object CMakeFiles/ale-lib.dir/src/emucore/TIASnd.cxx.o
+[ 22%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/CartUA.cxx.o
+[ 22%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/CartF4.cxx.o
+[ 22%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/CartCV.cxx.o
+[ 22%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/Deserializer.cxx.o
+[ 22%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/CartMB.cxx.o
+[ 22%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/TIA.cxx.o
+[ 23%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/CartE7.cxx.o
+[ 23%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/CartE0.cxx.o
+[ 24%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/CartFE.cxx.o
+[ 24%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/Cart3E.cxx.o
+[ 24%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/CartF8.cxx.o
+[ 24%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/CartF4SC.cxx.o
+[ 24%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/CartF6SC.cxx.o
+[ 25%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/FSNode.cxx.o
+[ 25%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/Switches.cxx.o
+[ 25%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/Random.cxx.o
+[ 25%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/Cart.cxx.o
+[ 25%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/Console.cxx.o
+[ 25%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/Driving.cxx.o
+[ 26%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/CartF4.cxx.o
+[ 27%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/CartFASC.cxx.o
+[ 27%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/Cart0840.cxx.o
+[ 27%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/TIA.cxx.o
+[ 27%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/Paddles.cxx.o
+[ 27%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/TIASnd.cxx.o
+[ 27%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/PropsSet.cxx.o
+[ 28%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/CartCV.cxx.o
+[ 29%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/MediaSrc.cxx.o
+[ 29%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/OSystem.cxx.o
+[ 29%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/Deserializer.cxx.o
+[ 29%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/CartE7.cxx.o
+[ 29%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/CartE0.cxx.o
+[ 29%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/CartFASC.cxx.o
+[ 29%] [ 29%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/CartF8SC.cxx.o
+Building CXX object CMakeFiles/ale-bin.dir/src/emucore/Cart3E.cxx.o
+[ 30%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/CartF8.cxx.o
+[ 30%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/Cart0840.cxx.o
+[ 30%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/CartF6.cxx.o
+[ 30%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/CartAR.cxx.o
+[ 31%] [ 31%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/Paddles.cxx.o
+Building CXX object CMakeFiles/ale-bin.dir/src/emucore/CartF6SC.cxx.o
+[ 31%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/TIASnd.cxx.o
+[ 31%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/CartCV.cxx.o
+[ 31%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/FSNode.cxx.o
+[ 32%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/Cart4K.cxx.o
+[ 32%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/M6532.cxx.o
+[ 32%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/Deserializer.cxx.o
+[ 32%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/Cart.cxx.o
+[ 33%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/Console.cxx.o
+[ 33%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/CartE7.cxx.o
+[ 33%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/MD5.cxx.o
+[ 34%] [ 34%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/CartE0.cxx.o
+Building CXX object CMakeFiles/ale-bin.dir/src/emucore/PropsSet.cxx.o
+[ 34%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/AtariVox.cxx.o
+[ 35%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/SpeakJet.cxx.o
+[ 35%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/m6502/src/M6502Low.cxx.o
+[ 35%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/Cart3E.cxx.o
+[ 35%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/MediaSrc.cxx.o
+In file included from /home/itsukara/Download/Arcade-Learning-Environment/src/emucore/m6502/src/M6502Low.cxx:138:0:
+/home/itsukara/Download/Arcade-Learning-Environment/src/emucore/m6502/src/M6502Low.ins: In member function ‘virtual bool M6502Low::execute(uInt32)’:
+/home/itsukara/Download/Arcade-Learning-Environment/src/emucore/m6502/src/M6502Low.ins:2060:39: warning: operation on ‘((M6502Low*)this)->M6502Low::<anonymous>.M6502::PC’ may be undefined [-Wsequence-point]
+   PC = low | ((uInt16)peek(PC++) << 8); 
+                                       ^
+[ 35%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/OSystem.cxx.o
+[ 35%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/CartF8.cxx.o
+[ 35%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/CartF8SC.cxx.o
+[ 35%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/CartF6SC.cxx.o
+[ 36%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/CartF6.cxx.o
+[ 37%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/FSNode.cxx.o
+[ 37%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/CartAR.cxx.o
+[ 37%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/Cart4K.cxx.o
+[ 37%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/Cart.cxx.o
+[ 37%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/m6502/src/M6502Hi.cxx.o
+[ 37%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/M6532.cxx.o
+In file included from /home/itsukara/Download/Arcade-Learning-Environment/src/emucore/m6502/src/M6502Hi.cxx:155:0:
+/home/itsukara/Download/Arcade-Learning-Environment/src/emucore/m6502/src/M6502Hi.ins: In member function ‘virtual bool M6502High::execute(uInt32)’:
+/home/itsukara/Download/Arcade-Learning-Environment/src/emucore/m6502/src/M6502Hi.ins:2061:39: warning: operation on ‘((M6502High*)this)->M6502High::<anonymous>.M6502::PC’ may be undefined [-Wsequence-point]
+   PC = low | ((uInt16)peek(PC++) << 8); 
+                                       ^
+[ 38%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/MD5.cxx.o
+[ 38%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/Console.cxx.o
+[ 38%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/AtariVox.cxx.o
+[ 38%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/SpeakJet.cxx.o
+[ 38%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/m6502/src/M6502Low.cxx.o
+[ 38%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/m6502/src/System.cxx.o
+In file included from /home/itsukara/Download/Arcade-Learning-Environment/src/emucore/m6502/src/M6502Low.cxx:138:0:
+/home/itsukara/Download/Arcade-Learning-Environment/src/emucore/m6502/src/M6502Low.ins: In member function ‘virtual bool M6502Low::execute(uInt32)’:
+/home/itsukara/Download/Arcade-Learning-Environment/src/emucore/m6502/src/M6502Low.ins:2060:39: warning: operation on ‘((M6502Low*)this)->M6502Low::<anonymous>.M6502::PC’ may be undefined [-Wsequence-point]
+   PC = low | ((uInt16)peek(PC++) << 8); 
+                                       ^
+[ 38%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/m6502/src/M6502.cxx.o
+[ 39%] [ 39%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/m6502/src/NullDev.cxx.o
+Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/PropsSet.cxx.o
+[ 39%] Building CXX object CMakeFiles/ale-lib.dir/src/emucore/m6502/src/Device.cxx.o
+[ 39%] Building CXX object CMakeFiles/ale-lib.dir/src/environment/stella_environment.cpp.o
+[ 39%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/m6502/src/M6502Hi.cxx.o
+[ 39%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/MediaSrc.cxx.o
+In file included from /home/itsukara/Download/Arcade-Learning-Environment/src/emucore/m6502/src/M6502Hi.cxx:155:0:
+/home/itsukara/Download/Arcade-Learning-Environment/src/emucore/m6502/src/M6502Hi.ins: In member function ‘virtual bool M6502High::execute(uInt32)’:
+/home/itsukara/Download/Arcade-Learning-Environment/src/emucore/m6502/src/M6502Hi.ins:2061:39: warning: operation on ‘((M6502High*)this)->M6502High::<anonymous>.M6502::PC’ may be undefined [-Wsequence-point]
+   PC = low | ((uInt16)peek(PC++) << 8); 
+                                       ^
+[ 40%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/OSystem.cxx.o
+[ 40%] Building CXX object CMakeFiles/ale-lib.dir/src/environment/phosphor_blend.cpp.o
+[ 41%] Building CXX object CMakeFiles/ale-lib.dir/src/environment/ale_state.cpp.o
+[ 42%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/m6502/src/System.cxx.o
+[ 42%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/CartF8SC.cxx.o
+[ 42%] Building CXX object CMakeFiles/ale-lib.dir/src/games/RomSettings.cpp.o
+[ 42%] Building CXX object CMakeFiles/ale-lib.dir/src/games/RomUtils.cpp.o
+[ 42%] Building CXX object CMakeFiles/ale-lib.dir/src/games/Roms.cpp.o
+[ 42%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/CartF6.cxx.o
+[ 42%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/CartAR.cxx.o
+[ 43%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/Cart4K.cxx.o
+[ 43%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Trondead.cpp.o
+[ 43%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/M6532.cxx.o
+[ 43%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/MD5.cxx.o
+[ 44%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/MrDo.cpp.o
+[ 44%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/AtariVox.cxx.o
+[ 44%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/SpeakJet.cxx.o
+[ 44%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/m6502/src/M6502.cxx.o
+[ 44%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/StarGunner.cpp.o
+[ 45%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/m6502/src/M6502Low.cxx.o
+[ 45%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/m6502/src/NullDev.cxx.o
+[ 45%] Building CXX object CMakeFiles/ale-bin.dir/src/emucore/m6502/src/Device.cxx.o
+In file included from /home/itsukara/Download/Arcade-Learning-Environment/src/emucore/m6502/src/M6502Low.cxx:138:0:
+/home/itsukara/Download/Arcade-Learning-Environment/src/emucore/m6502/src/M6502Low.ins: In member function ‘virtual bool M6502Low::execute(uInt32)’:
+/home/itsukara/Download/Arcade-Learning-Environment/src/emucore/m6502/src/M6502Low.ins:2060:39: warning: operation on ‘((M6502Low*)this)->M6502Low::<anonymous>.M6502::PC’ may be undefined [-Wsequence-point]
+   PC = low | ((uInt16)peek(PC++) << 8); 
+                                       ^
+[ 45%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Centipede.cpp.o
+[ 45%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/FishingDerby.cpp.o
+[ 46%] Building CXX object CMakeFiles/ale-bin.dir/src/environment/stella_environment.cpp.o
+[ 46%] Building CXX object CMakeFiles/ale-bin.dir/src/environment/phosphor_blend.cpp.o
+[ 47%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Gravitar.cpp.o
+[ 47%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/m6502/src/M6502Hi.cxx.o
+[ 47%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Asterix.cpp.o
+[ 47%] Building CXX object CMakeFiles/ale-bin.dir/src/environment/ale_state.cpp.o
+In file included from /home/itsukara/Download/Arcade-Learning-Environment/src/emucore/m6502/src/M6502Hi.cxx:155:0:
+/home/itsukara/Download/Arcade-Learning-Environment/src/emucore/m6502/src/M6502Hi.ins: In member function ‘virtual bool M6502High::execute(uInt32)’:
+/home/itsukara/Download/Arcade-Learning-Environment/src/emucore/m6502/src/M6502Hi.ins:2061:39: warning: operation on ‘((M6502High*)this)->M6502High::<anonymous>.M6502::PC’ may be undefined [-Wsequence-point]
+   PC = low | ((uInt16)peek(PC++) << 8); 
+                                       ^
+[ 47%] [ 47%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/MontezumaRevenge.cpp.o
+Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/m6502/src/System.cxx.o
+[ 47%] Building CXX object CMakeFiles/ale-bin.dir/src/games/RomSettings.cpp.o
+[ 47%] Building CXX object CMakeFiles/ale-bin.dir/src/games/RomUtils.cpp.o
+[ 47%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Frogger.cpp.o
+[ 48%] Building CXX object CMakeFiles/ale-bin.dir/src/games/Roms.cpp.o
+[ 48%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Trondead.cpp.o
+[ 48%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Skiing.cpp.o
+[ 48%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/MrDo.cpp.o
+[ 48%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/StarGunner.cpp.o
+[ 49%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/ElevatorAction.cpp.o
+[ 49%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/m6502/src/M6502.cxx.o
+[ 50%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Centipede.cpp.o
+[ 50%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/KeystoneKapers.cpp.o
+[ 51%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/m6502/src/NullDev.cxx.o
+[ 51%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/FishingDerby.cpp.o
+[ 51%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Gravitar.cpp.o
+[ 51%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/SpaceInvaders.cpp.o
+[ 51%] Building CXX object CMakeFiles/ale-c-lib.dir/src/emucore/m6502/src/Device.cxx.o
+[ 51%] Building CXX object CMakeFiles/ale-c-lib.dir/src/environment/stella_environment.cpp.o
+[ 51%] Building CXX object CMakeFiles/ale-c-lib.dir/src/environment/phosphor_blend.cpp.o
+[ 51%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Asterix.cpp.o
+[ 51%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Pong.cpp.o
+[ 51%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/MontezumaRevenge.cpp.o
+[ 52%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Frogger.cpp.o
+[ 53%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Tutankham.cpp.o
+[ 53%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Galaxian.cpp.o
+[ 53%] Building CXX object CMakeFiles/ale-c-lib.dir/src/environment/ale_state.cpp.o
+[ 53%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Skiing.cpp.o
+[ 53%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/ElevatorAction.cpp.o
+[ 53%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/WizardOfWor.cpp.o
+[ 53%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Seaquest.cpp.o
+[ 53%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/KeystoneKapers.cpp.o
+[ 54%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/RomSettings.cpp.o
+[ 54%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/RomUtils.cpp.o
+[ 54%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Berzerk.cpp.o
+[ 55%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/SpaceInvaders.cpp.o
+[ 55%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/Roms.cpp.o
+[ 56%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Zaxxon.cpp.o
+[ 56%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Pong.cpp.o
+[ 56%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Trondead.cpp.o
+[ 56%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Defender.cpp.o
+[ 57%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/MrDo.cpp.o
+[ 57%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Tutankham.cpp.o
+[ 57%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Galaxian.cpp.o
+[ 57%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Atlantis.cpp.o
+[ 57%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/StarGunner.cpp.o
+[ 57%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Centipede.cpp.o
+[ 57%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/WizardOfWor.cpp.o
+[ 57%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Freeway.cpp.o
+[ 58%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/JourneyEscape.cpp.o
+[ 58%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/FishingDerby.cpp.o
+[ 59%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Seaquest.cpp.o
+[ 59%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Berzerk.cpp.o
+[ 59%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/RoboTank.cpp.o
+[ 59%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Gravitar.cpp.o
+[ 60%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Asterix.cpp.o
+[ 60%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Zaxxon.cpp.o
+[ 60%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Phoenix.cpp.o
+[ 60%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Amidar.cpp.o
+[ 60%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/MontezumaRevenge.cpp.o
+[ 60%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Defender.cpp.o
+[ 61%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Atlantis.cpp.o
+[ 61%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/DemonAttack.cpp.o
+[ 61%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Frogger.cpp.o
+[ 61%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Freeway.cpp.o
+[ 61%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/JourneyEscape.cpp.o
+[ 62%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/RoadRunner.cpp.o
+[ 62%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Skiing.cpp.o
+[ 62%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/RoboTank.cpp.o
+[ 62%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Phoenix.cpp.o
+[ 62%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Frostbite.cpp.o
+[ 62%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/ElevatorAction.cpp.o
+[ 62%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Bowling.cpp.o
+[ 63%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Amidar.cpp.o
+[ 63%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/UpNDown.cpp.o
+[ 64%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/KeystoneKapers.cpp.o
+[ 65%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Koolaid.cpp.o
+[ 65%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/DemonAttack.cpp.o
+[ 65%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Assault.cpp.o
+[ 65%] [ 65%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Pong.cpp.o
+Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/SpaceInvaders.cpp.o
+[ 65%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/RoadRunner.cpp.o
+[ 65%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/BattleZone.cpp.o
+[ 65%] [ 66%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Tutankham.cpp.o
+Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Galaxian.cpp.o
+[ 66%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Frostbite.cpp.o
+[ 66%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/IceHockey.cpp.o
+[ 66%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/WizardOfWor.cpp.o
+[ 66%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Seaquest.cpp.o
+[ 67%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Bowling.cpp.o
+[ 67%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/KungFuMaster.cpp.o
+[ 67%] [ 67%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Berzerk.cpp.o
+Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Zaxxon.cpp.o
+[ 67%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/UpNDown.cpp.o
+[ 68%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/BeamRider.cpp.o
+[ 69%] [ 69%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Kingkong.cpp.o
+Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Defender.cpp.o
+[ 69%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Koolaid.cpp.o
+[ 69%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Assault.cpp.o
+[ 69%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Atlantis.cpp.o
+[ 69%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Tetris.cpp.o
+[ 69%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/LaserGates.cpp.o
+[ 69%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/BattleZone.cpp.o
+[ 69%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Freeway.cpp.o
+[ 69%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/JourneyEscape.cpp.o
+[ 70%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/CrazyClimber.cpp.o
+[ 71%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/IceHockey.cpp.o
+[ 72%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/RoboTank.cpp.o
+[ 72%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/KungFuMaster.cpp.o
+[ 72%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/BankHeist.cpp.o
+[ 72%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/DonkeyKong.cpp.o
+[ 72%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Phoenix.cpp.o
+[ 72%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/BeamRider.cpp.o
+[ 72%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Kingkong.cpp.o
+[ 72%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/TimePilot.cpp.o
+[ 72%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Amidar.cpp.o
+[ 72%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/DemonAttack.cpp.o
+[ 73%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Tetris.cpp.o
+[ 73%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/QBert.cpp.o
+[ 74%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/AirRaid.cpp.o
+[ 74%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/RoadRunner.cpp.o
+[ 74%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/LaserGates.cpp.o
+[ 74%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/CrazyClimber.cpp.o
+[ 74%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/VideoPinball.cpp.o
+[ 75%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Frostbite.cpp.o
+[ 75%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/BankHeist.cpp.o
+[ 75%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/DonkeyKong.cpp.o
+[ 75%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Pitfall.cpp.o
+[ 75%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Bowling.cpp.o
+[ 76%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/TimePilot.cpp.o
+[ 76%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/QBert.cpp.o
+[ 76%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/LostLuggage.cpp.o
+[ 76%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/UpNDown.cpp.o
+[ 76%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/AirRaid.cpp.o
+[ 76%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/VideoPinball.cpp.o
+[ 77%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/DoubleDunk.cpp.o
+[ 77%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Koolaid.cpp.o
+[ 77%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Pitfall.cpp.o
+[ 78%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/LostLuggage.cpp.o
+[ 78%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Asteroids.cpp.o
+[ 79%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Assault.cpp.o
+[ 79%] [ 79%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/DoubleDunk.cpp.o
+Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Asteroids.cpp.o
+[ 79%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Boxing.cpp.o
+[ 79%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/BattleZone.cpp.o
+[ 79%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Boxing.cpp.o
+[ 80%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Kangaroo.cpp.o
+[ 80%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Kangaroo.cpp.o
+[ 80%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/IceHockey.cpp.o
+[ 80%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Krull.cpp.o
+[ 80%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/MsPacman.cpp.o
+[ 80%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Krull.cpp.o
+[ 80%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/KungFuMaster.cpp.o
+[ 80%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Hero.cpp.o
+[ 80%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Pooyan.cpp.o
+[ 81%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/MsPacman.cpp.o
+[ 81%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/BeamRider.cpp.o
+[ 82%] [ 82%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Solaris.cpp.o
+Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Hero.cpp.o
+[ 82%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Venture.cpp.o
+[ 83%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Kingkong.cpp.o
+[ 83%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Pooyan.cpp.o
+[ 83%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Solaris.cpp.o
+[ 83%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Turmoil.cpp.o
+[ 83%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Tetris.cpp.o
+[ 83%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/LaserGates.cpp.o
+[ 84%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Venture.cpp.o
+[ 84%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Gopher.cpp.o
+[ 84%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/CrazyClimber.cpp.o
+[ 84%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Turmoil.cpp.o
+[ 85%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/BankHeist.cpp.o
+[ 86%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/YarsRevenge.cpp.o
+[ 86%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/DonkeyKong.cpp.o
+[ 86%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/TimePilot.cpp.o
+[ 86%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Gopher.cpp.o
+[ 86%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/SirLancelot.cpp.o
+[ 86%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/QBert.cpp.o
+[ 86%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/AirRaid.cpp.o
+[ 86%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/YarsRevenge.cpp.o
+[ 86%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/NameThisGame.cpp.o
+[ 87%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/VideoPinball.cpp.o
+[ 87%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Pitfall.cpp.o
+[ 87%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/SirLancelot.cpp.o
+[ 87%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Enduro.cpp.o
+[ 87%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Alien.cpp.o
+[ 87%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/LostLuggage.cpp.o
+[ 88%] [ 89%] [ 89%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/ChopperCommand.cpp.o
+Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/NameThisGame.cpp.o
+Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Enduro.cpp.o
+[ 89%] [ 89%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/JamesBond.cpp.o
+Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Alien.cpp.o
+[ 89%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/ChopperCommand.cpp.o
+[ 89%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/DoubleDunk.cpp.o
+[ 89%] [ 90%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Breakout.cpp.o
+Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/JamesBond.cpp.o
+[ 90%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Breakout.cpp.o
+[ 91%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Asteroids.cpp.o
+[ 91%] [ 92%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/PrivateEye.cpp.o
+Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/RiverRaid.cpp.o
+[ 92%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/PrivateEye.cpp.o
+[ 92%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Boxing.cpp.o
+[ 92%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Kangaroo.cpp.o
+[ 92%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/RiverRaid.cpp.o
+[ 92%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Carnival.cpp.o
+[ 92%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Carnival.cpp.o
+[ 92%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Krull.cpp.o
+[ 93%] Building CXX object CMakeFiles/ale-lib.dir/src/games/supported/Tennis.cpp.o
+[ 93%] Building CXX object CMakeFiles/ale-bin.dir/src/games/supported/Tennis.cpp.o
+[ 93%] Building C object CMakeFiles/ale-lib.dir/src/external/TinyMT/tinymt32.c.o
+[ 93%] Building CXX object CMakeFiles/ale-lib.dir/src/os_dependent/SettingsUNIX.cxx.o
+[ 93%] [ 93%] Building CXX object CMakeFiles/ale-lib.dir/src/os_dependent/OSystemUNIX.cxx.o
+Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/MsPacman.cpp.o
+[ 94%] Building CXX object CMakeFiles/ale-lib.dir/src/os_dependent/FSNodePOSIX.cxx.o
+[ 94%] Building C object CMakeFiles/ale-bin.dir/src/external/TinyMT/tinymt32.c.o
+[ 94%] Building CXX object CMakeFiles/ale-bin.dir/src/os_dependent/SettingsUNIX.cxx.o
+/home/itsukara/Download/Arcade-Learning-Environment/src/os_dependent/FSNodePOSIX.cxx: In constructor ‘POSIXFilesystemNode::POSIXFilesystemNode()’:
+/home/itsukara/Download/Arcade-Learning-Environment/src/os_dependent/FSNodePOSIX.cxx:102:26: warning: ignoring return value of ‘char* getcwd(char*, size_t)’, declared with attribute warn_unused_result [-Wunused-result]
+   getcwd(buf, MAXPATHLEN);
+                          ^
+[ 95%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Hero.cpp.o
+[ 96%] Building CXX object CMakeFiles/ale-bin.dir/src/os_dependent/OSystemUNIX.cxx.o
+[ 96%] Building CXX object CMakeFiles/ale-bin.dir/src/os_dependent/FSNodePOSIX.cxx.o
+Linking CXX shared library libale.so
+/home/itsukara/Download/Arcade-Learning-Environment/src/os_dependent/FSNodePOSIX.cxx: In constructor ‘POSIXFilesystemNode::POSIXFilesystemNode()’:
+/home/itsukara/Download/Arcade-Learning-Environment/src/os_dependent/FSNodePOSIX.cxx:102:26: warning: ignoring return value of ‘char* getcwd(char*, size_t)’, declared with attribute warn_unused_result [-Wunused-result]
+   getcwd(buf, MAXPATHLEN);
+                          ^
+[ 96%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Pooyan.cpp.o
+[ 96%] Built target ale-lib
+[ 96%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Solaris.cpp.o
+[ 96%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Venture.cpp.o
+Linking CXX executable ale
+[ 96%] Built target ale-bin
+[ 97%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Turmoil.cpp.o
+[ 97%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Gopher.cpp.o
+[ 97%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/YarsRevenge.cpp.o
+[ 97%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/SirLancelot.cpp.o
+[ 98%] [ 98%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Enduro.cpp.o
+Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/NameThisGame.cpp.o
+[ 98%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Alien.cpp.o
+[ 98%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/ChopperCommand.cpp.o
+[ 98%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/JamesBond.cpp.o
+[ 99%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Breakout.cpp.o
+[ 99%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/PrivateEye.cpp.o
+[ 99%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/RiverRaid.cpp.o
+[ 99%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Carnival.cpp.o
+[ 99%] Building CXX object CMakeFiles/ale-c-lib.dir/src/games/supported/Tennis.cpp.o
+[100%] Building C object CMakeFiles/ale-c-lib.dir/src/external/TinyMT/tinymt32.c.o
+[100%] Building CXX object CMakeFiles/ale-c-lib.dir/src/os_dependent/SettingsUNIX.cxx.o
+[100%] Building CXX object CMakeFiles/ale-c-lib.dir/src/os_dependent/OSystemUNIX.cxx.o
+[100%] Building CXX object CMakeFiles/ale-c-lib.dir/src/os_dependent/FSNodePOSIX.cxx.o
+/home/itsukara/Download/Arcade-Learning-Environment/src/os_dependent/FSNodePOSIX.cxx: In constructor ‘POSIXFilesystemNode::POSIXFilesystemNode()’:
+/home/itsukara/Download/Arcade-Learning-Environment/src/os_dependent/FSNodePOSIX.cxx:102:26: warning: ignoring return value of ‘char* getcwd(char*, size_t)’, declared with attribute warn_unused_result [-Wunused-result]
+   getcwd(buf, MAXPATHLEN);
+                          ^
+Linking CXX shared library ale_python_interface/libale_c.so
+[100%] Built target ale-c-lib
++ pip install .
+Processing /home/itsukara/Download/Arcade-Learning-Environment
+Building wheels for collected packages: ale-python-interface
+  Running setup.py bdist_wheel for ale-python-interface ... done
+  Stored in directory: /home/itsukara/.cache/pip/wheels/4d/60/d5/63dd242c9031a3eed91a4d647d59dc5b181587472b43a3e5f8
+Successfully built ale-python-interface
+Installing collected packages: ale-python-interface
+Successfully installed ale-python-interface-0.0.1
+itsukara@azvm30:~/Download$ 
+
+
+======================================================================================
+======================================================================================
+itsukara@azvm30:~/Download$ bash -x install-additionals.sh 
++ pip install sortedcontainers
+Collecting sortedcontainers
+  Downloading sortedcontainers-1.5.3-py2.py3-none-any.whl
+Installing collected packages: sortedcontainers
+Successfully installed sortedcontainers-1.5.3
++ git clone https://github.com/openai/gym
+Cloning into 'gym'...
+remote: Counting objects: 3833, done.
+remote: Compressing objects: 100% (10/10), done.
+remote: Total 3833 (delta 2), reused 0 (delta 0), pack-reused 3823
+Receiving objects: 100% (3833/3833), 933.33 KiB | 0 bytes/s, done.
+Resolving deltas: 100% (2535/2535), done.
+Checking connectivity... done.
++ cd gym
++ pip install -e .
+Obtaining file:///home/itsukara/Download/gym
+Requirement already satisfied (use --upgrade to upgrade): numpy>=1.10.4 in /home/itsukara/anaconda3/lib/python3.5/site-packages (from gym==0.4.2)
+Requirement already satisfied (use --upgrade to upgrade): requests>=2.0 in /home/itsukara/anaconda3/lib/python3.5/site-packages (from gym==0.4.2)
+Requirement already satisfied (use --upgrade to upgrade): six in /home/itsukara/anaconda3/lib/python3.5/site-packages (from gym==0.4.2)
+Collecting pyglet>=1.2.0 (from gym==0.4.2)
+  Downloading pyglet-1.2.4-py3-none-any.whl (964kB)
+    100% |████████████████████████████████| 972kB 1.4MB/s 
+Installing collected packages: pyglet, gym
+  Running setup.py develop for gym
+Successfully installed gym pyglet-1.2.4
++ pip install -e '.[atari]'
+Obtaining file:///home/itsukara/Download/gym
+Requirement already satisfied (use --upgrade to upgrade): numpy>=1.10.4 in /home/itsukara/anaconda3/lib/python3.5/site-packages (from gym==0.4.2)
+Requirement already satisfied (use --upgrade to upgrade): requests>=2.0 in /home/itsukara/anaconda3/lib/python3.5/site-packages (from gym==0.4.2)
+Requirement already satisfied (use --upgrade to upgrade): six in /home/itsukara/anaconda3/lib/python3.5/site-packages (from gym==0.4.2)
+Requirement already satisfied (use --upgrade to upgrade): pyglet>=1.2.0 in /home/itsukara/anaconda3/lib/python3.5/site-packages (from gym==0.4.2)
+Collecting atari_py>=0.0.17 (from gym==0.4.2)
+  Downloading atari-py-0.0.18.tar.gz (750kB)
+    100% |████████████████████████████████| 757kB 1.8MB/s 
+Requirement already satisfied (use --upgrade to upgrade): Pillow in /home/itsukara/anaconda3/lib/python3.5/site-packages (from gym==0.4.2)
+Collecting PyOpenGL (from gym==0.4.2)
+  Downloading PyOpenGL-3.1.0.tar.gz (1.2MB)
+    100% |████████████████████████████████| 1.2MB 1.2MB/s 
+Building wheels for collected packages: atari-py, PyOpenGL
+  Running setup.py bdist_wheel for atari-py ... done
+  Stored in directory: /home/itsukara/.cache/pip/wheels/5d/d2/66/3e3ef5cad72c0a204001f5b7502c3bb81329962a8661d02e96
+  Running setup.py bdist_wheel for PyOpenGL ... done
+  Stored in directory: /home/itsukara/.cache/pip/wheels/1c/17/50/f69d63e0a8169fb890f5a167817a73391be85d30e86fd29504
+Successfully built atari-py PyOpenGL
+Installing collected packages: atari-py, PyOpenGL, gym
+  Running setup.py develop for gym
+Successfully installed PyOpenGL-3.1.0 atari-py-0.0.18 gym-0.4.2
+itsukara@azvm30:~/Download$ 
+
+
+======================================================================================
+======================================================================================
+itsukara@azvm30:~/Download$ cd ../async_deep_reinforce/
+itsukara@azvm30:~/async_deep_reinforce$ mv checkpoints checkpoints.old
+itsukara@azvm30:~/async_deep_reinforce$ run-option montezuma-c-avg-greedy-rar025
+runset=montezuma-c-avg-greedy-rar025
+comment=0-3M:cavg, 3-200M:tes=30, tes-extend, llr=0, llrr=0, cavg, greediness=0.01, rar=0.25
+rom=montezuma_revenge.bin
+option=--train-episode-steps=30 --tes-extend=True --lives-lost-reward=0.0 --lives-lost-rratio=0.0 --reset-max-reward=True --psc-use=True --no-reward-time=600 --end-mega-step=100 --log-interval=800 --color-maximizing-in-gs=False --color-averaging-in-ale=True --max-mega-step=200 --greediness=0.01 --repeat-action-ratio=0.25
+A.L.E: Arcade Learning Environment (version 0.5.1)
+[Powered by Stella]
+Use -help for help screen.
+Warning: couldn't load settings file: ./ale.cfg
+Game console created:
+  ROM file:  montezuma_revenge.bin
+  Cart Name: Montezuma's Revenge - Starring Panama Joe (1983) (Parker Bros)
+  Cart MD5:  3347a6dd59049b15a38394aa2dafa585
+  Display Format:  AUTO-DETECT ==> NTSC
+  ROM Size:        8192
+  Bankswitch Type: AUTO-DETECT ==> E0
+
+Running ROM file...
+Random seed is 0
+******************** options ********************
+Namespace(action_size=18, average_score_log_interval=10, basic_income=0.0, basic_income_time=100000000000000000000, checkpoint_dir='checkpoints', color_averaging_in_ale=True, color_averaging_in_gs=False, color_maximizing_in_gs=False, display=False, end_mega_step=100, end_time_step=100000000, entropy_beta=0.01, frames_skip_in_ale=4, frames_skip_in_gs=1, gamma=0.99, grad_norm_clip=40.0, greediness=0.01, gym_env='MontezumaRevenge-v0', initial_alpha_high=0.01, initial_alpha_log_rate=0.4226, initial_alpha_low=0.0001, lives_lost_reward=0.0, lives_lost_rratio=0.0, lives_lost_weight=1.0, local_t_max=5, log_file='tmp/a3c_log', log_interval=800, max_mega_step=200, max_play_steps=4500, max_play_time=300, max_time_step=200000000, max_to_keep=None, no_reward_steps=9000, no_reward_time=600, num_episode_record=20, num_experiments=1, parallel_size=8, performance_log_interval=1500, psc_beta=0.01, psc_frsize=42, psc_maxval=127, psc_use=True, randomness=0.00022222222222222223, randomness_log_interval=150.0, randomness_log_num=30, randomness_steps=4500, randomness_time=300, record_gs_screen_dir=None, record_new_record_dir=None, record_screen_dir=None, repeat_action_probability=0.0, repeat_action_ratio=0.25, reset_max_reward=True, reward_clip=1.0, rmsp_alpha=0.99, rmsp_epsilon=0.1, rom='montezuma_revenge.bin', save_mega_interval=3, save_time_interval=3000000, score_averaging_length=100, score_highest_ratio=0.5, score_log_interval=900, stack_frames_in_gs=False, terminate_on_lives_lost=False, tes_extend=True, tes_extend_ratio=5.0, train_episode_steps=30, train_in_eval=False, use_gpu=True, use_gym=False, use_lstm=False, verbose=True)
+*************************************************
+A.L.E: Arcade Learning Environment (version 0.5.1)
+[Powered by Stella]
+Use -help for help screen.
+Warning: couldn't load settings file: ./ale.cfg
+Game console created:
+  ROM file:  montezuma_revenge.bin
+  Cart Name: Montezuma's Revenge - Starring Panama Joe (1983) (Parker Bros)
+  Cart MD5:  3347a6dd59049b15a38394aa2dafa585
+  Display Format:  AUTO-DETECT ==> NTSC
+  ROM Size:        8192
+  Bankswitch Type: AUTO-DETECT ==> E0
+
+Running ROM file...
+Random seed is 11992
+real_actions= [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17]
+[PSC]@@@ NEW ROOM(1) VISITED: visit counts=[0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+A.L.E: Arcade Learning Environment (version 0.5.1)
+[Powered by Stella]
+Use -help for help screen.
+Warning: couldn't load settings file: ./ale.cfg
+Game console created:
+  ROM file:  montezuma_revenge.bin
+  Cart Name: Montezuma's Revenge - Starring Panama Joe (1983) (Parker Bros)
+  Cart MD5:  3347a6dd59049b15a38394aa2dafa585
+  Display Format:  AUTO-DETECT ==> NTSC
+  ROM Size:        8192
+  Bankswitch Type: AUTO-DETECT ==> E0
+
+Running ROM file...
+Random seed is 8451
+real_actions= [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17]
+[PSC]@@@ NEW ROOM(1) VISITED: visit counts=[0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+A.L.E: Arcade Learning Environment (version 0.5.1)
+[Powered by Stella]
+Use -help for help screen.
+Warning: couldn't load settings file: ./ale.cfg
+Game console created:
+  ROM file:  montezuma_revenge.bin
+  Cart Name: Montezuma's Revenge - Starring Panama Joe (1983) (Parker Bros)
+  Cart MD5:  3347a6dd59049b15a38394aa2dafa585
+  Display Format:  AUTO-DETECT ==> NTSC
+  ROM Size:        8192
+  Bankswitch Type: AUTO-DETECT ==> E0
+
+Running ROM file...
+Random seed is 26968
+real_actions= [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17]
+[PSC]@@@ NEW ROOM(1) VISITED: visit counts=[0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+A.L.E: Arcade Learning Environment (version 0.5.1)
+[Powered by Stella]
+Use -help for help screen.
+Warning: couldn't load settings file: ./ale.cfg
+Game console created:
+  ROM file:  montezuma_revenge.bin
+  Cart Name: Montezuma's Revenge - Starring Panama Joe (1983) (Parker Bros)
+  Cart MD5:  3347a6dd59049b15a38394aa2dafa585
+  Display Format:  AUTO-DETECT ==> NTSC
+  ROM Size:        8192
+  Bankswitch Type: AUTO-DETECT ==> E0
+
+Running ROM file...
+Random seed is 56109
+real_actions= [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17]
+[PSC]@@@ NEW ROOM(1) VISITED: visit counts=[0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+A.L.E: Arcade Learning Environment (version 0.5.1)
+[Powered by Stella]
+Use -help for help screen.
+Warning: couldn't load settings file: ./ale.cfg
+Game console created:
+  ROM file:  montezuma_revenge.bin
+  Cart Name: Montezuma's Revenge - Starring Panama Joe (1983) (Parker Bros)
+  Cart MD5:  3347a6dd59049b15a38394aa2dafa585
+  Display Format:  AUTO-DETECT ==> NTSC
+  ROM Size:        8192
+  Bankswitch Type: AUTO-DETECT ==> E0
+
+Running ROM file...
+Random seed is 64235
+real_actions= [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17]
+[PSC]@@@ NEW ROOM(1) VISITED: visit counts=[0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+A.L.E: Arcade Learning Environment (version 0.5.1)
+[Powered by Stella]
+Use -help for help screen.
+Warning: couldn't load settings file: ./ale.cfg
+Game console created:
+  ROM file:  montezuma_revenge.bin
+  Cart Name: Montezuma's Revenge - Starring Panama Joe (1983) (Parker Bros)
+  Cart MD5:  3347a6dd59049b15a38394aa2dafa585
+  Display Format:  AUTO-DETECT ==> NTSC
+  ROM Size:        8192
+  Bankswitch Type: AUTO-DETECT ==> E0
+
+Running ROM file...
+Random seed is 36121
+real_actions= [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17]
+[PSC]@@@ NEW ROOM(1) VISITED: visit counts=[0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+A.L.E: Arcade Learning Environment (version 0.5.1)
+[Powered by Stella]
+Use -help for help screen.
+Warning: couldn't load settings file: ./ale.cfg
+Game console created:
+  ROM file:  montezuma_revenge.bin
+  Cart Name: Montezuma's Revenge - Starring Panama Joe (1983) (Parker Bros)
+  Cart MD5:  3347a6dd59049b15a38394aa2dafa585
+  Display Format:  AUTO-DETECT ==> NTSC
+  ROM Size:        8192
+  Bankswitch Type: AUTO-DETECT ==> E0
+
+Running ROM file...
+Random seed is 43977
+real_actions= [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17]
+[PSC]@@@ NEW ROOM(1) VISITED: visit counts=[0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+A.L.E: Arcade Learning Environment (version 0.5.1)
+[Powered by Stella]
+Use -help for help screen.
+Warning: couldn't load settings file: ./ale.cfg
+Game console created:
+  ROM file:  montezuma_revenge.bin
+  Cart Name: Montezuma's Revenge - Starring Panama Joe (1983) (Parker Bros)
+  Cart MD5:  3347a6dd59049b15a38394aa2dafa585
+  Display Format:  AUTO-DETECT ==> NTSC
+  ROM Size:        8192
+  Bankswitch Type: AUTO-DETECT ==> E0
+
+Running ROM file...
+Random seed is 23925
+real_actions= [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17]
+[PSC]@@@ NEW ROOM(1) VISITED: visit counts=[0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
+WARNING:tensorflow:Passing a `GraphDef` to the SummaryWriter is deprecated. Pass a `Graph` object instead, such as `sess.graph`.
+Could not find old checkpoint
+Press Ctrl+C to stop
+pi=[ 0.05826766  0.05253733  0.05701661  0.05929542  0.05561724  0.05342633
+  0.05822033  0.05593918  0.05202595  0.05531708  0.05589596  0.05275061
+  0.05566065  0.05645977  0.05435816  0.05512977  0.05570021  0.05638067] (thread0)
+ V=0.0823536217212677 (thread0)
+t=     1,s=       90,th=4:         |         |         |         |l=6>5    |
+t=     1,s=      105,th=7:         |         |         |         |         |         |         |l=6>5    |
+t=     1,s=      110,th=1:         |l=6>5    |
+t=     2,s=      265,th=2:         |         |l=6>5    |
+t=     2,s=      230,th=6:         |         |         |         |         |         |l=6>5    |
+t=     2,s=      255,th=0:l=6>5    |
+t=     2,s=      320,th=1:         |l=5>4    |
+t=     2,s=      390,th=7:         |         |         |         |         |         |         |l=5>4    |
+t=     2,s=      470,th=2:         |         |l=5>4    |
+t=     3,s=      535,th=6:         |         |         |         |         |         |l=5>4    |
+t=     3,s=      605,th=7:         |         |         |         |         |         |         |l=4>3    |
+t=     3,s=      620,th=0:l=5>4    |
+t=     3,s=      730,th=1:         |l=4>3    |
+t=     3,s=      800,th=7:         |         |         |         |         |         |         |l=3>2    |
+t=     3,s=      820,th=3:         |         |         |l=6>5    |
+t=     4,s=      880,th=0:l=4>3    |
+t=     4,s=      895,th=6:         |         |         |         |         |         |l=4>3    |
+t=     4,s=      975,th=2:         |         |l=4>3    |
+t=     4,s=     1195,th=2:         |         |l=3>2    |
+t=     4,s=     1220,th=4:         |         |         |         |l=5>4    |
+t=     4,s=     1245,th=7:         |         |         |         |         |         |         |l=2>1    |
+t=     5,s=     1335,th=1:         |l=3>2    |
+t=     5,s=     1395,th=4:         |         |         |         |l=4>3    |
+t=     5,s=     1580,th=6:         |         |         |         |         |         |l=3>2    |
+t=     5,s=     1610,th=4:         |         |         |         |l=3>2    |
+t=     5,s=     1650,th=7:         |         |         |         |         |         |         |l=1>0    |
+t=     5,s=     1650,th=7:         |         |         |         |         |         |         |r=  0@END|
+t=     6,s=     1766,th=7:         |         |         |         |         |         |         |l=6>5    |
+t=     6,s=     1951,th=6:         |         |         |         |         |         |l=2>1    |
+t=     7,s=     2161,th=7:         |         |         |         |         |         |         |l=5>4    |
+t=     7,s=     2296,th=0:l=3>2    |
+t=     8,s=     2391,th=5:         |         |         |         |         |l=6>5    |
+t=     8,s=     2466,th=7:         |         |         |         |         |         |         |l=4>3    |
+t=     8,s=     2506,th=4:         |         |         |         |l=2>1    |
+t=     9,s=     2831,th=2:         |         |l=2>1    |
+t=     9,s=     2826,th=3:         |         |         |l=5>4    |
+t=     9,s=     2931,th=7:         |         |         |         |         |         |         |l=3>2    |
+^CYou pressed Ctrl+C!
+@@@ Data saved at global_t=3101
+itsukara@azvm30:~/async_deep_reinforce$
+======================================================================================
+======================================================================================

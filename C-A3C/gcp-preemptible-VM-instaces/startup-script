@@ -1,0 +1,42 @@
+#!/bin/bash
+# You have to change following lines
+export home_dir=/home/itsukara
+export run_dir=/home/itsukara/pscOHL12092300
+export run_command=run-option-gym
+
+# comment out next line after set up above lines
+#exit
+
+
+# dont' have to change following lines
+
+export host=`hostname`
+case $host in
+  "gcp10") export runset=montezuma-y-yaml-pscm-ff-fs2 ;;
+  "gcp20") export runset=montezuma-y-yaml-pscm-ff-fs2 ;;
+  "gcp30") export runset=montezuma-y-yaml-pscm-ff-fs2 ;;
+  "gcp40") export runset=montezuma-y-yaml-pscm-ff-fs2 ;;
+  "gcp50") export runset=montezuma-y-yaml-pscm-ff-fs2 ;;
+  "gcp60") export runset=montezuma-y-yaml-pscm-ff-fs2 ;;
+  "gcp70") export runset=montezuma-y-yaml-pscm-ff-fs2 ;;
+  "gcp80") export runset=montezuma-y-yaml-pscm-ff-fs2 ;;
+esac
+
+
+export PATH=".:$home_dir/anaconda3/bin:$PATH"
+cd $home_dir
+echo "`export TZ=JST-9;date +%Y/%m/%d-%H:%M:%S` Start up!" >> startup.log
+
+if [ -e "init-script" ] ; then
+    bash init-script
+    rm   init-script
+fi
+
+
+cd $run_dir
+
+export log=log.$host.$runset
+nohup $run_command $runset &>> $log &
+(sleep 100; nohup report $log &>> report.log )&
+(sleep 150; nohup run-avconv-and-rm screen.new-record &>> avconv1.log )&
+(sleep 300; nohup run-avconv-and-rm screen.new-room   &>> avconv2.log )&

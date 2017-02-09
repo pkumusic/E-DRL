@@ -1,0 +1,9 @@
+*.pyc
+tmp/*
+old/*
+checkpoints*/*
+/.project
+/.pydevproject
+/checkpoints/
+/tmp/
+/log
