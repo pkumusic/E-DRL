@@ -1,0 +1,5 @@
+future
+gym
+numpy
+six
+-e .
