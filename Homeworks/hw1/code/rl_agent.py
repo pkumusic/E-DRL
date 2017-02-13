@@ -9,8 +9,9 @@ import deeprl_hw1.lake_envs as lake_env
 import gym
 import time
 import random
+import math
 import numpy as np
-from deeprl_hw1.rl import print_policy, policy_iteration
+from deeprl_hw1.rl import print_policy, policy_iteration, value_iteration, value_function_to_policy
 
 def run_random_policy(env):
     """Run a random policy for the given environment.
@@ -81,7 +82,8 @@ def generate_random_policy(env, seed=0):
     return policy
 
 def print_values(values):
-    values = values.reshape((4,4))
+    l = int(len(values) ** 0.5)
+    values = values.reshape((l,l))
     print(values)
 
 def main():
@@ -95,12 +97,20 @@ def main():
     print_policy(policy, action_names)
 
     env.render()
+
+    input('Hit enter to run policy iteration...')
     policy, value_func, num_policy_imp, num_value_iters = policy_iteration(env, gamma)
     print_policy(policy, action_names)
     print_values(value_func)
     print("The number of policy improvements: %d"%(num_policy_imp))
     print("The number of value iterations: %d" % (num_value_iters))
 
+    input('Hit enter to run value iteration...')
+    values, num_value_iters = value_iteration(env, gamma)
+    policy = value_function_to_policy(env, gamma, values)
+    print_policy(policy, action_names)
+    print_values(value_func)
+    print("The number of value iterations: %d" % (num_value_iters))
     #print(value_func, num_policy_imp, num_value_iters)
     #values, i = evaluate_policy(env, gamma, policy, tol=10e-3)
     #print(values,i)

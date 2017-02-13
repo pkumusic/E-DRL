@@ -72,8 +72,18 @@ def value_function_to_policy(env, gamma, value_function):
       An array of integers. Each integer is the optimal action to take
       in that state according to the environment dynamics and the
       given value function.
-    """    
-    return np.zeros(env.nS, dtype='int')
+    """
+    policy = np.zeros(env.nS, dtype='int')
+    for s in xrange(env.nS):
+        action_values = []
+        for a in xrange(env.nA):
+            v = 0
+            for (prob, nextstate, reward, is_terminal) in env.P[s][a]:
+                v += prob * (reward + gamma * value_function[nextstate])
+            action_values.append(v)
+        action = np.argmax(action_values)
+        policy[s] = action
+    return policy
 
 
 def improve_policy(env, gamma, value_func, policy):
@@ -188,7 +198,27 @@ def value_iteration(env, gamma, max_iterations=int(1e3), tol=1e-3):
     np.ndarray, iteration
       The value function and the number of iterations it took to converge.
     """
-    return np.zeros(env.nS), 0
+    values = np.zeros(env.nS)
+    num_iter = 0
+    while True:
+        num_iter += 1
+        delta = 0
+        for s in xrange(env.nS):
+            action_values = []
+            v_old = values[s]
+            for a in xrange(env.nA):
+                v = 0
+                for (prob, nextstate, reward, is_terminal) in env.P[s][a]:
+                    v += prob * (reward + gamma * values[nextstate])
+                action_values.append(v)
+            v = max(action_values)
+            values[s] = v
+            delta = max(delta, abs(v-v_old))
+        if num_iter >= max_iterations:
+            break
+        if delta < tol:
+            break
+    return values, num_iter
 
 
 def print_policy(policy, action_names):
