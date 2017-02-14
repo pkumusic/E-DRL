@@ -209,7 +209,10 @@ def value_iteration(env, gamma, max_iterations=int(1e3), tol=1e-3):
             for a in xrange(env.nA):
                 v = 0
                 for (prob, nextstate, reward, is_terminal) in env.P[s][a]:
-                    v += prob * (reward + gamma * values[nextstate])
+                    if s == nextstate and is_terminal:
+                        pass
+                    else:
+                        v += prob * (reward + gamma * values[nextstate])
                 action_values.append(v)
             v = max(action_values)
             values[s] = v
