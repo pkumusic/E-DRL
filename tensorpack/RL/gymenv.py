@@ -5,6 +5,7 @@
 
 
 import time
+from pseudocount import *
 from ..utils import logger
 try:
     import gym
@@ -32,8 +33,9 @@ class GymEnv(RLEnvironment):
     """
     def __init__(self, name, pc_method=None, dumpdir=None, viz=False, auto_restart=True):
         # pc_method: Pseudo-count exploration method
+        self.pc_method = pc_method
         if pc_method:
-            logger.info('Success')
+            self.pc = PC(pc_method)
         with _ALE_LOCK:
             self.gymenv = gym.make(name)
         if dumpdir:
@@ -67,6 +69,8 @@ class GymEnv(RLEnvironment):
 
     def action(self, act):
         self._ob, r, isOver, info = self.gymenv.step(act)
+        if self.pc_method:
+            r += self.pc.pc_reward(self._ob)
         self.rwd_counter.feed(r)
         if isOver:
             self.finish_episode()
