@@ -60,9 +60,13 @@ EVAL_EPISODE = 50
 NUM_ACTIONS = None
 DOUBLE = None
 DUELING = None
+PC_METHOD = None # Pseudo count method
 
 def get_player(viz=False, train=False, dumpdir=None):
-    pl = GymEnv(ENV_NAME, dumpdir=dumpdir)
+    if PC_METHOD and train:
+        pl = GymEnv(ENV_NAME, dumpdir=dumpdir, pc_method=PC_METHOD)
+    else:
+        pl = GymEnv(ENV_NAME, dumpdir=dumpdir)
     def resize(img):
         return cv2.resize(img, IMAGE_SIZE)
     def grey(img):
@@ -237,6 +241,7 @@ if __name__ == "__main__":
     parser.add_argument('--double', help='If use double DQN', default='t')
     parser.add_argument('--dueling', help='If use dueling method', default='f')
     parser.add_argument('--logdir', help='output directory', required=True)
+    parser.add_argument('--pc', help='pseudo count method', choices=[None, 'joint'], default=None)
     args=parser.parse_args()
     ENV_NAME = args.env
     LOG_DIR  = args.logdir
@@ -260,6 +265,13 @@ if __name__ == "__main__":
         logger.info("Using Double")
     if DUELING:
         logger.info("Using Dueling")
+
+    # For Pseudo Count Rewards
+    PC_METHOD = args.pc
+    if PC_METHOD:
+        logger.info("Using Pseudo Count method: " + PC_METHOD)
+    else:
+        logger.info("Don't use Pseudo Count method")
 
     assert ENV_NAME
     p = get_player(); del p     # set NUM_ACTIONS

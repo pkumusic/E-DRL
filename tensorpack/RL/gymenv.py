@@ -30,7 +30,10 @@ class GymEnv(RLEnvironment):
     """
     An OpenAI/gym wrapper. Can optionally auto restart.
     """
-    def __init__(self, name, dumpdir=None, viz=False, auto_restart=True):
+    def __init__(self, name, pc_method=None, dumpdir=None, viz=False, auto_restart=True):
+        # pc_method: Pseudo-count exploration method
+        if pc_method:
+            logger.info('Success')
         with _ALE_LOCK:
             self.gymenv = gym.make(name)
         if dumpdir:
