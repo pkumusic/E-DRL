@@ -8,10 +8,11 @@
 \usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
 \usepackage{hyperref}
 \usepackage{placeins}
+\usepackage{float}
 \usepackage{tikz}
 \usepackage{tikzsymbols}
 \usepackage{todonotes}
-
+\newcommand{\yl}[1]{\textcolor{red}{#1}}
 \usetikzlibrary{positioning,calc}
 
 \title{10-703 Deep RL and Controls\\
@@ -21,7 +22,8 @@
 
 \date{February 1, 2017\\
   \hspace{1cm}\\
-Due February 17, 2017}
+Due February 17, 2017\\
+\yl{Yuezhang Li (yuezhanl)}}
 
 \begin{document}
 
@@ -141,19 +143,19 @@ horizon MDP. The coffee cup is still an absorbing state.
 Using the above problem description answer the following questions:
 
 \begin{enumerate}[a)]
-\item  How many states are in this MDP? (i.e. what is $|S|$).
-\item How many actions are in this MDP? (i.e. what is $|A|$).
-\item What is the dimensionality of the transition function $P$?
+\item  How many states are in this MDP? (i.e. what is $|S|$). \yl{36}
+\item How many actions are in this MDP? (i.e. what is $|A|$). \yl{4}
+\item What is the dimensionality of the transition function $P$? \yl{36*4=144}
 \item Fill in the probabilities for the transition function $P$.\\
   \begin{center}
     \begin{tabular}{|l|l|c|c|c|c|c|}\hline
       \multicolumn{2}{|c|}{} &
                                \multicolumn{5}{|c|}{\textbf{s'}}\\\hline
       \textbf{s} & \textbf{a} & (1,2) & (1,1) & (1,4) & (1,3) & (5, 6)\\\hline
-      (1,1) & up & & & & &\\ \hline
-      (1,1) & down & & & & &\\ \hline
-      (1,3) & up & & & & &\\ \hline
-      (6,6) & left & & & & &\\ \hline
+      (1,1) & up & 1& 0& 0& 0&0\\ \hline
+      (1,1) & down& 0& 1& 0&0&0\\ \hline
+      (1,3) & up & 0& 0& 0& 1&0\\ \hline
+      (6,6) & left & 0& 0& 0& 0&0\\ \hline
     \end{tabular}
   \end{center}
 
@@ -161,16 +163,94 @@ Using the above problem description answer the following questions:
   and a value of $\gamma$ that
   will lead to an optimal policy giving the shortest path to the coffee cup from
   all states.
+  
+  \yl{R((5,6),right,(6,6))=1\\
+  R((6,5),up,(6,6))=1\\
+ and other R(S,A,S)=0\\
+ $\gamma$ = 0.9}
 \item Does $\gamma \in (0, 1)$ affect the optimal policy in this case?
   Explain why.
+  \yl{No. Because when $0 < gamma < 1$, the optimal policy would always be the shortest path. }
 \item How many possible policies are there?  (\textbf{All policies},
   not just optimal policies.)
+  \yl{$4^{36}$}
 \item What is the optimal policy? Draw the grid and label each cell
   with an arrows in the direction of the optimal action. If multiple
   arrows, include the probability of each arrow. There may be
   multiple optimal policies, pick one and show it.
-\item Is your policy deterministic or stochastic?
-\item Is there any advantage to having a stochastic policy? Explain.
+  
+  \begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
+    % draw the grid and label the edges
+    \draw[step=1cm,gray,very thin] (0,0) grid (6,6);
+    \foreach \x in {1, ..., 6}
+      \draw (\x cm - .5cm, 1pt) -- (\x cm - .5cm, -1pt)
+      node[anchor=north] {$\x$};
+      \foreach \y in {1, ..., 6}
+      \draw (1pt,\y cm - .5cm) -- (-1pt, \y cm - .5cm)
+      node[anchor=east] {$\y$};
+
+      % add the agent and the goal
+      \node (agent) at (.5cm, .5cm) {\Strichmaxerl[3]};
+      \node (goal) at (5.5cm, 5.5cm) {\Coffeecup[3]};
+      \node (goal) at (0.5cm, 5.5cm) {$\rightarrow$};
+      \node (goal) at (1.5cm, 5.5cm) {$\rightarrow$};
+      \node (goal) at (2.5cm, 5.5cm) {$\rightarrow$};
+      \node (goal) at (3.5cm, 5.5cm) {$\rightarrow$};
+      \node (goal) at (4.5cm, 5.5cm) {$\rightarrow$};
+      \node (goal) at (5.5cm, 5.5cm) {$\rightarrow$};
+      \node (goal) at (4.5cm, 4.5cm) {$\rightarrow$};
+      \node (goal) at (3.5cm, 4.5cm) {$\rightarrow$};
+      \node (goal) at (2.5cm, 4.5cm) {$\rightarrow$};
+      \node (goal) at (1.5cm, 4.5cm) {$\rightarrow$};
+      \node (goal) at (.5cm, .5cm) {$\rightarrow$};
+      \node (goal) at (1.5cm, .5cm) {$\rightarrow$};
+      \node (goal) at (2.5cm, .5cm) {$\rightarrow$};
+      \node (goal) at (3.5cm, .5cm) {$\rightarrow$};
+      \node (goal) at (4.5cm, .5cm) {$\rightarrow$};
+      \node (goal) at (.5cm, 1.5cm) {$\rightarrow$};
+      \node (goal) at (1.5cm, 1.5cm) {$\rightarrow$};
+      \node (goal) at (.5cm, 2.5cm) {$\rightarrow$};
+      \node (goal) at (1.5cm, 2.5cm) {$\rightarrow$};
+      \node (goal) at (3.5cm, 2.5cm) {$\rightarrow$};
+      \node (goal) at (4.5cm, 2.5cm) {$\rightarrow$};
+      \node (goal) at (3.5cm, 2.5cm) {$\rightarrow$};
+      \node (goal) at (5.5cm, 4.5cm) {$\uparrow$};
+      \node (goal) at (.5cm, 4.5cm) {$\uparrow$};
+      \node (goal) at (.5cm, 3.5cm) {$\uparrow$};
+      \node (goal) at (5.5cm, 2.5cm) {$\uparrow$};
+      \node (goal) at (5.5cm, 1.5cm) {$\uparrow$};
+      \node (goal) at (5.5cm, 0.5cm) {$\uparrow$};
+      \node (goal) at (4.5cm, 1.5cm) {$\uparrow$};
+      \node (goal) at (3.5cm, 1.5cm) {$\uparrow$};
+      \node (goal) at (2.5cm, 2.5cm) {$\downarrow$};
+      \node (goal) at (2.5cm, 1.5cm) {$\downarrow$};
+      \node (goal) at (1.5cm, 3.5cm) {$\leftarrow$};
+      \node (goal) at (2.5cm, 3.5cm) {$\leftarrow$};
+      \node (goal) at (3.5cm, 3.5cm) {$\leftarrow$};
+      \node (goal) at (4.5cm, 3.5cm) {$\leftarrow$};
+      \node (goal) at (5.5cm, 3.5cm) {$\leftarrow$};
+      
+
+      % Add some obstacles
+      \draw[line width=3pt] (0cm, 3cm) -- (5cm, 3cm);
+      \draw[line width=3pt] (3cm, 3cm) -- (3cm, 1cm);
+
+      \draw[line width=3pt] (1cm, 4cm) -- (6cm, 4cm);
+      \draw[line width=3pt] (1cm, 4cm) -- (1cm, 5cm);
+
+      % border walls
+      \draw[line width=3pt] (0cm, 0cm) -- (0cm, 6cm);
+      \draw[line width=3pt] (0cm, 0cm) -- (6cm, 0cm);
+      \draw[line width=3pt] (6cm, 6cm) -- (0cm, 6cm);
+      \draw[line width=3pt] (6cm, 6cm) -- (6cm, 0cm);
+
+  \end{tikzpicture}
+  \caption{An optimal policy.}
+\end{figure}
+\item Is your policy deterministic or stochastic? \yl{deterministic}
+\item Is there any advantage to having a stochastic policy? Explain. \yl{In this case, not much advantage. But in some settings, stochastic policy might have advantages of a) in adversarial setting, where your enemy cannot learn you policy easily, b) if the environment is stochastic, stochastic policy might be better, c) partial observable settings, stochastic policy might be better.}
 \end{enumerate}
 
 \subsection*{Part b (2pt)}
@@ -188,12 +268,12 @@ change answer the following questions:
       \multicolumn{2}{|c|}{} &
                                \multicolumn{3}{|c|}{\textbf{s'}}\\\hline
       \textbf{s} & \textbf{a} & (1,3) & (3,2) & (1,4)\\\hline
-      (2,2) & up & & & \\ \hline
+      (2,2) & up & 0& 0.1& 0\\ \hline
     \end{tabular}
   \end{center}
 \item Does the optimal policy change compared to Part~a? Justify your
-  answer.
-\item Will the value of the optimal policy change? Explain.
+  answer. \yl{It will change. For example, right would be the optimal action rather than up in (4,3).}
+\item Will the value of the optimal policy change? Explain. \yl{It will change because the environment is actually changed}
 \end{enumerate}
 
 \subsection*{Part c (4pt)}
@@ -248,19 +328,24 @@ Consider the case where each step takes 1 minute to execute.
 \begin{enumerate}[a)]
 \item Specify a reward function $R : S \times A \times S$ that will lead to the
   policy giving the shortest path to the coffee cup in states around
-  the coffee cup. Try to keep the reward function as simple as possible.
+  the coffee cup. Try to keep the reward function as simple as possible. 
+    
+    \yl{R((5,6),right,(6,6))=1\\
+  R((6,5),up,(6,6))=1\\
+ and other R(S,A,S)=0\\
+ $\gamma$ = 0.9}
 \item Refer to Figure~\ref{fig:prob1_horizon_region1}. Using your
   reward function, Will the agent's policy in the green shaded region
-  change compared to the MDP in Part~a? Justify your answer.
+  change compared to the MDP in Part~a? Justify your answer. \yl{No. Because in this region, the best policy is still the one which giving shortest path to the coffee cup.}
 \item Refer to Figure~\ref{fig:prob1_horizon_region1}. Using your
   reward function, consider policy $\pi_a$ that in state $(1,5)$
   chooses action down, and a policy $\pi_b$ that in state
   $(1,5)$ chooses action up. How does $V_{\pi_a} ((1, 5))$ relate to
-  $V_{\pi_b}((1,5))$?
+  $V_{\pi_b}((1,5))$? \yl{$V_{\pi_a} ((1, 5))=V_{\pi_b}((1,5))=0$}
 \item Consider a policy $\pi_a$ and a policy $\pi_b$, where
   $\pi_a(s_{green}) = \pi_b(s_{green})$ and
   $\pi_a(s_{blue}) \not= \pi_b(s_{blue})$. How do $V_{\pi_a}$ relate
-  to $V_{\pi_b}$? Explain.
+  to $V_{\pi_b}$? Explain. \yl{$V_{\pi_a}=V_{\pi_b}$, because all the states in the blue area have 0 value, since it cannot reach the coffeecup to get +1 reward.}
 
 \end{enumerate}
 
@@ -319,31 +404,131 @@ Answer these questions for the maps
   improvement steps and the total number of policy evaluation
   steps. Use $\gamma=0.9$. Use a stopping tolerance of
   $10^{-3}$ for the policy evaluations.
+   
+  \yl{For 4x4: Time: 0.005s, number of policy improvement: 7, total number of policy evaluation: 28}
+  
+  \yl{For 8x8: Time: 0.025s, number of policy improvement: 15, total number of policy evaluation: 120}
 \item What is the optimal policy for this map? Show as a grid of
   letters with ``U'', ``D'', ``L'', ``R'' representing the actions up,
   down, left, right respectively. See
   Figure~\ref{fig:prob2_example_policy} for an example of the expected
   output.  
+  
+  \yl{For 4x4:}
+  \begin{figure}[H]
+  \centering
+  \begin{BVerbatim}
+DRDL
+DLDL
+RDDL
+LRRL
+  \end{BVerbatim}
+  \caption{An optimal policy for 4x4}
+\end{figure}
+
+  \yl{For 8x8:}
+  \begin{figure}[H]
+  \centering
+  \begin{BVerbatim}
+DDDDDDDD
+DDDRDDDD
+DDDLDRDD
+RRRRDLDD
+RRULDDRD
+DLLRRDLD
+DLRULDLD
+RRULRRRL
+  \end{BVerbatim}
+  \caption{An optimal policy for 8x8}
+\end{figure}
 \item Find the value function of this policy. Plot it as a color
   image, where each square shows its value as a color. See
   Figure~\ref{fig:prob3_value_image} for an example.
+  
+  \yl{For 4x4:}
+  
+  \begin{figure}[H]
+  \centering
+  \includegraphics[width=.5\textwidth]{figures/value1.png}
+  \caption{Value function}
+\end{figure}
+
+  \yl{For 8x8:}
+  
+  \begin{figure}[H]
+  \centering
+  \includegraphics[width=.5\textwidth]{figures/value2.png}
+  \caption{Value function}
+\end{figure}
+ 
+  
 \item Find the optimal value function directly using value
   iteration. Record the time taken for execution, and the number of
   iterations required. Use $\gamma=0.9$ Use a stopping tolerance of
-  $10^{-3}$.
+  $10^{-3}$.  
+  
+  \yl{For 4x4: 
+  Time: 0.001s, number of iterations: 7}
+  
+    \yl{For 8x8: 
+  Time: 0.0066s, number of iterations: 15}
 \item Plot this value function as a color image, where each square
   shows its value as a color. See Figure~\ref{fig:prob3_value_image}
   for an example.
-\item Which algorithm was faster? Which took less iterations?
-\item Are there any differences in the value function?
+  
+  \yl{For 4x4:}
+  
+  \begin{figure}[H]
+  \centering
+  \includegraphics[width=.5\textwidth]{figures/value1.png}
+  \caption{Value function}
+\end{figure}
+
+  \yl{For 8x8:}
+  
+  \begin{figure}[H]
+  \centering
+  \includegraphics[width=.5\textwidth]{figures/value2.png}
+  \caption{Value function}
+\end{figure}
+  
+\item Which algorithm was faster? Which took less iterations? \yl{Value iteration. Value iteration.}
+\item Are there any differences in the value function? \yl{No difference}
 \item Convert the optimal value function to the optimal policy. Show
   the policy a grid of letters with ``U'', ``D'', ``L'', ``R''
   representing the actions up, down, left, right respectively. See
   Figure~\ref{fig:prob2_example_policy} for an example of the expected
   output.
-\item Write an agent that executes the optimal policy. Record the
+  
+    \yl{For 4x4:}
+  \begin{figure}[H]
+  \centering
+  \begin{BVerbatim}
+DRDL
+DLDL
+RDDL
+LRRL
+  \end{BVerbatim}
+  \caption{An optimal policy for 4x4}
+\end{figure}
+
+  \yl{For 8x8:}
+  \begin{figure}[H]
+  \centering
+  \begin{BVerbatim}
+DDDDDDDD
+DDDRDDDD
+DDDLDRDD
+RRRRDLDD
+RRULDDRD
+DLLRRDLD
+DLRULDLD
+RRULRRRL
+  \end{BVerbatim}
+  \caption{An optimal policy for 8x8}
+\end{figure}\item Write an agent that executes the optimal policy. Record the
   total cumulative discounted reward. Does this value match the value
-  computed for the starting state? If not, explain why.
+  computed for the starting state? If not, explain why. \yl{0.59049 for 4x4, 0.25418658 for 8x8. This value is the same as the value computed for the starting state. Because this is a deterministic environment and a deterministic policy, so the expected value is the optimal value.}
 \end{enumerate}
 
 \begin{figure}[ht]
@@ -374,20 +559,69 @@ Answer the following questions for the maps
 \begin{enumerate}[a)]
 \item Using value iteration, find the optimal value function. Record
   the time taken for execution and the number of iterations required. Use a
-  stopping tolerance of $10^{-3}$. Use $\gamma=0.9$.
+  stopping tolerance of $10^{-3}$. Use $\gamma=0.9$. \yl{For 4x4:
+  Time: 0.0039s, number of iterations: 23}
+  
+  \yl{For 8x8:
+  Time: 0.0143s, number of iterations: 24}
 \item Plot the value function as a color map like in Part~a. Is the
   value function different compared to the deterministic versions of
   the maps?
+  \yl{Yes. It's different.}
+  
+  \yl{For 4x4:}
+  \begin{figure}[H]
+  \centering
+  \includegraphics[width=.5\textwidth]{figures/value1-s.png}
+  \caption{Value function}
+\end{figure}
+
+  \yl{For 8x8:}
+  
+  \begin{figure}[H]
+  \centering
+  \includegraphics[width=.5\textwidth]{figures/value2-s.png}
+  \caption{Value function}
+\end{figure}
+  
+  
 \item Convert this value function to the optimal policy and include it
   in the writeup.
+  
+  \yl{For 4x4:}
+  \begin{figure}[H]
+  \centering
+  \begin{BVerbatim}
+LULU
+LLLL
+UDLL
+LRDL
+  \end{BVerbatim}
+  \caption{An optimal policy for 4x4}
+\end{figure}
+
+  \yl{For 8x8:}
+  \begin{figure}[H]
+  \centering
+  \begin{BVerbatim}
+DRRRRRRR
+URRURRRD
+URLLRURD
+UUUDLLRD
+UULLRDUR
+LLLDULLR
+LLDLLLLR
+RDLLDDDL
+  \end{BVerbatim}
+  \end{figure}
 \item Does the optimal policy differ from the optimal policy in the 
   deterministic map? 
   If so pick a state where the policy differs and explain why the action is
-  different.
+  different. \yl{Yes. For example, in the 8x8 map, the (7,1) state is Down, but for deterministic version, it is Right. This might due to the fact if you choose right and happened to slip, if would go to left, which is bad. But if you choose Down, if it's slip, it can happened to slip to the goal state. If it is not slip, it can remain in the original stae.}
 \item Write an agent that executes the optimal policy. Run this agent
   $100$ times on the map and record the total cumulative discounted
   reward. Average the results. Does this value match the value
-  computed for the starting state? If not explain why.
+  computed for the starting state? If not explain why. \yl{for 4x4, it is 0.06968, and value computed is 0.0642. For 8x8, it is 0.00793, and the value computed is 0.00232. They didn't match. It might because the process is stochastic, so the variance is actually big.}
 \end{enumerate}
 
 \subsection*{Part c (4 pt)}
@@ -402,11 +636,31 @@ Answer these questions for map \texttt{Deterministic-4x4-neg-reward-FrozenLake-v
 \item Using value iteration, find the optimal value function. Use a
   stopping tolerance of $10^{-3}$. Use $\gamma=0.9$. Plot the
   value function as a color map like in Part~a.
-\item Is the value function different from the other deterministic 4x4 map?
+  \yl{This question is a little bit confusing. I assume that the hole and the goal still means end of the episode. The color is plotted as following.}
+  
+    \begin{figure}[H]
+  \centering
+  \includegraphics[width=.5\textwidth]{figures/value1-n.png}
+  \caption{Value function}
+\end{figure}
+
+  
+\item Is the value function different from the other deterministic 4x4 map? \yl{Yes. It is different.}
 \item Convert the value function to the optimal policy and include it
-  in the writeup.
+  in the writeup. \yl{As following}
+  
+    \begin{figure}[H]
+  \centering
+  \begin{BVerbatim}
+DDLD
+RLLL
+DURL
+LLRL
+  \end{BVerbatim}
+  \caption{An optimal policy for 4x4}
+\end{figure}
 \item Is the policy different from the other deterministic 4x4 map? If
-  so, pick a state where it differs and explain why the action is different.
+  so, pick a state where it differs and explain why the action is different. \yl{Yes. For example, row 1, col 2, it is Down, in order to go to the hole to end the episode in order to avoid losing more scores. But in non-negative version, it is Right, in order to go to the goal state.}
 \end{enumerate}
 
 

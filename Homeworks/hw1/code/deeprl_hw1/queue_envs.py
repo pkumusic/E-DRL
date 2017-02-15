@@ -3,7 +3,7 @@
 
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
-
+import gym
 from gym import Env, spaces
 from gym.envs.registration import register
 
@@ -37,8 +37,12 @@ class QueueEnv(Env):
         self.action_space = spaces.Discrete(4)
         self.observation_space = spaces.MultiDiscrete(
             [(1, 3), (0, 5), (0, 5), (0, 5)])
-        self.nS = 0
-        self.nA = 0
+        self.nS = 3 * 6 * 6 * 6
+        self.nA = 4
+        self.p1 = p1
+        self.p2 = p2
+        self.p3 = p3
+        self.s = (1, 0, 0, 0)
 
     def _reset(self):
         """Reset the environment.
@@ -52,7 +56,7 @@ class QueueEnv(Env):
           (current queue, num items in 1, num items in 2, num items in
           3).
         """
-        return None
+        return (1, 0, 0, 0)
 
     def _step(self, action):
         """Execute the specified action.
@@ -71,6 +75,21 @@ class QueueEnv(Env):
           state. debug_info is a dictionary. You can fill debug_info
           with any additional information you deem useful.
         """
+        (cur, num1, num2, num3) = self.s
+        reward = 0
+        if action == self.SWITCH_TO_1:
+            cur = 1
+        elif action == self.SWITCH_TO_2:
+            cur = 2
+        elif action == self.SWITCH_TO_3:
+            cur = 3
+        elif action == self.SERVICE_QUEUE:
+            if self.s[cur] > 0:
+                reward = 1
+
+
+            pass
+
         return None, None, None, None
 
     def _render(self, mode='human', close=False):
@@ -132,3 +151,4 @@ register(
     kwargs={'p1': .1,
             'p2': .1,
             'p3': .1})
+
