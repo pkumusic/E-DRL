@@ -13,11 +13,10 @@ class PC():
     def __init__(self, method):
         # initialize
         self.method = method
-        self.maxval = 255 # max pixel value for uint8
-        self.flat_pixel_counter = np.zeros((FRSIZE*FRSIZE, self.maxval+1)) # Counter for each (pos1, pos2, val)
+        self.flat_pixel_counter = np.zeros((FRSIZE*FRSIZE, MAX_DOWNSAMPLED_VAL+1)) # Counter for each (pos1, pos2, val), used for joint method
         self.total_num_states = 0  # total number of seen states
 
-        pass
+
 
     def pc_reward(self, state):
         """
@@ -33,8 +32,7 @@ class PC():
     def preprocess(self, state):
         state = cv2.cvtColor(state, cv2.COLOR_BGR2GRAY)
         state = cv2.resize(state, (FRSIZE, FRSIZE))
-        state = np.uint8(state)
-        #print state
+        state = np.uint8(state / MAXVAL * MAX_DOWNSAMPLED_VAL)
         return state
 
     def add(self, state):
