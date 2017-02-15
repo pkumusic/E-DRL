@@ -6,6 +6,8 @@ from __future__ import division
 import cv2
 import numpy as np
 FRSIZE = 42
+MAXVAL = 255                # original max value for a state
+MAX_DOWNSAMPLED_VAL = 255   # downsampled max value for a state. 8 in the paper.
 class PC():
     # class for process with pseudo count rewards
     def __init__(self, method):
@@ -32,6 +34,7 @@ class PC():
         state = cv2.cvtColor(state, cv2.COLOR_BGR2GRAY)
         state = cv2.resize(state, (FRSIZE, FRSIZE))
         state = np.uint8(state)
+        #print state
         return state
 
     def add(self, state):
