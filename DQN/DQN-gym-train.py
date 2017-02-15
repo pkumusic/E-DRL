@@ -241,7 +241,7 @@ if __name__ == "__main__":
     parser.add_argument('--double', help='If use double DQN', default='t')
     parser.add_argument('--dueling', help='If use dueling method', default='f')
     parser.add_argument('--logdir', help='output directory', required=True)
-    parser.add_argument('--pc', help='pseudo count method', choices=[None, 'joint'], default=None)
+    parser.add_argument('--pc', help='pseudo count method', choices=[None, 'joint', 'CTS'], default=None)
     args=parser.parse_args()
     ENV_NAME = args.env
     LOG_DIR  = args.logdir

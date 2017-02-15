@@ -57,7 +57,10 @@ class PC():
                 pc_count = 0.0
                 pc_reward = self.count2reward(pc_count)
             self.total_num_states += 1
-        return pc_reward
+            return pc_reward
+        if self.method == 'CTS':
+            # Model described in the paper "Unifying Count-Based Exploration and Intrinsic Motivation"
+            pass
 
     def count2reward(self, count, beta=0.05, alpha=0.01, power=-0.5):
         # r = beta (N + alpha)^power
