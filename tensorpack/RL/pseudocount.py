@@ -3,7 +3,7 @@
 # File: pseudocount.py
 # Author: Music Li <yuezhanl@andrew.cmu.edu>
 from __future__ import division
-from cts_models import ConvolutionalMarginalDensityModel
+from cts_models import ConvolutionalMarginalDensityModel, ConvolutionalDensityModel, L_shaped_context
 import cv2
 import numpy as np
 FRSIZE = 42
@@ -17,8 +17,8 @@ class PC():
         self.flat_pixel_counter = np.zeros((FRSIZE*FRSIZE, MAX_DOWNSAMPLED_VAL+1)) # Counter for each (pos1, pos2, val), used for joint method
         self.total_num_states = 0  # total number of seen states
         if self.method == 'CTS':
-            self.CTS = ConvolutionalMarginalDensityModel((FRSIZE, FRSIZE))
-            #self.CTS = ConvolutionalDensityModel((FRSIZE, FRSIZE))
+            #self.CTS = ConvolutionalMarginalDensityModel((FRSIZE, FRSIZE))
+            self.CTS = ConvolutionalDensityModel((FRSIZE, FRSIZE), L_shaped_context)
             #self.CTS = LocationDependentDensityModel((FRSIZE, FRSIZE))
 
     def pc_reward(self, state):
@@ -67,7 +67,6 @@ class PC():
             log_pp = self.CTS.query(state)
             n = self.p_pp_to_count(log_p, log_pp)
             pc_reward = self.count2reward(n)
-            print pc_reward
             return pc_reward
 
     #
