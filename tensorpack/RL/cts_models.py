@@ -76,7 +76,6 @@ import model
 # FRAME_SHAPE = next(freeway_generator(0, 1)).shape
 # print ('Frame shape is {}'.format(FRAME_SHAPE))
 
-
 class ConvolutionalMarginalDensityModel(object):
     """A density model for Freeway frames."""
 
@@ -91,16 +90,25 @@ class ConvolutionalMarginalDensityModel(object):
 
     def update(self, frame):
         assert (frame.shape == self.frame_shape)
-
         total_log_probability = 0.0
         # We simply apply the CTS update to each pixel.
         for y in range(frame.shape[0]):
             for x in range(frame.shape[1]):
                 # Convert all 3 channels to an atomic colour.
-                print colour
-                exit()
                 colour = frame[y, x]
                 total_log_probability += self.convolutional_model.update(context=[], symbol=colour)
+
+        return total_log_probability
+
+    def query(self, frame):
+        assert (frame.shape == self.frame_shape)
+        total_log_probability = 0.0
+        # We simply apply the CTS update to each pixel.
+        for y in range(frame.shape[0]):
+            for x in range(frame.shape[1]):
+                # Convert all 3 channels to an atomic colour.
+                colour = frame[y, x]
+                total_log_probability += self.convolutional_model.log_prob(context=[], symbol=colour)
 
         return total_log_probability
 

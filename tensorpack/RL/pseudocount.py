@@ -63,15 +63,27 @@ class PC():
             return pc_reward
         if self.method == 'CTS':
             # Model described in the paper "Unifying Count-Based Exploration and Intrinsic Motivation"
-            log_prob = self.CTS.update(state)
+            log_p = self.CTS.update(state)
+            log_pp = self.CTS.query(state)
+            n = self.p_pp_to_count(log_p, log_pp)
+            pc_reward = self.count2reward(n)
+            print pc_reward
+            return pc_reward
 
     #
-    def p_pp_to_count(self, p, pp):
+    def p_pp_to_count(self, log_p, log_pp):
         """
         :param p: density estimation p. p = p(x;x_{<t})
         :param pp: recording probability. p' = p(x;x_{<t}x)
-        :return: N = p(1-pp)/(pp-p) ~= p/(pp-p) = 1/((pp/p)-1) = 1/(pp_over_p - 1)
+        :return: N = p(1-pp)/(pp-p) = (1-pp)/(pp/p-1) ~= 1/(pp/p-1)
+        pp/p = e^(log_pp) / e^(log_p) = e ^ (log_pp - log_p)
         """
+        assert log_pp >= log_p
+        pp = np.exp(log_pp)
+        assert pp <= 1
+        pp_over_p = np.exp(log_pp - log_p)
+        N = (1.0-pp) / (pp_over_p - 1)
+        return N
 
 
     def count2reward(self, count, beta=0.05, alpha=0.01, power=-0.5):
