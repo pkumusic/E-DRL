@@ -6,7 +6,16 @@ from __future__ import (absolute_import, division, print_function,
 import gym
 from gym import Env, spaces
 from gym.envs.registration import register
+import numpy as np
 
+def categorical_sample(prob_n, np_random):
+    """
+    Sample from categorical distribution
+    Each row specifies class probabilities
+    """
+    prob_n = np.asarray(prob_n)
+    csprob_n = np.cumsum(prob_n)
+    return (csprob_n > np_random.rand()).argmax()
 
 class QueueEnv(Env):
     """Implement the Queue environment from problem 3.
@@ -43,6 +52,19 @@ class QueueEnv(Env):
         self.p2 = p2
         self.p3 = p3
         self.s = (1, 0, 0, 0)
+        self._seed()
+        self._reset()
+        # define P here P[s][a] = [(prob, nextstate, reward, is_terminal)...]
+        self.P = {}
+        for pointer in xrange(1,4):
+            for num1 in xrange(6):
+                for num2 in xrange(6):
+                    for num3 in xrange(6):
+                        state = (pointer, num1, num2, num3)
+                        self.P[state] = {}
+                        for a in xrange(4):
+                            self.P[state][a] = self.query_model(state, a)
+
 
     def _reset(self):
         """Reset the environment.
@@ -75,25 +97,47 @@ class QueueEnv(Env):
           state. debug_info is a dictionary. You can fill debug_info
           with any additional information you deem useful.
         """
-        (cur, num1, num2, num3) = self.s
-        reward = 0
-        if action == self.SWITCH_TO_1:
-            cur = 1
-        elif action == self.SWITCH_TO_2:
-            cur = 2
-        elif action == self.SWITCH_TO_3:
-            cur = 3
-        elif action == self.SERVICE_QUEUE:
-            if self.s[cur] > 0:
-                reward = 1
+        # Action
+        # (cur, num1, num2, num3) = self.s
+        # reward = 0
+        # if action == self.SWITCH_TO_1:
+        #     cur = 1
+        # elif action == self.SWITCH_TO_2:
+        #     cur = 2
+        # elif action == self.SWITCH_TO_3:
+        #     cur = 3
+        # elif action == self.SERVICE_QUEUE:
+        #     if self.s[cur] > 0:
+        #         reward = 1
+        #         if cur == 1:
+        #             num1 -= 1
+        #         if cur == 2:
+        #             num2 -= 1
+        #         if cur == 3:
+        #             num3 -= 1
+        # # After action.
+        # add1 = np.random.binomial(1, self.p1)
+        # add2 = np.random.binomial(1, self.p2)
+        # add3 = np.random.binomial(1, self.p3)
+        # if add1 and num1 < 5:
+        #     num1 += 1
+        # if add2 and num2 < 5:
+        #     num2 += 1
+        # if add3 and num3 < 5:
+        #     num3 += 1
+        # self.s = (cur, num1, num2, num3)
+        #return self.s, reward, False, None
+        transitions = self.P[self.s][action]
+        i = categorical_sample([t[0] for t in transitions], self.np_random)
+        p, s, r, d= transitions[i]
+        self.s = s
+        return (s, r, False, d)
 
 
-            pass
-
-        return None, None, None, None
 
     def _render(self, mode='human', close=False):
-        pass
+        print(self.s)
+
 
     def _seed(self, seed=None):
         """Set the random seed.
@@ -103,7 +147,9 @@ class QueueEnv(Env):
         seed: int, None
           Random seed used by numpy.random and random.
         """
-        pass
+        self.np_random = np.random.RandomState()
+        self.np_random.seed(seed)
+        return seed
 
     def query_model(self, state, action):
         """Return the possible transition outcomes for a state-action pair.
@@ -124,7 +170,37 @@ class QueueEnv(Env):
         [(prob, nextstate, reward, is_terminal), ...]
           List of possible outcomes
         """
-        return None
+        (cur, num1, num2, num3) = state
+        reward = 0
+        if action == QueueEnv.SWITCH_TO_1:
+            cur = 1
+        if action == QueueEnv.SWITCH_TO_2:
+            cur = 2
+        if action == QueueEnv.SWITCH_TO_3:
+            cur = 3
+        if action == QueueEnv.SERVICE_QUEUE:
+            if state[cur] > 0:
+                reward = 1
+                if cur == 1:
+                    num1 -= 1
+                if cur == 2:
+                    num2 -= 1
+                if cur == 3:
+                    num3 -= 1
+        ans = []
+        for p1, add1 in ((self.p1, 1), (1-self.p1, 0)):
+            for p2, add2 in ((self.p2, 1), (1-self.p2, 0)):
+                for p3, add3 in ((self.p3, 1), (1 - self.p3, 0)):
+                    p = p1 * p2 * p3
+                    new_num1, new_num2, new_num3 = num1, num2, num3
+                    if num1 < 5 and add1:
+                        new_num1 = num1 + 1
+                    if num2 < 5 and add2:
+                        new_num2 = num2 + 1
+                    if num3 < 5 and add3:
+                        new_num3 = num3 + 1
+                    ans.append((p, (cur, new_num1, new_num2, new_num3), reward, False))
+        return ans
 
     def get_action_name(self, action):
         if action == QueueEnv.SERVICE_QUEUE:
