@@ -1,6 +1,8 @@
-Implementing DQN, DDQN, Dueling DQN and DDDQN with tensorpack.
+Implemented DQN, DDQN, Dueling DQN and DDDQN with tensorpack.
 
-Implementing Objecti-Sensitive DQNs (O-DQNs).
+Implemented Objecti-Sensitive DQNs (O-DQNs).
+
+Implemented CTS models and count-based exploration in Unifying Count-Based Exploration and Intrinsic Motivation.
 
 # Different methods to incorporate objects
 ## Combine/Separate
