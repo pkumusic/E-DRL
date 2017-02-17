@@ -17,9 +17,10 @@ class PC():
         self.flat_pixel_counter = np.zeros((FRSIZE*FRSIZE, MAX_DOWNSAMPLED_VAL+1)) # Counter for each (pos1, pos2, val), used for joint method
         self.total_num_states = 0  # total number of seen states
         if self.method == 'CTS':
-            #self.CTS = ConvolutionalMarginalDensityModel((FRSIZE, FRSIZE))            # 100 iter/s for memory filling
+            self.CTS = ConvolutionalMarginalDensityModel((FRSIZE, FRSIZE))            # 100 iter/s for memory filling
             #self.CTS = ConvolutionalDensityModel((FRSIZE, FRSIZE), L_shaped_context) # 12 iter/s for memory filling
-            self.CTS = LocationDependentDensityModel((FRSIZE, FRSIZE), L_shaped_context) # 12 iter/s
+            #self.CTS = LocationDependentDensityModel((FRSIZE, FRSIZE), L_shaped_context) # 12 iter/s
+        self.n = 0
 
     def pc_reward(self, state):
         """
@@ -39,6 +40,7 @@ class PC():
         return state
 
     def add(self, state):
+        self.n += 1
         if self.method == 'joint':
             # Model each pixel as independent pixels.
             # p = (c1/n) * (c2/n) * ... * (cn/n)
@@ -67,6 +69,12 @@ class PC():
             log_pp = self.CTS.query(state)
             n = self.p_pp_to_count(log_p, log_pp)
             pc_reward = self.count2reward(n)
+            ## Following codes are used for generating images during training for debug
+            # if self.n == 200:
+            #     import matplotlib.pyplot as plt
+            #     img = self.CTS.sample()
+            #     plt.imshow(img)
+            #     plt.show()
             return pc_reward
 
     #
