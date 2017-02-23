@@ -10,6 +10,12 @@ Exploration Strategies for Deep Reinforcement Learning
 
 ## Plans
 
+Some ideas:
+1. Combining better density models for count-based approach. (e.g., PixelCNN)
+2. Using auxiliary tasks for exploration.
+3. Using Thompson sampling 
+4. Design network for exploration
+
 We plan to explore the exploration strategies for DRL to overcome sparse reward games such as MONTEZUMA's REVENGE and PITFALL.
 PITFALL is actually unsolved and all current models resulting in pessimistic behaviors (e.g., jumping around the starting point)
 
