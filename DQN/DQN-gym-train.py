@@ -196,6 +196,9 @@ def get_config():
     logger.set_logger_dir(LOG_DIR)
     M = Model()
     #TODO: For count-based model, remove epsilon greedy exploration
+    epsilon_greedy = True
+    if PC_METHOD:
+        epsilon_greedy = False
     dataset_train = ExpReplay(
             predictor_io_names=(['state'], ['Qvalue']),
             player=get_player(train=True),
@@ -207,7 +210,8 @@ def get_config():
             exploration_epoch_anneal=EXPLORATION_EPOCH_ANNEAL,
             update_frequency=4,
             reward_clip=(-1, 1),
-            history_len=FRAME_HISTORY)
+            history_len=FRAME_HISTORY,
+            epsilon_greedy=epsilon_greedy)
 
     lr = tf.Variable(0.001, trainable=False, name='learning_rate')
     tf.scalar_summary('learning_rate', lr)

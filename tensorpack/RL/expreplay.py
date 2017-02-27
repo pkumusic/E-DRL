@@ -39,7 +39,8 @@ class ExpReplay(DataFlow, Callback):
             exploration_epoch_anneal=0.002,
             reward_clip=None,
             update_frequency=1,
-            history_len=1
+            history_len=1,
+            epsilon_greedy=True,
             ):
         """
         :param predictor: a callabale running the up-to-date network.
@@ -48,6 +49,7 @@ class ExpReplay(DataFlow, Callback):
         :param history_len: length of history frames to concat. zero-filled initial frames
         :param update_frequency: number of new transitions to add to memory
             after sampling a batch of transitions for training
+        :param exploration_method: None indicates epsilon greedy.
         """
         init_memory_size = int(init_memory_size)
 
@@ -60,11 +62,15 @@ class ExpReplay(DataFlow, Callback):
         self.rng = get_rng(self)
         self._init_memory_flag = threading.Event()  # tell if memory has been initialized
         self._predictor_io_names = predictor_io_names
+        self.epsilon_greedy = epsilon_greedy
+        if not epsilon_greedy:
+            print "Turn off epsilon greedy in expreplay"
 
     def _init_memory(self):
         logger.info("Populating replay memory...")
 
         # fill some for the history
+        
         old_exploration = self.exploration
         self.exploration = 1
         for k in range(self.history_len):
@@ -84,7 +90,8 @@ class ExpReplay(DataFlow, Callback):
             #self.mem.append(deepcopy(self.mem[0]))
             #return
         old_s = self.player.current_state()
-        if self.rng.rand() <= self.exploration:
+
+        if self.rng.rand() <= self.exploration and self.epsilon_greedy:
             act = self.rng.choice(range(self.num_actions))
         else:
             # build a history state
