@@ -110,13 +110,16 @@ class Model(ModelDesc):
     def _get_NN_prediction(self, image):
         #image = image / 255.0
         with argscope(Conv2D, nl=tf.nn.relu):
-            l = Conv2D('conv0', image, out_channel=32, kernel_shape=5)
-            l = MaxPooling('pool0', l, 2)
-            l = Conv2D('conv1', l, out_channel=32, kernel_shape=5)
-            l = MaxPooling('pool1', l, 2)
-            l = Conv2D('conv2', l, out_channel=64, kernel_shape=4)
-            l = MaxPooling('pool2', l, 2)
-            l = Conv2D('conv3', l, out_channel=64, kernel_shape=3)
+            # l = Conv2D('conv0', image, out_channel=32, kernel_shape=5)
+            # l = MaxPooling('pool0', l, 2)
+            # l = Conv2D('conv1', l, out_channel=32, kernel_shape=5)
+            # l = MaxPooling('pool1', l, 2)
+            # l = Conv2D('conv2', l, out_channel=64, kernel_shape=4)
+            # l = MaxPooling('pool2', l, 2)
+            # l = Conv2D('conv3', l, out_channel=64, kernel_shape=3)
+            l = Conv2D('conv0', image, out_channel=32, kernel_shape=8, stride=4)
+            l = Conv2D('conv1', l, out_channel=64, kernel_shape=4, stride=2)
+            l = Conv2D('conv2', l, out_channel=64, kernel_shape=3)
 
         l = FullyConnected('fc0', l, 512, nl=tf.identity)
         l = PReLU('prelu', l)
