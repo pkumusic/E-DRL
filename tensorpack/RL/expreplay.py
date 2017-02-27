@@ -63,14 +63,14 @@ class ExpReplay(DataFlow, Callback):
         self._init_memory_flag = threading.Event()  # tell if memory has been initialized
         self._predictor_io_names = predictor_io_names
         self.epsilon_greedy = epsilon_greedy
-        if not epsilon_greedy:
+        if not self.epsilon_greedy:
             print "Turn off epsilon greedy in expreplay"
 
     def _init_memory(self):
         logger.info("Populating replay memory...")
 
         # fill some for the history
-        
+
         old_exploration = self.exploration
         self.exploration = 1
         for k in range(self.history_len):
