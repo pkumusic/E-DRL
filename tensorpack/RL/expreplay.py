@@ -91,7 +91,7 @@ class ExpReplay(DataFlow, Callback):
             #return
         old_s = self.player.current_state()
 
-        if self.rng.rand() <= self.exploration:# and self.epsilon_greedy:
+        if (self.rng.rand() <= self.exploration) and (self.epsilon_greedy==True):
             act = self.rng.choice(range(self.num_actions))
         else:
             # build a history state
