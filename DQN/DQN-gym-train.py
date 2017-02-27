@@ -72,7 +72,7 @@ def get_player(viz=False, train=False, dumpdir=None):
     def grey(img):
         img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
         img = resize(img)
-        img = img[:, :, np.newaxis] / 255.0
+        img = img[:, :, np.newaxis]
         return img
     pl = MapPlayerState(pl, grey)
     #show_images(pl.current_state())
@@ -99,7 +99,7 @@ class Model(ModelDesc):
 
     def _get_DQN_prediction(self, image):
         """ image: [0,255]"""
-        #image = image / 255.0
+        image = image / 255.0
         with argscope(Conv2D, nl=PReLU.f, use_bias=True):
             l = Conv2D('conv0', image, out_channel=32, kernel_shape=5)
             l = MaxPooling('pool0', l, 2)
@@ -108,12 +108,12 @@ class Model(ModelDesc):
             l = Conv2D('conv2', l, out_channel=64, kernel_shape=4)
             l = MaxPooling('pool2', l, 2)
             l = Conv2D('conv3', l, out_channel=64, kernel_shape=3)
+            # the original arch in Nature DQN
+            # l = Conv2D('conv0', image, out_channel=32, kernel_shape=8, stride=4)
+            # l = Conv2D('conv1', l, out_channel=64, kernel_shape=4, stride=2)
+            # l = Conv2D('conv2', l, out_channel=64, kernel_shape=3)
 
             l = FullyConnected('fc0', l, 512, nl=lambda x, name: LeakyReLU.f(x, 0.01, name))
-            # the original arch
-            #.Conv2D('conv0', image, out_channel=32, kernel_shape=8, stride=4)
-            #.Conv2D('conv1', out_channel=64, kernel_shape=4, stride=2)
-            #.Conv2D('conv2', out_channel=64, kernel_shape=3)
 
         if not DUELING:
             Q = FullyConnected('fct', l, NUM_ACTIONS, nl=tf.identity)
@@ -123,7 +123,7 @@ class Model(ModelDesc):
             Q = tf.add(As, V - tf.reduce_mean(As, 1, keep_dims=True))
         return tf.identity(Q, name='Qvalue')
 
-
+    #TODO: Mix with Monte-Carlo Reward
     def _build_graph(self, inputs):
         state, action, reward, next_state, isOver = inputs
         self.predict_value = self._get_DQN_prediction(state)
@@ -195,7 +195,7 @@ def get_config():
     #logger.set_logger_dir(os.path.join('train_log', LOG_DIR))
     logger.set_logger_dir(LOG_DIR)
     M = Model()
-
+    #TODO: For count-based model, remove epsilon greedy exploration
     dataset_train = ExpReplay(
             predictor_io_names=(['state'], ['Qvalue']),
             player=get_player(train=True),
