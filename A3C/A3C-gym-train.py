@@ -74,9 +74,13 @@ EVALUATE_PROC = min(multiprocessing.cpu_count() // 2, 20)
 
 NUM_ACTIONS = None
 ENV_NAME = None
+PC_METHOD = None # Pseudo count method
 
 def get_player(viz=False, train=False, dumpdir=None):
-    pl = GymEnv(ENV_NAME, dumpdir=dumpdir)
+    if PC_METHOD and train:
+        pl = GymEnv(ENV_NAME, dumpdir=dumpdir, pc_method=PC_METHOD)
+    else:
+        pl = GymEnv(ENV_NAME, dumpdir=dumpdir)
     def resize(img):
         return cv2.resize(img, IMAGE_SIZE)
     def grey(img):
@@ -135,7 +139,7 @@ class Model(ModelDesc):
 
         expf = tf.get_variable('explore_factor', shape=[],
                 initializer=tf.constant_initializer(1), trainable=False)
-        logitsT = tf.nn.softmax(policy * expf, name='logitsT')
+        logitsT = tf.nn.softmax(policy * expf, name='logitsT') #The larger expf, the less exploration
         is_training = get_current_tower_context().is_training
         if not is_training:
             return
@@ -261,12 +265,19 @@ if __name__ == '__main__':
     parser.add_argument('--task', help='task to perform',
             choices=['play', 'eval', 'train'], default='train')
     parser.add_argument('--logdir', help='output directory', required=True)
+    parser.add_argument('--pc', help='pseudo count method', choices=[None, 'joint', 'CTS'], default=None)
     args = parser.parse_args()
 
     LOG_DIR = args.logdir
     ENV_NAME = args.env
     assert ENV_NAME
     p = get_player(); del p    # set NUM_ACTIONS
+
+    PC_METHOD = args.pc
+    if PC_METHOD:
+        logger.info("Using Pseudo Count method: " + PC_METHOD)
+    else:
+        logger.info("Don't use Pseudo Count method")
 
     if args.gpu:
         os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu

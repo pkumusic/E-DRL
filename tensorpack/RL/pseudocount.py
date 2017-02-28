@@ -8,7 +8,7 @@ import cv2
 import numpy as np
 FRSIZE = 42
 MAXVAL = 255                # original max value for a state
-MAX_DOWNSAMPLED_VAL = 8   # downsampled max value for a state. 8 in the paper.
+MAX_DOWNSAMPLED_VAL = 128   # downsampled max value for a state. 8 in the paper.
 class PC():
     # class for process with pseudo count rewards
     def __init__(self, method):
