@@ -198,6 +198,7 @@ def get_config():
     #TODO: For count-based model, remove epsilon greedy exploration
     epsilon_greedy = True
     if PC_METHOD:
+        global INIT_EXPLORATION, END_EXPLORATION, EXPLORATION_EPOCH_ANNEAL
         INIT_EXPLORATION = 1
         END_EXPLORATION  = 0.01
         EXPLORATION_EPOCH_ANNEAL = 0.33
