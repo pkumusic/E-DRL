@@ -34,3 +34,7 @@ Some ideas:
 3. Based on count-based methods, what we actually need is a density estimator for an unseen image. Could we use Variational Autoencoder, Generative Adversarial Nets, Bolzman Machines or any other approaches to build the estimator?
 
 4. Is it possible to directly embed the exploration strategy into DQN training?
+
+#Installation notes:
+
+1. Tensorflow version is 0.11.0rc0, https://www.tensorflow.org/versions/r0.11/get_started/os_setup
