@@ -196,7 +196,6 @@ def get_config():
     logger.set_logger_dir(LOG_DIR)
     M = Model()
     #TODO: For count-based model, remove epsilon greedy exploration
-    epsilon_greedy = True
     if PC_METHOD:
         global INIT_EXPLORATION, END_EXPLORATION, EXPLORATION_EPOCH_ANNEAL
         INIT_EXPLORATION = 1
