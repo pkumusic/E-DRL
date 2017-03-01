@@ -1,0 +1,39 @@
+#!/bin/bash
+#SBATCH -N 1
+#SBATCH -p GPU-shared
+#SBATCH --ntasks-per-node 2
+#SBATCH --gres=gpu:k80:1
+#SBATCH -t 10:00:00
+
+# this will request 2 CPU cores, an one k80 on a shared GPU node
+# if the job is still running after 10 hours, it will be automatically killed.
+
+set -x  # echo commands to stdout
+set -u  # throw an error if unset variable referenced
+set -e  # exit on error
+
+# helper vars
+PYLON1=/pylon1/$(id -gn)/$USER
+PYLON2=/pylon2/$(id -gn)/$USER
+
+module load cuda/8.0
+
+# select which python module you want 2/3
+module load python3
+# module load python2
+
+# switch to pylon1
+# NOTE: Files in this directory are deleted when 30 days old
+pushd $PYLON1
+
+# turn on the virtualenv
+source $PYLON2/my-virtualenv/bin/activate
+
+# run the experiment script
+python $PYLON2/deeprl_hw2/dqn_atari.py --env Breakout-v0
+
+# turn off the virtualenv
+deactivate
+
+# go back to the original dir
+popd
