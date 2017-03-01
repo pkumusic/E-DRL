@@ -14,6 +14,7 @@ from keras.optimizers import Adam
 import deeprl_hw2 as tfrl
 from deeprl_hw2.dqn import DQNAgent
 from deeprl_hw2.objectives import mean_huber_loss
+from deeprl_hw2.constants import *
 
 
 def create_model(window, input_shape, num_actions,
@@ -86,16 +87,17 @@ def get_output_folder(parent_dir, env_name):
 
 
 def main():  # noqa: D103
-    parser = argparse.ArgumentParser(description='Run DQN on Atari Breakout')
-    parser.add_argument('--env', default='Breakout-v0', help='Atari env name')
+    parser = argparse.ArgumentParser(description='Run DQN on Atari Game')
+    parser.add_argument('--env', default='SpaceInvaders-v0', help='Atari env name')
     parser.add_argument(
         '-o', '--output', default='atari-v0', help='Directory to save data to')
     parser.add_argument('--seed', default=0, type=int, help='Random seed')
 
     args = parser.parse_args()
-    args.input_shape = tuple(args.input_shape)
+    #args.input_shape = tuple(args.input_shape)
 
     args.output = get_output_folder(args.output, args.env)
+    print args.output
 
     # here is where you should start up a session,
     # create your DQN agent, create your model, etc.
