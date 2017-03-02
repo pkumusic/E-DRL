@@ -77,6 +77,8 @@ ENV_NAME = None
 PC_METHOD = None # Pseudo count method
 
 def get_player(viz=False, train=False, dumpdir=None):
+    #TODO: idea1 use CNN as features of our density model
+    #TODO: idea2 time increasing with psuedo reward
     if PC_METHOD and train:
         pl = GymEnv(ENV_NAME, dumpdir=dumpdir, pc_method=PC_METHOD)
     else:
