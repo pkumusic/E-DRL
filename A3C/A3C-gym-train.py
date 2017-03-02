@@ -75,6 +75,7 @@ EVALUATE_PROC = min(multiprocessing.cpu_count() // 2, 20)
 NUM_ACTIONS = None
 ENV_NAME = None
 PC_METHOD = None # Pseudo count method
+NETWORK_ARCH = None # Network Architecture
 
 def get_player(viz=False, train=False, dumpdir=None):
     #TODO: idea1 use CNN as features of our density model
@@ -116,16 +117,18 @@ class Model(ModelDesc):
     def _get_NN_prediction(self, image):
         image = image / 255.0
         with argscope(Conv2D, nl=tf.nn.relu):
-            # l = Conv2D('conv0', image, out_channel=32, kernel_shape=5)
-            # l = MaxPooling('pool0', l, 2)
-            # l = Conv2D('conv1', l, out_channel=32, kernel_shape=5)
-            # l = MaxPooling('pool1', l, 2)
-            # l = Conv2D('conv2', l, out_channel=64, kernel_shape=4)
-            # l = MaxPooling('pool2', l, 2)
-            # l = Conv2D('conv3', l, out_channel=64, kernel_shape=3)
-            l = Conv2D('conv0', image, out_channel=32, kernel_shape=8, stride=4)
-            l = Conv2D('conv1', l, out_channel=64, kernel_shape=4, stride=2)
-            l = Conv2D('conv2', l, out_channel=64, kernel_shape=3)
+            if NETWORK_ARCH == '1':
+                l = Conv2D('conv0', image, out_channel=32, kernel_shape=5)
+                l = MaxPooling('pool0', l, 2)
+                l = Conv2D('conv1', l, out_channel=32, kernel_shape=5)
+                l = MaxPooling('pool1', l, 2)
+                l = Conv2D('conv2', l, out_channel=64, kernel_shape=4)
+                l = MaxPooling('pool2', l, 2)
+                l = Conv2D('conv3', l, out_channel=64, kernel_shape=3)
+            elif NETWORK_ARCH == 'nature':
+                l = Conv2D('conv0', image, out_channel=32, kernel_shape=8, stride=4)
+                l = Conv2D('conv1', l, out_channel=64, kernel_shape=4, stride=2)
+                l = Conv2D('conv2', l, out_channel=64, kernel_shape=3)
         # conv2 output: [None, 11, 11, 64]
         l = FullyConnected('fc0', l, 512, nl=tf.identity)
         l = PReLU('prelu', l)
@@ -268,6 +271,7 @@ if __name__ == '__main__':
             choices=['play', 'eval', 'train'], default='train')
     parser.add_argument('--logdir', help='output directory', required=True)
     parser.add_argument('--pc', help='pseudo count method', choices=[None, 'joint', 'CTS'], default=None)
+    parser.add_argument('--network', help='network architecture', choices=['nature','1'], default='nature')
     args = parser.parse_args()
 
     LOG_DIR = args.logdir
@@ -280,6 +284,8 @@ if __name__ == '__main__':
         logger.info("Using Pseudo Count method: " + PC_METHOD)
     else:
         logger.info("Don't use Pseudo Count method")
+    NETWORK_ARCH = args.network
+    logger.info("Using network architecutre: " + NETWORK_ARCH)
 
     if args.gpu:
         os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
