@@ -7,7 +7,11 @@ Some parameters to tune with, here is the default settings:
 * MAX_DOWNSAMPLED_VAL. rescaled value for density model. default 128.
 * beta * ((count+alpha) ** power). beta=0.05, alpha=0.01, power=-0.5. This results in 0.5 score for any image with 0 count.
 * The rewards are clipped between (-1,1)
+* Network Architecture: default is same as in Nature DQN. 1 is the CNN with max pooling. 
 
+Training speed:
+* baseline A3C: 9.6 iter/s 
+* joint, 42, 128: 9.8 iter/s
 
 Example of running script
 ~~~
