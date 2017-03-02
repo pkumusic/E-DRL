@@ -287,6 +287,8 @@ if __name__ == '__main__':
     NETWORK_ARCH = args.network
     logger.info("Using network architecutre: " + NETWORK_ARCH)
 
+    input("Please make sure the parameters are right")
+
     if args.gpu:
         os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
     if args.task != 'train':
