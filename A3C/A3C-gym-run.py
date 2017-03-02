@@ -15,7 +15,7 @@ from tensorpack.RL import *
 
 IMAGE_SIZE = (84, 84)
 FRAME_HISTORY = 4
-CHANNEL = FRAME_HISTORY * 3
+CHANNEL = FRAME_HISTORY# * 3
 IMAGE_SHAPE3 = IMAGE_SIZE + (CHANNEL,)
 
 NUM_ACTIONS = None
@@ -25,7 +25,15 @@ from common import play_one_episode
 
 def get_player(dumpdir=None):
     pl = GymEnv(ENV_NAME, dumpdir=dumpdir, auto_restart=False)
-    pl = MapPlayerState(pl, lambda img: cv2.resize(img, IMAGE_SIZE[::-1]))
+    def resize(img):
+        return cv2.resize(img, IMAGE_SIZE)
+    def grey(img):
+        img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        img = resize(img)
+        img = img[:, :, np.newaxis]
+        return img
+    pl = MapPlayerState(pl, grey)
+
 
     global NUM_ACTIONS
     NUM_ACTIONS = pl.get_action_space().num_actions()
@@ -43,13 +51,16 @@ class Model(ModelDesc):
     def _get_NN_prediction(self, image):
         image = image / 255.0
         with argscope(Conv2D, nl=tf.nn.relu):
-            l = Conv2D('conv0', image, out_channel=32, kernel_shape=5)
-            l = MaxPooling('pool0', l, 2)
-            l = Conv2D('conv1', l, out_channel=32, kernel_shape=5)
-            l = MaxPooling('pool1', l, 2)
-            l = Conv2D('conv2', l, out_channel=64, kernel_shape=4)
-            l = MaxPooling('pool2', l, 2)
-            l = Conv2D('conv3', l, out_channel=64, kernel_shape=3)
+            # l = Conv2D('conv0', image, out_channel=32, kernel_shape=5)
+            # l = MaxPooling('pool0', l, 2)
+            # l = Conv2D('conv1', l, out_channel=32, kernel_shape=5)
+            # l = MaxPooling('pool1', l, 2)
+            # l = Conv2D('conv2', l, out_channel=64, kernel_shape=4)
+            # l = MaxPooling('pool2', l, 2)
+            # l = Conv2D('conv3', l, out_channel=64, kernel_shape=3)
+            l = Conv2D('conv0', image, out_channel=32, kernel_shape=8, stride=4)
+            l = Conv2D('conv1', l, out_channel=64, kernel_shape=4, stride=2)
+            l = Conv2D('conv2', l, out_channel=64, kernel_shape=3)
 
         l = FullyConnected('fc0', l, 512, nl=tf.identity)
         l = PReLU('prelu', l)
@@ -67,7 +78,7 @@ def run_submission(cfg, output, nr):
     for k in range(nr):
         if k != 0:
             player.restart_episode()
-        score = play_one_episode(player, predfunc, verbose=True)
+        score = play_one_episode(player, predfunc, verbose=False)
         print("Total:", score)
 
 def do_submit(output, api_key):
