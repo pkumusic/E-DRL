@@ -79,6 +79,7 @@ NETWORK_ARCH = None # Network Architecture
 
 def get_player(viz=False, train=False, dumpdir=None):
     #TODO: idea1 use CNN as features of our density model
+    #TODO: idea1.5 clear counter in some intermeidate points
     #TODO: idea2 time increasing with psuedo reward
     if PC_METHOD and train:
         pl = GymEnv(ENV_NAME, dumpdir=dumpdir, pc_method=PC_METHOD)
@@ -273,6 +274,7 @@ if __name__ == '__main__':
     parser.add_argument('--logdir', help='output directory', required=True)
     parser.add_argument('--pc', help='pseudo count method', choices=[None, 'joint', 'CTS'], default=None)
     parser.add_argument('--network', help='network architecture', choices=['nature','1'], default='nature')
+
     args = parser.parse_args()
 
     LOG_DIR = args.logdir
