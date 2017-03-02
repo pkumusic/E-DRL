@@ -11,7 +11,7 @@ Some parameters to tune with, here is the default settings:
 
 Training speed:
 * baseline A3C: 9.6 iter/s 
-* joint, 42, 128: 9.8 iter/s
+* joint, 42, 128: 9.8 iter/s (Almost no overhead)
 
 Example of running script
 ~~~

@@ -125,11 +125,12 @@ class Model(ModelDesc):
                 l = Conv2D('conv2', l, out_channel=64, kernel_shape=4)
                 l = MaxPooling('pool2', l, 2)
                 l = Conv2D('conv3', l, out_channel=64, kernel_shape=3)
+            # conv3 output: [None, 10, 10, 64]
             elif NETWORK_ARCH == 'nature':
                 l = Conv2D('conv0', image, out_channel=32, kernel_shape=8, stride=4)
                 l = Conv2D('conv1', l, out_channel=64, kernel_shape=4, stride=2)
                 l = Conv2D('conv2', l, out_channel=64, kernel_shape=3)
-        # conv2 output: [None, 11, 11, 64]
+            # conv2 output: [None, 11, 11, 64]
         l = FullyConnected('fc0', l, 512, nl=tf.identity)
         l = PReLU('prelu', l)
         policy = FullyConnected('fc-pi', l, out_dim=NUM_ACTIONS, nl=tf.identity)
