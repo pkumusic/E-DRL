@@ -141,7 +141,7 @@ class Model(ModelDesc):
 
         expf = tf.get_variable('explore_factor', shape=[],
                 initializer=tf.constant_initializer(1), trainable=False)
-        #logitsT = tf.nn.softmax(policy * expf, name='logitsT') #The larger expf, the less exploration
+        logitsT = tf.nn.softmax(policy * expf, name='logitsT') #The larger expf, the less exploration
         is_training = get_current_tower_context().is_training
         if not is_training:
             return
@@ -244,8 +244,8 @@ def get_config():
             StatPrinter(), PeriodicCallback(ModelSaver(), 5),
             ScheduledHyperParamSetter('learning_rate', [(80, 0.0003), (120, 0.0001)]),
             ScheduledHyperParamSetter('entropy_beta', [(80, 0.005)]),
-            #ScheduledHyperParamSetter('explore_factor',
-                #[(80, 2), (100, 3), (120, 4), (140, 5)]),
+            ScheduledHyperParamSetter('explore_factor',
+                [(80, 2), (100, 3), (120, 4), (140, 5)]),
             HumanHyperParamSetter('learning_rate'),
             HumanHyperParamSetter('entropy_beta'),
             HumanHyperParamSetter('explore_factor'),
