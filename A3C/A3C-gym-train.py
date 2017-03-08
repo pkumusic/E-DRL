@@ -76,12 +76,14 @@ NUM_ACTIONS = None
 ENV_NAME = None
 PC_METHOD = None # Pseudo count method
 NETWORK_ARCH = None # Network Architecture
+FEATURE = None
 
 def get_player(viz=False, train=False, dumpdir=None):
     #TODO: idea1 use CNN as features of our density model
     #TODO: idea1.5 clear counter in some intermeidate points
-    #TODO: idea2 time increasing with psuedo reward
-    #TODO: Not decrease Explore Factor after several epochs. The exp results show not enough exploration afterwards. But the scores are remained greatly.
+    #TODO: idea2 time increasing with psuedo reward. IF the pseudo reward is less than a threshold (e.g.,0.01) for most of the states, increase the pseudo reward.
+    #TODO: (on EXP now)Not decrease Explore Factor after several epochs. The exp results show not enough exploration afterwards. But the scores are remained greatly.
+    #TODO: idea2.5: Intuition from people. Exploration and Exploitation modes. Remember the good rewards and turn into Exploitation modes, explore other possibilities.
     if PC_METHOD and train:
         pl = GymEnv(ENV_NAME, dumpdir=dumpdir, pc_method=PC_METHOD)
     else:
@@ -275,15 +277,18 @@ if __name__ == '__main__':
     parser.add_argument('--logdir', help='output directory', required=True)
     parser.add_argument('--pc', help='pseudo count method', choices=[None, 'joint', 'CTS'], default=None)
     parser.add_argument('--network', help='network architecture', choices=['nature','1'], default='nature')
-
+    parser.add_argument('--feature', help='Feature to use in the density model', choices=[None, 'fc0'], default=None)
     args = parser.parse_args()
 
     LOG_DIR = args.logdir
     ENV_NAME = args.env
     assert ENV_NAME
     p = get_player(); del p    # set NUM_ACTIONS
-
+    logger.info("Playing the game: " + ENV_NAME)
+    logger.info("The log directory: " + LOG_DIR)
     PC_METHOD = args.pc
+    FEATURE = args.feature
+    logger.info("Using feature " + str(FEATURE) + " for density model")
     if PC_METHOD:
         logger.info("Using Pseudo Count method: " + PC_METHOD)
     else:
