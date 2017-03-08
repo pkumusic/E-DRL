@@ -256,7 +256,7 @@ def get_config():
             HumanHyperParamSetter('entropy_beta'),
             HumanHyperParamSetter('explore_factor'),
             master,
-            PeriodicCallback(Evaluator(EVAL_EPISODE, ['state'], ['logits']), 2),
+            PeriodicCallback(Evaluator(EVAL_EPISODE, ['state'], ['logits']), 5),
         ]),
         extra_threads_procs=[master],
         session_config=get_default_sess_config(0.5),
