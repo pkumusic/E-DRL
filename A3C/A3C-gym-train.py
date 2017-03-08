@@ -81,6 +81,7 @@ def get_player(viz=False, train=False, dumpdir=None):
     #TODO: idea1 use CNN as features of our density model
     #TODO: idea1.5 clear counter in some intermeidate points
     #TODO: idea2 time increasing with psuedo reward
+    #TODO: Not decrease Explore Factor after several epochs. The exp results show not enough exploration afterwards. But the scores are remained greatly.
     if PC_METHOD and train:
         pl = GymEnv(ENV_NAME, dumpdir=dumpdir, pc_method=PC_METHOD)
     else:
