@@ -248,10 +248,10 @@ def get_config():
         optimizer=tf.train.AdamOptimizer(lr, epsilon=1e-3),
         callbacks=Callbacks([
             StatPrinter(), PeriodicCallback(ModelSaver(), 5),
-            ScheduledHyperParamSetter('learning_rate', [(80, 0.0003), (120, 0.0001)]),
+            #ScheduledHyperParamSetter('learning_rate', [(80, 0.0003), (120, 0.0001)]),
             ScheduledHyperParamSetter('entropy_beta', [(80, 0.005)]),
-            ScheduledHyperParamSetter('explore_factor',
-                [(80, 2), (100, 3), (120, 4), (140, 5)]),
+            #ScheduledHyperParamSetter('explore_factor',
+                #[(80, 2), (100, 3), (120, 4), (140, 5)]),
             HumanHyperParamSetter('learning_rate'),
             HumanHyperParamSetter('entropy_beta'),
             HumanHyperParamSetter('explore_factor'),
