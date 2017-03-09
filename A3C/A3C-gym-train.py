@@ -84,6 +84,7 @@ def get_player(viz=False, train=False, dumpdir=None):
     #TODO: idea2 time increasing with psuedo reward. IF the pseudo reward is less than a threshold (e.g.,0.01) for most of the states, increase the pseudo reward.
     #TODO: (on EXP now)Not decrease Explore Factor after several epochs. The exp results show not enough exploration afterwards. But the scores are remained greatly.
     #TODO: idea2.5: Intuition from people. Exploration and Exploitation modes. Remember the good rewards and turn into Exploitation modes, explore other possibilities.
+    #TODO: Evaluate with policy probability
     if PC_METHOD and train:
         pl = GymEnv(ENV_NAME, dumpdir=dumpdir, pc_method=PC_METHOD)
     else:
@@ -278,6 +279,7 @@ if __name__ == '__main__':
     parser.add_argument('--pc', help='pseudo count method', choices=[None, 'joint', 'CTS'], default=None)
     parser.add_argument('--network', help='network architecture', choices=['nature','1'], default='nature')
     parser.add_argument('--feature', help='Feature to use in the density model', choices=[None, 'fc0'], default=None)
+    parser.add_argument('--pc_factor', help='Pseudo count factor. PC_MULT,PC_THRE,PC_TIME', default=None)
     args = parser.parse_args()
 
     LOG_DIR = args.logdir
@@ -289,6 +291,7 @@ if __name__ == '__main__':
     PC_METHOD = args.pc
     FEATURE = args.feature
     logger.info("Using feature " + str(FEATURE) + " for density model")
+
     if PC_METHOD:
         logger.info("Using Pseudo Count method: " + PC_METHOD)
     else:
