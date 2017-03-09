@@ -88,7 +88,7 @@ class GymEnv(RLEnvironment):
                     self.multiplier *= self.pc_mult
                     self.pc_repeat_time = 0
                     logger.info('Multiplier for pc reward is getting bigger. Multiplier=' + str(self.multiplier))
-            sys.stderr.write(str(r)+'\n')
+            #sys.stderr.write(str(r)+'\n')
         self.rwd_counter.feed(r)
         if isOver:
             self.finish_episode()
