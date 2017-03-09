@@ -32,7 +32,7 @@ def play_one_episode(player, func, verbose=False, policy_dist=False):
                 act = spc.sample()
             else:
                 distrib = func([[s]])[0][0]
-                print distrib
+                print sum(distrib)
                 act = np.random.choice(len(distrib), p=distrib)
             if verbose:
                 print(act)
