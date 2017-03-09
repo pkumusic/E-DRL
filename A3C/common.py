@@ -17,15 +17,23 @@ from tensorpack.callbacks import *
 global get_player
 get_player = None
 
-def play_one_episode(player, func, verbose=False):
+def play_one_episode(player, func, verbose=False, policy_dist=False):
     def f(s):
         spc = player.get_action_space()
-        act = func([[s]])[0][0].argmax()
-        if random.random() < 0.05:
-            act = spc.sample()
-        if verbose:
-            print(act)
-        return act
+        if not policy_dist:
+            act = func([[s]])[0][0].argmax()
+            if random.random() < 0.05:
+                act = spc.sample()
+            if verbose:
+                print(act)
+            return act
+        else:
+            distrib = func([[s]])[0][0]
+            print distrib
+            act = np.random.choice(len(distrib), p=distrib)
+            if verbose:
+                print(act)
+            return act
     return np.mean(player.play_one_episode(f))
 
 def play_model(cfg):
@@ -35,12 +43,13 @@ def play_model(cfg):
         score = play_one_episode(player, predfunc)
         print("Total:", score)
 
-def eval_with_funcs(predict_funcs, nr_eval):
+def eval_with_funcs(predict_funcs, nr_eval, policy_dist=False):
     class Worker(StoppableThread):
         def __init__(self, func, queue):
             super(Worker, self).__init__()
             self._func = func
             self.q = queue
+            self.policy_dist = policy_dist
 
         def func(self, *args, **kwargs):
             if self.stopped():
@@ -51,7 +60,7 @@ def eval_with_funcs(predict_funcs, nr_eval):
             player = get_player(train=False)
             while not self.stopped():
                 try:
-                    score = play_one_episode(player, self.func)
+                    score = play_one_episode(player, self.func, policy_dist=self.policy_dist)
                     #print "Score, ", score
                 except RuntimeError:
                     return
@@ -88,10 +97,11 @@ def eval_model_multithread(cfg, nr_eval):
     logger.info("Average Score: {}; Max Score: {}".format(mean, max))
 
 class Evaluator(Callback):
-    def __init__(self, nr_eval, input_names, output_names):
+    def __init__(self, nr_eval, input_names, output_names, policy_dist=False):
         self.eval_episode = nr_eval
         self.input_names = input_names
         self.output_names = output_names
+        self.policy_dist = policy_dist
 
     def _setup_graph(self):
         NR_PROC = min(multiprocessing.cpu_count() // 2, 20)
@@ -100,7 +110,7 @@ class Evaluator(Callback):
 
     def _trigger_epoch(self):
         t = time.time()
-        mean, max = eval_with_funcs(self.pred_funcs, nr_eval=self.eval_episode)
+        mean, max = eval_with_funcs(self.pred_funcs, nr_eval=self.eval_episode, policy_dist=self.policy_dist)
         t = time.time() - t
         if t > 10 * 60:  # eval takes too long
             self.eval_episode = int(self.eval_episode * 0.94)

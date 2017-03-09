@@ -78,14 +78,15 @@ PC_METHOD = None # Pseudo count method
 NETWORK_ARCH = None # Network Architecture
 FEATURE = None
 PC_MULT,PC_THRE,PC_TIME = None, None, None
+POLICY_DIST = True # draw from policy distribution when testing, instead of epsilon greedy
 
 def get_player(viz=False, train=False, dumpdir=None):
     #TODO: idea1 use CNN as features of our density model
     #TODO: idea1.5 clear counter in some intermeidate points
-    #TODO: idea2 time increasing with psuedo reward. IF the pseudo reward is less than a threshold (e.g.,0.01) for most of the states, increase the pseudo reward.
+    #TODO: (on EXP now)idea2 time increasing with psuedo reward.  IF the pseudo reward is less than a threshold (e.g.,0.01) for most of the states, increase the pseudo reward.
     #TODO: (on EXP now)Not decrease Explore Factor after several epochs. The exp results show not enough exploration afterwards. But the scores are remained greatly.
     #TODO: idea2.5: Intuition from people. Exploration and Exploitation modes. Remember the good rewards and turn into Exploitation modes, explore other possibilities.
-    #TODO: Evaluate with policy probability
+    #TODO: (NEXT PLAN)Evaluate with policy probability
     if PC_METHOD and train:
         pl = GymEnv(ENV_NAME, dumpdir=dumpdir, pc_method=PC_METHOD, pc_mult=PC_MULT, pc_thre=PC_THRE, pc_time=PC_TIME)
     else:
@@ -260,7 +261,7 @@ def get_config():
             HumanHyperParamSetter('entropy_beta'),
             HumanHyperParamSetter('explore_factor'),
             master,
-            PeriodicCallback(Evaluator(EVAL_EPISODE, ['state'], ['logits']), 5),
+            PeriodicCallback(Evaluator(EVAL_EPISODE, ['state'], ['logits'], policy_dist=POLICY_DIST), 5),
         ]),
         extra_threads_procs=[master],
         session_config=get_default_sess_config(0.5),
@@ -292,6 +293,8 @@ if __name__ == '__main__':
     PC_METHOD = args.pc
     FEATURE = args.feature
     logger.info("Using feature " + str(FEATURE) + " for density model")
+    if POLICY_DIST:
+        logger.info("Draw from policy distribution when evaluation")
 
     if PC_METHOD:
         logger.info("Using Pseudo Count method: " + PC_METHOD)
