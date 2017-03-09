@@ -72,7 +72,7 @@ class GymEnv(RLEnvironment):
         self._ob, r, isOver, info = self.gymenv.step(act)
         if self.pc_method:
             r += self.pc.pc_reward(self._ob)
-            sys.stderr.write(str(r))
+            sys.stderr.write(str(r)+'\n')
         self.rwd_counter.feed(r)
         if isOver:
             self.finish_episode()
