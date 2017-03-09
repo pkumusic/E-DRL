@@ -28,9 +28,12 @@ def play_one_episode(player, func, verbose=False, policy_dist=False):
                 print(act)
             return act
         else:
-            distrib = func([[s]])[0][0]
-            print distrib
-            act = np.random.choice(len(distrib), p=distrib)
+            if random.random() < 0.01:
+                act = spc.sample()
+            else:
+                distrib = func([[s]])[0][0]
+                print distrib
+                act = np.random.choice(len(distrib), p=distrib)
             if verbose:
                 print(act)
             return act
