@@ -81,12 +81,12 @@ PC_MULT,PC_THRE,PC_TIME = None, None, None
 POLICY_DIST = True # draw from policy distribution when testing, instead of epsilon greedy
 
 def get_player(viz=False, train=False, dumpdir=None):
-    #TODO: idea1 use CNN as features of our density model
+    #TODO: (Next Plan)idea1 use CNN as features of our density model
     #TODO: idea1.5 clear counter in some intermeidate points
     #TODO: (on EXP now)idea2 time increasing with psuedo reward.  IF the pseudo reward is less than a threshold (e.g.,0.01) for most of the states, increase the pseudo reward.
     #TODO: (on EXP now)Not decrease Explore Factor after several epochs. The exp results show not enough exploration afterwards. But the scores are remained greatly.
-    #TODO: idea2.5: Intuition from people. Exploration and Exploitation modes. Remember the good rewards and turn into Exploitation modes, explore other possibilities.
-    #TODO: (NEXT PLAN)Evaluate with policy probability
+    #TODO: (Read more papers)idea2.5: Intuition from people. Exploration and Exploitation modes. Remember the good rewards and turn into Exploitation modes, explore other possibilities.
+    #TODO: (Done)Evaluate with policy probability
     if PC_METHOD and train:
         pl = GymEnv(ENV_NAME, dumpdir=dumpdir, pc_method=PC_METHOD, pc_mult=PC_MULT, pc_thre=PC_THRE, pc_time=PC_TIME)
     else:
