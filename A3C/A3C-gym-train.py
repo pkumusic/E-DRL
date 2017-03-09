@@ -64,7 +64,7 @@ CHANNEL = FRAME_HISTORY# * 3
 IMAGE_SHAPE3 = IMAGE_SIZE + (CHANNEL,)
 
 LOCAL_TIME_MAX = 5
-STEP_PER_EPOCH = 100 #6000
+STEP_PER_EPOCH = 6000
 EVAL_EPISODE = 50
 BATCH_SIZE = 128
 SIMULATOR_PROC = 50
@@ -261,7 +261,7 @@ def get_config():
             HumanHyperParamSetter('entropy_beta'),
             HumanHyperParamSetter('explore_factor'),
             master,
-            PeriodicCallback(Evaluator(EVAL_EPISODE, ['state'], ['logits'], policy_dist=POLICY_DIST), 1),
+            PeriodicCallback(Evaluator(EVAL_EPISODE, ['state'], ['logits'], policy_dist=POLICY_DIST), 5),
         ]),
         extra_threads_procs=[master],
         session_config=get_default_sess_config(0.5),
