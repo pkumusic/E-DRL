@@ -24,7 +24,7 @@ import threading
 from ..utils.fs import *
 from ..utils.stat import *
 from .envbase import RLEnvironment, DiscreteActionSpace
-
+from collections import deque
 
 _ALE_LOCK = threading.Lock()
 
@@ -32,11 +32,17 @@ class GymEnv(RLEnvironment):
     """
     An OpenAI/gym wrapper. Can optionally auto restart.
     """
-    def __init__(self, name, pc_method=None, dumpdir=None, viz=False, auto_restart=True):
+    def __init__(self, name, pc_method=None, pc_mult=None, pc_thre=None, pc_time=None, dumpdir=None, viz=False, auto_restart=True):
         # pc_method: Pseudo-count exploration method
         self.pc_method = pc_method
+        self.multiplier = 1
         if pc_method:
             self.pc = PC(pc_method)
+            if pc_mult:
+                self.pc_mult = pc_mult
+                self.pc_repeat_time = 0
+                self.pc_max_repeat_time = pc_time
+                self.pc_thre = pc_thre
         with _ALE_LOCK:
             self.gymenv = gym.make(name)
         if dumpdir:
@@ -71,7 +77,17 @@ class GymEnv(RLEnvironment):
     def action(self, act):
         self._ob, r, isOver, info = self.gymenv.step(act)
         if self.pc_method:
-            r += self.pc.pc_reward(self._ob)
+            pc_reward = self.pc.pc_reward(self._ob) * self.multiplier
+            r += pc_reward
+            if self.pc_mult:
+                if pc_reward < self.pc_thre:
+                    self.pc_repeat_time += 1
+                else:
+                    self.pc_repeat_time = 0
+                if self.pc_repeat_time >= self.pc_max_repeat_time:
+                    self.multiplier *= self.pc_mult
+                    self.pc_repeat_time = 0
+                    logger.info('Multiplier for pc reward is getting bigger. Multiplier=' + str(self.multiplier))
             sys.stderr.write(str(r)+'\n')
         self.rwd_counter.feed(r)
         if isOver:

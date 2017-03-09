@@ -77,6 +77,7 @@ ENV_NAME = None
 PC_METHOD = None # Pseudo count method
 NETWORK_ARCH = None # Network Architecture
 FEATURE = None
+PC_MULT,PC_THRE,PC_TIME = None, None, None
 
 def get_player(viz=False, train=False, dumpdir=None):
     #TODO: idea1 use CNN as features of our density model
@@ -86,7 +87,7 @@ def get_player(viz=False, train=False, dumpdir=None):
     #TODO: idea2.5: Intuition from people. Exploration and Exploitation modes. Remember the good rewards and turn into Exploitation modes, explore other possibilities.
     #TODO: Evaluate with policy probability
     if PC_METHOD and train:
-        pl = GymEnv(ENV_NAME, dumpdir=dumpdir, pc_method=PC_METHOD)
+        pl = GymEnv(ENV_NAME, dumpdir=dumpdir, pc_method=PC_METHOD, pc_mult=PC_MULT, pc_thre=PC_THRE, pc_time=PC_TIME)
     else:
         pl = GymEnv(ENV_NAME, dumpdir=dumpdir)
     def resize(img):
@@ -279,7 +280,7 @@ if __name__ == '__main__':
     parser.add_argument('--pc', help='pseudo count method', choices=[None, 'joint', 'CTS'], default=None)
     parser.add_argument('--network', help='network architecture', choices=['nature','1'], default='nature')
     parser.add_argument('--feature', help='Feature to use in the density model', choices=[None, 'fc0'], default=None)
-    parser.add_argument('--pc_factor', help='Pseudo count factor. PC_MULT,PC_THRE,PC_TIME', default=None)
+    parser.add_argument('--pcfactor', help='Pseudo count factor. PC_MULT,PC_THRE,PC_TIME', default=None) #2.5,0.01,1000
     args = parser.parse_args()
 
     LOG_DIR = args.logdir
@@ -294,6 +295,14 @@ if __name__ == '__main__':
 
     if PC_METHOD:
         logger.info("Using Pseudo Count method: " + PC_METHOD)
+        if not args.pcfactor:
+            logger.info("Do not use pc factor.")
+        else:
+            PC_MULT, PC_THRE, PC_TIME = args.pcfactor.split(',')
+            logger.info("Use pc factor to encourage explore")
+            logger.info("Multiplier=%s, Threshold=%s, Repeat Times=%s"%(PC_MULT, PC_THRE, PC_TIME))
+            PC_MULT, PC_THRE, PC_TIME = float(PC_MULT), float(PC_THRE), int(PC_TIME)
+
     else:
         logger.info("Don't use Pseudo Count method")
     NETWORK_ARCH = args.network
