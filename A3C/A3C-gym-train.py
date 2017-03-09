@@ -65,7 +65,7 @@ IMAGE_SHAPE3 = IMAGE_SIZE + (CHANNEL,)
 
 LOCAL_TIME_MAX = 5
 STEP_PER_EPOCH = 6000
-EVAL_EPISODE = 10
+EVAL_EPISODE = 50
 BATCH_SIZE = 128
 SIMULATOR_PROC = 50
 PREDICTOR_THREAD_PER_GPU = 2
@@ -105,7 +105,7 @@ def get_player(viz=False, train=False, dumpdir=None):
     pl = HistoryFramePlayer(pl, FRAME_HISTORY)
     #if not train:
     #    pl = PreventStuckPlayer(pl, 30, 1)
-    #pl = LimitLengthPlayer(pl, 40000)
+    pl = LimitLengthPlayer(pl, 40000)
     return pl
 common.get_player = get_player
 
