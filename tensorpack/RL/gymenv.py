@@ -36,10 +36,10 @@ class GymEnv(RLEnvironment):
         # pc_method: Pseudo-count exploration method
         self.pc_method = pc_method
         self.multiplier = 1
+        self.pc_mult = pc_mult
         if pc_method:
             self.pc = PC(pc_method)
-            if pc_mult:
-                self.pc_mult = pc_mult
+            if self.pc_mult:
                 self.pc_repeat_time = 0
                 self.pc_max_repeat_time = pc_time
                 self.pc_thre = pc_thre
