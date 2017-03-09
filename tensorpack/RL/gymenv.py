@@ -7,6 +7,7 @@
 import time
 from pseudocount import *
 from ..utils import logger
+import sys
 try:
     import gym
     # TODO
@@ -71,7 +72,7 @@ class GymEnv(RLEnvironment):
         self._ob, r, isOver, info = self.gymenv.step(act)
         if self.pc_method:
             r += self.pc.pc_reward(self._ob)
-            print r
+            sys.stderr.write(str(r))
         self.rwd_counter.feed(r)
         if isOver:
             self.finish_episode()
