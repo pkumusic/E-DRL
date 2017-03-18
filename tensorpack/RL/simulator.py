@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # File: simulator.py
-# Author: Yuxin Wu <ppwwyyxxc@gmail.com>
+# Author: Yuxin Wu <ppwwyyxxc@gmail.com>, Music Lee <yuezhanl@andrew.cmu.edu>
 
 import tensorflow as tf
 import multiprocessing as mp

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # File: train-atari.py
-# Author: Yuxin Wu <ppwwyyxxc@gmail.com>
+# Author: Yuxin Wu <ppwwyyxxc@gmail.com>, Music Lee <yuezhanl@andrew.cmu.edu>
 
 import numpy as np
 import tensorflow as tf
@@ -88,7 +88,7 @@ def get_player(viz=False, train=False, dumpdir=None):
     #TODO: (Read more papers)idea2.5: Intuition from people. Exploration and Exploitation modes. Remember the good rewards and turn into Exploitation modes, explore other possibilities.
     #TODO: (Done)Evaluate with policy probability
     if PC_METHOD and train:
-        pl = GymEnv(ENV_NAME, dumpdir=dumpdir, pc_method=PC_METHOD, pc_mult=PC_MULT, pc_thre=PC_THRE, pc_time=PC_TIME)
+        pl = GymEnv(ENV_NAME, dumpdir=dumpdir, pc_method=PC_METHOD, pc_mult=PC_MULT, pc_thre=PC_THRE, pc_time=PC_TIME, feature=FEATURE)
     else:
         pl = GymEnv(ENV_NAME, dumpdir=dumpdir)
     def resize(img):
@@ -188,19 +188,30 @@ class MySimulatorMaster(SimulatorMaster, Callback):
 
     def _setup_graph(self):
         self.sess = self.trainer.sess
-        self.async_predictor = MultiThreadAsyncPredictor(
-                self.trainer.get_predict_funcs(['state'], ['logitsT', 'pred_value'],
-                PREDICTOR_THREAD), batch_size=15)
+        if not FEATURE:
+            self.async_predictor = MultiThreadAsyncPredictor(
+                    self.trainer.get_predict_funcs(['state'], ['logitsT', 'pred_value'],
+                    PREDICTOR_THREAD), batch_size=15)
+        else:
+            self.async_predictor = MultiThreadAsyncPredictor(
+                self.trainer.get_predict_funcs(['state'], ['logitsT', 'pred_value', FEATURE],
+                                               PREDICTOR_THREAD), batch_size=15)
         self.async_predictor.run()
 
     def _on_state(self, state, ident):
         def cb(outputs):
-            distrib, value = outputs.result()
+            if not FEATURE:
+                distrib, value = outputs.result()
+            else:
+                distrib, value, feature = outputs.result()
             assert np.all(np.isfinite(distrib)), distrib
             action = np.random.choice(len(distrib), p=distrib)
             client = self.clients[ident]
             client.memory.append(TransitionExperience(state, action, None, value=value))
-            self.send_queue.put([ident, dumps(action)])
+            if not FEATURE:
+                self.send_queue.put([ident, dumps(action)])
+            else:
+                self.send_queue.put([ident, dumps(action, feature)])
         self.async_predictor.put_task([state], cb)
 
     def _on_episode_over(self, ident):
