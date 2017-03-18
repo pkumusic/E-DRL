@@ -194,7 +194,7 @@ class MySimulatorMaster(SimulatorMaster, Callback):
                     PREDICTOR_THREAD), batch_size=15)
         else:
             self.async_predictor = MultiThreadAsyncPredictor(
-                self.trainer.get_predict_funcs(['state'], ['logitsT', 'pred_value', FEATURE],
+                self.trainer.get_predict_funcs(['state'], ['logitsT', 'pred_value', 'logitsT'],
                                                PREDICTOR_THREAD), batch_size=15)
         self.async_predictor.run()
 
@@ -309,6 +309,10 @@ if __name__ == '__main__':
 
     if PC_METHOD:
         logger.info("Using Pseudo Count method: " + PC_METHOD)
+        if not FEATURE:
+            logger.info("Using image raw pixels as the input to pseudo count method.")
+        else:
+            logger.info("Using " + FEATURE + " layer feature as input to pseudo count method.")
         if not args.pcfactor:
             logger.info("Do not use pc factor.")
         else:
