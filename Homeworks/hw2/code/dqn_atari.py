@@ -17,6 +17,7 @@ from deeprl_hw2.objectives import mean_huber_loss
 from deeprl_hw2.constants import *
 from deeprl_hw2.preprocessors import *
 from deeprl_hw2.utils import *
+from deeprl_hw2.policy import *
 import gym
 
 
@@ -119,13 +120,21 @@ def main():  # noqa: D103
     #env = gym.wrappers.Monitor(env, args.output + '/gym')
     num_actions = env.action_space.n
     model = create_model(WINDOW, INPUT_SHAPE, num_actions)
-    preprocessor = AtariPreprocessor(INPUT_SHAPE)
-
-    state = preprocessor.process_state_for_network(ob)
-    #show_image(state, 'L')
+    atari_preprocessor = AtariPreprocessor(INPUT_SHAPE)
+    history_preprocessor = HistoryPreprocessor(4)
+    preprocessor = PreprocessorSequence([atari_preprocessor, history_preprocessor])
+    #state = preprocessor.process_state_for_network(ob)
+    #print state.shape
     memory = None
-    #dqn_agent = DQNAgent(model, preprocessor, memory, policy, gamma,
-    #                        target_update_freq, num_burn_in, train_freq, batch_size)
+    policy = GreedyPolicy()
+
+    dqn_agent = DQNAgent(model, preprocessor, memory, policy, GAMMA,
+                         TARGET_UPDATE_FREQ, INIT_MEMORY, TRAIN_FREQ, BATCH_SIZE)
+
+    optimizer = Adam(lr=0.00025, epsilon=10-3)
+    loss_func = mean_huber_loss
+    dqn_agent.compile(optimizer, loss_func)
+
 
 
 

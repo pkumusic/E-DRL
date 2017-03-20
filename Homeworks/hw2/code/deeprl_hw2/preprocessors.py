@@ -26,18 +26,24 @@ class HistoryPreprocessor(Preprocessor):
 
     def __init__(self, history_length=1):
         self.history = deque(maxlen=history_length)
+        self.history_length = history_length
 
     def process_state_for_network(self, state):
         """You only want history when you're deciding the current action to take."""
-        
-        pass
+        # Initialize
+        if not self.history:
+            for i in xrange(self.history_length):
+                self.history.append(np.zeros_like(state, dtype='float32'))
+        self.history.append(state)
+        return np.stack(self.history, axis=-1)
+
 
     def reset(self):
         """Reset the history sequence.
 
         Useful when you start a new episode.
         """
-        pass
+        self.history.clear()
 
     def get_config(self):
         return {'history_length': self.history_length}
@@ -102,7 +108,7 @@ class AtariPreprocessor(Preprocessor):
         img = Image.fromarray(state, 'RGB')
         img = img.convert('L')
         img = img.resize(self.new_size)
-        return np.asarray(img)#, dtype='float32')
+        return np.asarray(img, dtype='float32')
 
     def process_batch(self, samples):
         """The batches from replay memory will be uint8, convert to float32.
@@ -133,5 +139,10 @@ class PreprocessorSequence(Preprocessor):
     """
     def __init__(self, preprocessors):
         self.preprocessors = preprocessors
+
+    def process_state_for_network(self, state):
+        for preprocessor in self.preprocessors:
+            state = preprocessor.process_state_for_network(state)
+        return state
 
 
