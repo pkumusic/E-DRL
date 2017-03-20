@@ -32,7 +32,7 @@ import tensorpack.tfutils.summary as summary
 from tensorpack.tfutils.gradproc import MapGradient, SummaryGradient
 from tensorpack.callbacks.graph import RunOp
 from tensorpack.callbacks.base import PeriodicCallback
-
+#from tensorpack.tfutils.common import get_global_step
 import common
 from common import play_model, Evaluator, eval_model_multithread
 import numpy as np
@@ -248,10 +248,16 @@ if __name__ == "__main__":
     parser.add_argument('--dueling', help='If use dueling method', default='f')
     parser.add_argument('--logdir', help='output directory', required=True)
     parser.add_argument('--pc', help='pseudo count method', choices=[None, 'joint', 'CTS'], default=None)
+    parser.add_argument('--feature', help='Feature to use in the density model', choices=[None, 'fc0'], default=None)
     args=parser.parse_args()
     ENV_NAME = args.env
     LOG_DIR  = args.logdir
 
+    logger.info("Playing the game: " + ENV_NAME)
+    logger.info("The log directory: " + LOG_DIR)
+    PC_METHOD = args.pc
+    FEATURE = args.feature
+    logger.info("Using feature " + str(FEATURE) + " for density model")
     if args.double == 't':
         DOUBLE = True
     elif args.double == 'f':
@@ -279,6 +285,8 @@ if __name__ == "__main__":
     else:
         logger.info("Don't use Pseudo Count method")
 
+    raw_input("Please make sure the parameters are right")
+
     assert ENV_NAME
     p = get_player(); del p     # set NUM_ACTIONS
 
@@ -302,3 +310,6 @@ if __name__ == "__main__":
         if args.load:
             config.session_init = SaverRestore(args.load)
         QueueInputTrainer(config).train()
+
+
+

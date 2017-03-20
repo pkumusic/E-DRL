@@ -13,6 +13,7 @@ from tensorpack.predict.common import get_predict_func
 from tensorpack.utils.concurrency import *
 from tensorpack.utils.stat import  *
 from tensorpack.callbacks import *
+from tensorpack.callbacks.common import Callback
 
 global get_player
 get_player = None
@@ -21,7 +22,7 @@ def play_one_episode(player, func, verbose=False, task=None):
     def f(s):
         spc = player.get_action_space()
         act = func([[s]])[0][0].argmax()
-        if random.random() < 0.001:
+        if random.random() < 0.05:
             act = spc.sample()
         if verbose:
             print(act)
