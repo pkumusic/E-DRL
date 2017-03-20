@@ -5,7 +5,8 @@ from PIL import Image
 
 from deeprl_hw2 import utils
 from deeprl_hw2.core import Preprocessor
-
+import numpy as np
+from collections import deque
 
 class HistoryPreprocessor(Preprocessor):
     """Keeps the last k states.
@@ -24,10 +25,11 @@ class HistoryPreprocessor(Preprocessor):
     """
 
     def __init__(self, history_length=1):
-        pass
+        self.history = deque(maxlen=history_length)
 
     def process_state_for_network(self, state):
         """You only want history when you're deciding the current action to take."""
+        
         pass
 
     def reset(self):
@@ -78,7 +80,7 @@ class AtariPreprocessor(Preprocessor):
     """
 
     def __init__(self, new_size):
-        pass
+        self.new_size = new_size
 
     def process_state_for_memory(self, state):
         """Scale, convert to greyscale and store as uint8.
@@ -90,7 +92,6 @@ class AtariPreprocessor(Preprocessor):
         We recommend using the Python Image Library (PIL) to do the
         image conversions.
         """
-        pass
 
     def process_state_for_network(self, state):
         """Scale, convert to greyscale and store as float32.
@@ -98,7 +99,10 @@ class AtariPreprocessor(Preprocessor):
         Basically same as process state for memory, but this time
         outputs float32 images.
         """
-        pass
+        img = Image.fromarray(state, 'RGB')
+        img = img.convert('L')
+        img = img.resize(self.new_size)
+        return np.asarray(img)#, dtype='float32')
 
     def process_batch(self, samples):
         """The batches from replay memory will be uint8, convert to float32.
@@ -128,4 +132,6 @@ class PreprocessorSequence(Preprocessor):
     return history.process_state_for_network(state)
     """
     def __init__(self, preprocessors):
-        pass
+        self.preprocessors = preprocessors
+
+

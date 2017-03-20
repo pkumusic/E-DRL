@@ -2,6 +2,8 @@
 
 import semver
 import tensorflow as tf
+import gym
+from PIL import Image
 
 
 def get_uninitialized_variables(variables=None):
@@ -86,3 +88,7 @@ def get_hard_target_model_updates(target, source):
       List of tensor update ops.
     """
     pass
+
+def show_image(img, type='RGB'):
+    img = Image.fromarray(img, type)
+    img.show()

@@ -1,0 +1,2 @@
+WINDOW = 4
+INPUT_SHAPE = (84,84)

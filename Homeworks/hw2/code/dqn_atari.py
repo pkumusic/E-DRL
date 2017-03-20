@@ -15,6 +15,9 @@ import deeprl_hw2 as tfrl
 from deeprl_hw2.dqn import DQNAgent
 from deeprl_hw2.objectives import mean_huber_loss
 from deeprl_hw2.constants import *
+from deeprl_hw2.preprocessors import *
+from deeprl_hw2.utils import *
+import gym
 
 
 def create_model(window, input_shape, num_actions,
@@ -46,7 +49,13 @@ def create_model(window, input_shape, num_actions,
     keras.models.Model
       The Q-model.
     """
-    pass
+    input = Input(shape=(input_shape) + (window,), name='input')
+    flattened_input = Flatten()(input)
+    with tf.name_scope('output'):
+        output = Dense(num_actions, activation='linear')(flattened_input)
+    model = Model(inputs=input, outputs=output, name='linear_q_network')
+    print model.summary()
+    return model
 
 
 def get_output_folder(parent_dir, env_name):
@@ -68,7 +77,8 @@ def get_output_folder(parent_dir, env_name):
     parent_dir/run_dir
       Path to this run's save directory.
     """
-    os.makedirs(parent_dir, exist_ok=True)
+    if not os.path.exists(parent_dir):
+        os.makedirs(parent_dir)
     experiment_id = 0
     for folder_name in os.listdir(parent_dir):
         if not os.path.isdir(os.path.join(parent_dir, folder_name)):
@@ -88,20 +98,36 @@ def get_output_folder(parent_dir, env_name):
 
 def main():  # noqa: D103
     parser = argparse.ArgumentParser(description='Run DQN on Atari Game')
-    parser.add_argument('--env', default='SpaceInvaders-v0', help='Atari env name')
+    parser.add_argument('--env', default='SpaceInvaders-v0', help='Atari env name', required=True)
     parser.add_argument(
         '-o', '--output', default='atari-v0', help='Directory to save data to')
     parser.add_argument('--seed', default=0, type=int, help='Random seed')
 
     args = parser.parse_args()
+    print 'Using Tensorflow Version of ' + tf.__version__
     #args.input_shape = tuple(args.input_shape)
 
     args.output = get_output_folder(args.output, args.env)
-    print args.output
+    print "Output Folder: " + args.output
 
     # here is where you should start up a session,
     # create your DQN agent, create your model, etc.
     # then you can run your fit method.
+    env = gym.make(args.env)
+    env.reset()
+    ob, reward, done, info = env.step(0)
+    #env = gym.wrappers.Monitor(env, args.output + '/gym')
+    num_actions = env.action_space.n
+    model = create_model(WINDOW, INPUT_SHAPE, num_actions)
+    preprocessor = AtariPreprocessor(INPUT_SHAPE)
+
+    state = preprocessor.process_state_for_network(ob)
+    #show_image(state, 'L')
+    memory = None
+    #dqn_agent = DQNAgent(model, preprocessor, memory, policy, gamma,
+    #                        target_update_freq, num_burn_in, train_freq, batch_size)
+
+
 
 if __name__ == '__main__':
     main()

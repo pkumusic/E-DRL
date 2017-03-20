@@ -1,0 +1,1 @@
+Python 2.7.12 + Tensorflow 1.0.0
