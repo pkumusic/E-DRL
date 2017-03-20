@@ -27,7 +27,7 @@ def huber_loss(y_true, y_pred, max_grad=1.):
     x = y_true - y_pred
     sqrcost = tf.square(x)
     abscost = tf.abs(x)
-    return tf.select(abscost < max_grad,
+    return tf.where(abscost < max_grad,
               sqrcost * 0.5,
               abscost * max_grad - 0.5 * max_grad ** 2)
 

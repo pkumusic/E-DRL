@@ -1,3 +1,4 @@
+import tensorflow as tf
 """Main DQN agent."""
 
 class DQNAgent:
@@ -48,7 +49,10 @@ class DQNAgent:
                  num_burn_in,
                  train_freq,
                  batch_size):
-        pass
+        self.model = q_network
+
+
+
 
     def compile(self, optimizer, loss_func):
         """Setup all of the TF graph variables/ops.
@@ -67,7 +71,9 @@ class DQNAgent:
         keras.optimizers.Optimizer class. Specifically the Adam
         optimizer.
         """
-        pass
+
+        self.model.compile(optimizer=optimizer, loss=loss_func)
+
 
     def calc_q_values(self, state):
         """Given a state (or batch of states) calculate the Q-values.
@@ -78,7 +84,8 @@ class DQNAgent:
         ------
         Q-values for the state(s)
         """
-        pass
+        q_values = self.model(state)
+        self.sess.run(q_values)
 
     def select_action(self, state, **kwargs):
         """Select the action based on the current state.
@@ -145,7 +152,16 @@ class DQNAgent:
           How long a single episode should last before the agent
           resets. Can help exploration.
         """
-        pass
+        global_step = 0
+        while True:
+            if global_step % 100 == 0:
+                print 'global step: %d'%(global_step)
+            env.reset()
+
+
+            global_step += 1
+            if global_step > num_iterations:
+                break
 
     def evaluate(self, env, num_episodes, max_episode_length=None):
         """Test your agent with a provided environment.

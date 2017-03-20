@@ -10,6 +10,7 @@ from keras.layers import (Activation, Convolution2D, Dense, Flatten, Input,
                           Permute)
 from keras.models import Model
 from keras.optimizers import Adam
+from keras import backend as K
 
 import deeprl_hw2 as tfrl
 from deeprl_hw2.dqn import DQNAgent
@@ -114,6 +115,10 @@ def main():  # noqa: D103
     # here is where you should start up a session,
     # create your DQN agent, create your model, etc.
     # then you can run your fit method.
+
+    sess = tf.Session()
+    K.set_session(sess)
+
     env = gym.make(args.env)
     env.reset()
     ob, reward, done, info = env.step(0)
@@ -134,6 +139,13 @@ def main():  # noqa: D103
     optimizer = Adam(lr=0.00025, epsilon=10-3)
     loss_func = mean_huber_loss
     dqn_agent.compile(optimizer, loss_func)
+    dqn_agent.calc_q_values(ob)
+
+    #dqn_agent.fit(env, 1000,  MAX_EPISODE_LENGTH)
+
+
+
+
 
 
 
