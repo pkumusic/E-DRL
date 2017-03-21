@@ -138,6 +138,7 @@ class Model(ModelDesc):
                 l = Conv2D('conv1', l, out_channel=64, kernel_shape=4, stride=2)
                 l = Conv2D('conv2', l, out_channel=64, kernel_shape=3)
             # conv2 output: [None, 11, 11, 64]
+        conv2 = tf.identity(l, name='convolutional-2')
         l = FullyConnected('fc0', l, 512, nl=tf.identity)
         fc = tf.identity(l, name='fully-connected')
         l = PReLU('prelu', l)
@@ -195,7 +196,7 @@ class MySimulatorMaster(SimulatorMaster, Callback):
                     PREDICTOR_THREAD), batch_size=15)
         else:
             self.async_predictor = MultiThreadAsyncPredictor(
-                self.trainer.get_predict_funcs(['state'], ['logitsT', 'pred_value', 'fully-connected'],
+                self.trainer.get_predict_funcs(['state'], ['logitsT', 'pred_value', 'convolutional-2'],
                                                PREDICTOR_THREAD), batch_size=15)
         self.async_predictor.run()
 
