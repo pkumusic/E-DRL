@@ -10,7 +10,7 @@ FRSIZE = 42
 MAXVAL = 255                # original max value for a state
 MAX_DOWNSAMPLED_VAL = 128   # downsampled max value for a state. 8 in the paper.
 FEATURE_MAX_VAL = 1000
-FEATURE_NUM = 500
+FEATURE_NUM = 512
 class PC():
     # class for process with pseudo count rewards
     def __init__(self, method):
