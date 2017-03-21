@@ -195,7 +195,7 @@ class MySimulatorMaster(SimulatorMaster, Callback):
                     PREDICTOR_THREAD), batch_size=15)
         else:
             self.async_predictor = MultiThreadAsyncPredictor(
-                self.trainer.get_predict_funcs(['state'], ['logitsT', 'pred_value', 'xentropy_loss'],
+                self.trainer.get_predict_funcs(['state'], ['logitsT', 'pred_value', 'logits'],
                                                PREDICTOR_THREAD), batch_size=15)
         self.async_predictor.run()
 
