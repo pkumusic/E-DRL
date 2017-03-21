@@ -202,6 +202,7 @@ class MySimulatorMaster(SimulatorMaster, Callback):
         def cb(outputs):
             if not FEATURE:
                 distrib, value = outputs.result()
+                print type(value)
             else:
                 distrib, value, feature = outputs.result()
             assert np.all(np.isfinite(distrib)), distrib
