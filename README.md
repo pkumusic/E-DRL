@@ -35,6 +35,34 @@ Some ideas:
 
 4. Is it possible to directly embed the exploration strategy into DQN training?
 
-#Installation notes:
+## Installation notes:
 
-1. Tensorflow version is 0.11.0rc0, https://www.tensorflow.org/versions/r0.11/get_started/os_setup
+* Python version: 2.7 
+* Setting up virtual machine:
+ ~~~
+virtualenv drl
+source drl/bin/activate
+ ~~~
+* Tensorflow version is 0.11.0rc0, https://www.tensorflow.org/versions/r0.11/get_started/os_setup
+~~~
+export TF_BINARY_URL=https://storage.googleapis.com/tensorflow/linux/gpu/tensorflow-0.11.0rc0-cp27-none-linux_x86_64.whl
+pip install --upgrade $TF_BINARY_URL
+~~~
+* Export Tensorpack. A history modified version of tensorpack contained in the repo.:
+~~~
+export PYTHONPATH=$PYTHONPATH:path/to/E-DRL
+~~~
+* Install cv2:
+~~~
+pip install opencv-python (This is just a binding. May not work. May need to install from source)
+~~~
+* Install other dependencies:
+~~~
+pip install -r requirements.txt
+pip install gym
+pip install gym[atari]
+~~~
+* It should work:
+~~~
+python DQN-gym-train.py --env SpaceInvaders-v0 -g 0 --double f --dueling f --logdir DQN
+~~~
