@@ -7,6 +7,9 @@ Exploration Strategies for Deep Reinforcement Learning
 4. Baselines and possible improvements [Starcraft](https://arxiv.org/abs/1609.02993),[Gradient Boosting](https://arxiv.org/abs/1603.04119),[Bootstrapped DQN](https://arxiv.org/abs/1602.04621),[VIME](https://arxiv.org/abs/1605.09674),[Incentivizing](https://arxiv.org/abs/1507.00814),[BBQ Nets](https://arxiv.org/abs/1608.05081), [Reward Design](https://arxiv.org/abs/1604.07095), [Under-appreciated Rewards](https://arxiv.org/abs/1611.09321), [MBIE-EB](http://www.sciencedirect.com/science/article/pii/S0022000008000767)  弘扬，李军
 5. Novel ideas to incorporate exploration into network structure
 
+## Highlights:
+* Achieved 2500 score (ranked 1) on OpenAI gym Montezuma's Revenge game [Demo](https://gym.openai.com/evaluations/eval_zxZ4J4nTRw2snOY7umcfqw)
+
 
 ## Plans
 
