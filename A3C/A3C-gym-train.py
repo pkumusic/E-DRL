@@ -229,7 +229,7 @@ class MySimulatorMaster(SimulatorMaster, Callback):
                 distrib, value = outputs.result()
             else:
                 distrib, value, feature = outputs.result()
-                print type(feature)
+                print feature.shape
                 #print type(feature)
             assert np.all(np.isfinite(distrib)), distrib
             action = np.random.choice(len(distrib), p=distrib)
