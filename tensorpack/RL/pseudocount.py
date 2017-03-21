@@ -34,6 +34,10 @@ class PC():
 
         return pc_reward
 
+    def pc_reward_feature(self, feature):
+        print feature
+        return 0
+
     def preprocess(self, state):
         state = cv2.cvtColor(state, cv2.COLOR_BGR2GRAY)
         state = cv2.resize(state, (FRSIZE, FRSIZE))

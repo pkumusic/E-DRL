@@ -55,6 +55,7 @@ class GymEnv(RLEnvironment):
         self.restart_episode()
         self.auto_restart = auto_restart
         self.viz = viz
+        self.feature = feature
 
     def original_current_state(self):
         return self._ob
@@ -75,9 +76,16 @@ class GymEnv(RLEnvironment):
         return self._ob
 
     def action(self, act):
+        if self.feature and type(act) == list:
+            # use feature and pass feature values from master.
+            (act, feature) = act
         self._ob, r, isOver, info = self.gymenv.step(act)
         if self.pc_method:
-            pc_reward = self.pc.pc_reward(self._ob) * self.multiplier
+            if not self.feature:
+                pc_reward = self.pc.pc_reward(self._ob)
+            else:
+                pc_reward = self.pc.pc_reward_feature(feature)
+            pc_reward = pc_reward * self.multiplier
             r += pc_reward
             if self.pc_mult:
                 if pc_reward < self.pc_thre:

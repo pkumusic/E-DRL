@@ -92,8 +92,6 @@ class SimulatorProcessStateExchange(SimulatorProcessBase):
                 copy=False)
             # action or (action, feature)
             action = loads(s2c_socket.recv(copy=False).bytes)
-            if type(action) == list:
-                (action, feature) = action
             reward, isOver = player.action(action)
             state = player.current_state()
 
