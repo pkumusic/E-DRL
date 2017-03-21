@@ -61,6 +61,7 @@ NUM_ACTIONS = None
 DOUBLE = None
 DUELING = None
 PC_METHOD = None # Pseudo count method
+LINEAR = False
 
 def get_player(viz=False, train=False, dumpdir=None):
     if PC_METHOD and train:
@@ -100,20 +101,23 @@ class Model(ModelDesc):
     def _get_DQN_prediction(self, image):
         """ image: [0,255]"""
         image = image / 255.0
-        with argscope(Conv2D, nl=PReLU.f, use_bias=True):
-            # l = Conv2D('conv0', image, out_channel=32, kernel_shape=5)
-            # l = MaxPooling('pool0', l, 2)
-            # l = Conv2D('conv1', l, out_channel=32, kernel_shape=5)
-            # l = MaxPooling('pool1', l, 2)
-            # l = Conv2D('conv2', l, out_channel=64, kernel_shape=4)
-            # l = MaxPooling('pool2', l, 2)
-            # l = Conv2D('conv3', l, out_channel=64, kernel_shape=3)
-            # the original arch in Nature DQN
-            l = Conv2D('conv0', image, out_channel=32, kernel_shape=8, stride=4)
-            l = Conv2D('conv1', l, out_channel=64, kernel_shape=4, stride=2)
-            l = Conv2D('conv2', l, out_channel=64, kernel_shape=3)
+        if LINEAR:
+            l = image
+        else:
+            with argscope(Conv2D, nl=PReLU.f, use_bias=True):
+                # l = Conv2D('conv0', image, out_channel=32, kernel_shape=5)
+                # l = MaxPooling('pool0', l, 2)
+                # l = Conv2D('conv1', l, out_channel=32, kernel_shape=5)
+                # l = MaxPooling('pool1', l, 2)
+                # l = Conv2D('conv2', l, out_channel=64, kernel_shape=4)
+                # l = MaxPooling('pool2', l, 2)
+                # l = Conv2D('conv3', l, out_channel=64, kernel_shape=3)
+                # the original arch in Nature DQN
+                l = Conv2D('conv0', image, out_channel=32, kernel_shape=8, stride=4)
+                l = Conv2D('conv1', l, out_channel=64, kernel_shape=4, stride=2)
+                l = Conv2D('conv2', l, out_channel=64, kernel_shape=3)
 
-            l = FullyConnected('fc0', l, 512, nl=lambda x, name: LeakyReLU.f(x, 0.01, name))
+                l = FullyConnected('fc0', l, 512, nl=lambda x, name: LeakyReLU.f(x, 0.01, name))
 
         if not DUELING:
             Q = FullyConnected('fct', l, NUM_ACTIONS, nl=tf.identity)
@@ -249,6 +253,7 @@ if __name__ == "__main__":
     parser.add_argument('--logdir', help='output directory', required=True)
     parser.add_argument('--pc', help='pseudo count method', choices=[None, 'joint', 'CTS'], default=None)
     parser.add_argument('--feature', help='Feature to use in the density model', choices=[None, 'fc0'], default=None)
+    parser.add_argument('--linear', help='Linear used in homework', default=False)
     args=parser.parse_args()
     ENV_NAME = args.env
     LOG_DIR  = args.logdir
@@ -258,6 +263,9 @@ if __name__ == "__main__":
     PC_METHOD = args.pc
     FEATURE = args.feature
     logger.info("Using feature " + str(FEATURE) + " for density model")
+    if args.linear:
+        LINEAR = args.linear
+        logger.info("Using Linear Q-Network For Homework")
     if args.double == 't':
         DOUBLE = True
     elif args.double == 'f':
