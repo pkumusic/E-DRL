@@ -92,6 +92,7 @@ class SimulatorProcessStateExchange(SimulatorProcessBase):
                 copy=False)
             # action or (action, feature)
             action = loads(s2c_socket.recv(copy=False).bytes)
+            print type(action)
             if type(action) == tuple:
                 (action, feature) = action
             reward, isOver = player.action(action)
