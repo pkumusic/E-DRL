@@ -196,7 +196,7 @@ class MySimulatorMaster(SimulatorMaster, Callback):
                     PREDICTOR_THREAD), batch_size=15)
         else:
             self.async_predictor = MultiThreadAsyncPredictor(
-                self.trainer.get_predict_funcs(['state'], ['logitsT', 'pred_value', 'convolutional-2'],
+                self.trainer.get_predict_funcs(['state'], ['logitsT', 'pred_value', FEATURE],
                                                PREDICTOR_THREAD), batch_size=15)
         self.async_predictor.run()
 
@@ -206,7 +206,6 @@ class MySimulatorMaster(SimulatorMaster, Callback):
                 distrib, value = outputs.result()
             else:
                 distrib, value, feature = outputs.result()
-                print feature.shape
             assert np.all(np.isfinite(distrib)), distrib
             action = np.random.choice(len(distrib), p=distrib)
             client = self.clients[ident]
@@ -294,7 +293,7 @@ if __name__ == '__main__':
     parser.add_argument('--logdir', help='output directory', required=True)
     parser.add_argument('--pc', help='pseudo count method', choices=[None, 'joint', 'CTS'], default=None)
     parser.add_argument('--network', help='network architecture', choices=['nature','1'], default='nature')
-    parser.add_argument('--feature', help='Feature to use in the density model', choices=[None, 'fc0'], default=None)
+    parser.add_argument('--feature', help='Feature to use in the density model', choices=[None, 'fully-connected', 'convolutional-2'], default=None)
     parser.add_argument('--pcfactor', help='Pseudo count factor. PC_MULT,PC_THRE,PC_TIME', default=None) #2.5,0.01,1000
     args = parser.parse_args()
 
