@@ -202,9 +202,9 @@ class MySimulatorMaster(SimulatorMaster, Callback):
         def cb(outputs):
             if not FEATURE:
                 distrib, value = outputs.result()
-                print type(value)
             else:
                 distrib, value, feature = outputs.result()
+                print type(feature)
             assert np.all(np.isfinite(distrib)), distrib
             action = np.random.choice(len(distrib), p=distrib)
             client = self.clients[ident]
@@ -212,7 +212,7 @@ class MySimulatorMaster(SimulatorMaster, Callback):
             if not FEATURE:
                 self.send_queue.put([ident, dumps(action)])
             else:
-                self.send_queue.put([ident, dumps(action, feature)])
+                self.send_queue.put([ident, dumps((action, feature))])
         self.async_predictor.put_task([state], cb)
 
     def _on_episode_over(self, ident):
