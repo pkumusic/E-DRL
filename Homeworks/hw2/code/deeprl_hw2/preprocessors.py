@@ -37,7 +37,6 @@ class HistoryPreprocessor(Preprocessor):
         self.history.append(state)
         return np.stack(self.history, axis=-1)
 
-
     def reset(self):
         """Reset the history sequence.
 
@@ -98,6 +97,9 @@ class AtariPreprocessor(Preprocessor):
         We recommend using the Python Image Library (PIL) to do the
         image conversions.
         """
+        img = Image.fromarray(state, 'RGB')
+        img = img.convert('L')
+        return np.asarray(img)
 
     def process_state_for_network(self, state):
         """Scale, convert to greyscale and store as float32.
@@ -117,11 +119,26 @@ class AtariPreprocessor(Preprocessor):
         samples from the replay memory. Meaning you need to convert
         both state and next state values.
         """
-        pass
+        batch = []
+        for sample in samples:
+            curr_batch = []
+            state = sample[0].resize(self.new_size)
+            next_state = sample[3].resize(self.new_size)
+            curr_batch.append(np.asarray(state, dtype='float32'))
+            curr_batch.append(sample[1])
+            curr_batch.append(sample[2])
+            curr_batch.append(np.asarray(next_state, dtype='float32'))
+            batch.append(curr_batch)
+        return batch
 
     def process_reward(self, reward):
         """Clip reward between -1 and 1."""
-        pass
+        if reward > 0:
+            return 1
+        elif reward < 0:
+            return -1
+        else:
+            return reward
 
 
 class PreprocessorSequence(Preprocessor):
