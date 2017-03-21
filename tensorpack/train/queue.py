@@ -65,7 +65,7 @@ class QueueInputTrainerBase(FeedlessTrainer):
         self.input_vars = self.model.get_input_vars()
         if input_queue is None:
             self.input_queue = tf.FIFOQueue(
-                    5, [x.dtype for x in self.input_vars], name='input_queue')
+                    50, [x.dtype for x in self.input_vars], name='input_queue')
         else:
             self.input_queue = input_queue
         input_th = EnqueueThread(self)
