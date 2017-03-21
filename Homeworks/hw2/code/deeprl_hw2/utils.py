@@ -40,7 +40,7 @@ def get_uninitialized_variables(variables=None):
 
 
 def get_soft_target_model_updates(target, source, tau):
-    r"""Return list of target model update ops.
+    """Return list of target model update ops.
 
     These are soft target updates. Meaning that the target values are
     slowly adjusted, rather than directly copied over from the source
@@ -66,7 +66,19 @@ def get_soft_target_model_updates(target, source, tau):
     list(tf.Tensor)
       List of tensor update ops.
     """
-    pass
+    new_weights = []
+    for i in range(len(target.layers)):
+        layer_weight = []
+        target_weights = target.layers[i].get_weights()
+        source_weights = source.layers[i].get_weights()
+        for t, s in zip(target_weights, source_weights):
+            weight = []
+            for tw, sw in zip(t, s):
+                weight.append((1.0 - tau) * tw + tau * sw)
+            layer_weight.append(weight)
+        new_weights.append(layer_weight)
+
+    return target, new_weights
 
 
 def get_hard_target_model_updates(target, source):
@@ -87,7 +99,11 @@ def get_hard_target_model_updates(target, source):
     list(tf.Tensor)
       List of tensor update ops.
     """
-    pass
+    weights = []
+    for layer in source.layers:
+        weights.append(layer.get_weights())
+    return target, weights
+
 
 def show_image(img, type='RGB'):
     img = Image.fromarray(img, type)

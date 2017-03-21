@@ -6,6 +6,7 @@ in your code.
 """
 import numpy as np
 import attr
+import random
 
 
 class Policy:
@@ -92,7 +93,7 @@ class GreedyEpsilonPolicy(Policy):
      over time.
     """
     def __init__(self, epsilon):
-        pass
+        self.epsilon = epsilon
 
     def select_action(self, q_values, **kwargs):
         """Run Greedy-Epsilon for the given Q-values.
@@ -108,8 +109,10 @@ class GreedyEpsilonPolicy(Policy):
         int:
           The action index chosen.
         """
-
-    pass
+        if random.random < self.epsilon:
+            return random.randint(0, len(q_values)-1)
+        else:
+            return np.argmax(q_values)
 
 
 class LinearDecayGreedyEpsilonPolicy(Policy):
@@ -129,9 +132,17 @@ class LinearDecayGreedyEpsilonPolicy(Policy):
 
     """
 
-    def __init__(self, policy, attr_name, start_value, end_value,
+    def __init__(self, policy, epsilon, start_value, end_value,
                  num_steps):  # noqa: D102
-        pass
+        self.policy = policy
+        self.epsilon = epsilon
+        self.start_value = start_value
+        self.end_value = end_value
+        self.num_steps = num_steps
+
+    def get_epsilon(self, step):
+        gap = float(self.end_value - self.start_value) / float(self.num_steps)
+        return max(self.end_value, self.start_value + step * gap)
 
     def select_action(self, **kwargs):
         """Decay parameter and select action.
@@ -148,8 +159,9 @@ class LinearDecayGreedyEpsilonPolicy(Policy):
         Any:
           Selected action.
         """
-        pass
+        setattr(self.policy, self.epsilon, self.get_epsilon(self.policy.step))
+        return self.policy.select_action(**kwargs)
 
     def reset(self):
         """Start the decay over at the start value."""
-        pass
+        return self.start_value
