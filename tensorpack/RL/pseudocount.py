@@ -45,9 +45,13 @@ class PC():
         # Scale number to 1 - FEATURE_MAX_VAL
         num = abs(num)
         assert num != 0.0
+        while num > FEATURE_MAX_VAL:
+            num /= FEATURE_MAX_VAL
         while num < 1:
             num *= FEATURE_MAX_VAL
-        return int(num)
+        num = int(num)
+        assert 1 <= num <= FEATURE_MAX_VAL
+        return num
 
     def preprocess(self, state):
         state = cv2.cvtColor(state, cv2.COLOR_BGR2GRAY)
