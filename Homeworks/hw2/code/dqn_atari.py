@@ -51,6 +51,12 @@ def create_model(window, input_shape, num_actions,
     keras.models.Model
       The Q-model.
     """
+    """inputs = Input(shape=(None, 84, 84, 4))
+        first_layer = C.Conv2D(filters=16, kernel_size=(8, 8), strides=4, activation='relu')(inputs)
+        second_layer = C.Conv2D(filters=32, kernel_size=(4, 4), strides=2, activation='relu')(first_layer)
+        output_layer = core.Dense(units=self.policy.get_config['num_actions'])(second_layer)
+        self.model = Model(inputs=inputs, outputs=output_layer)"""
+
     input = Input(shape=(input_shape) + (window,), name='input')
     flattened_input = Flatten()(input)
     with tf.name_scope('output'):

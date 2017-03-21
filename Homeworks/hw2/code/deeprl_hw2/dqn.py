@@ -1,6 +1,11 @@
 import tensorflow as tf
 """Main DQN agent."""
 
+import keras.layers.convolutional as C
+import keras.layers.core as core
+from keras.layers import Input, Dense
+from keras.models import Model
+
 class DQNAgent:
     """Class implementing DQN.
 
@@ -8,7 +13,7 @@ class DQNAgent:
     in order to implement the DQNAgnet. This is just to get you
     started. You may need to tweak the parameters, add new ones, etc.
 
-    Feel free to change the functions and funciton parameters that the
+    Feel free to change the functions and function parameters that the
     class provides.
 
     We have provided docstrings to go along with our suggested API.
@@ -50,9 +55,14 @@ class DQNAgent:
                  train_freq,
                  batch_size):
         self.model = q_network
-
-
-
+        self.preprocessor = preprocessor
+        self.memory = memory
+        self.policy = policy
+        self.gamma = gamma
+        self.target_update_freq = target_update_freq
+        self.num_burn_in = num_burn_in
+        self.train_freq = train_freq
+        self.batch_size = batch_size
 
     def compile(self, optimizer, loss_func):
         """Setup all of the TF graph variables/ops.
@@ -71,7 +81,6 @@ class DQNAgent:
         keras.optimizers.Optimizer class. Specifically the Adam
         optimizer.
         """
-
         self.model.compile(optimizer=optimizer, loss=loss_func)
 
 

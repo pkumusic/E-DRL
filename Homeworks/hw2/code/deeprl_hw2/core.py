@@ -1,6 +1,8 @@
 """Core classes."""
 
-
+from deeprl_hw2 import preprocessors
+import tensorflow as tf
+import random
 
 class Sample:
     """Represents a reinforcement learning sample.
@@ -32,6 +34,12 @@ class Sample:
     is_terminal: boolean
       True if this action finished the episode. False otherwise.
     """
+    def __init__(self, state, action, reward, next_state, is_terminal):
+        self.state = state
+        self.action = action
+        self.reward = reward
+        self.next_state = next_state
+        self.is_terminal = is_terminal
     pass
 
 
@@ -57,6 +65,9 @@ class Preprocessor:
     episode.
     """
 
+    def __init__(self):
+        self.processor = preprocessors
+
     def process_state_for_network(self, state):
         """Preprocess the given state before giving it to the network.
 
@@ -80,7 +91,7 @@ class Preprocessor:
           modified in anyway.
 
         """
-        return state
+        return self.processor.AtariPreprocessor.process_state_for_network(state)
 
     def process_state_for_memory(self, state):
         """Preprocess the given state before giving it to the replay memory.
@@ -105,7 +116,7 @@ class Preprocessor:
           modified in any manner.
 
         """
-        return state
+        return self.processor.AtariPreprocessor.process_state_for_memory(state)
 
     def process_batch(self, samples):
         """Process batch of samples.
@@ -125,7 +136,7 @@ class Preprocessor:
           Samples after processing. Can be modified in anyways, but
           the list length will generally stay the same.
         """
-        return samples
+        return self.processor.AtariPreprocessor.process_batch(samples)
 
     def process_reward(self, reward):
         """Process the reward.
@@ -144,7 +155,7 @@ class Preprocessor:
         processed_reward: float
           The processed reward
         """
-        return reward
+        return self.processor.AtariPreprocessor.process_reward(reward)
 
     def reset(self):
         """Reset any internal state.
@@ -205,16 +216,29 @@ class ReplayMemory:
         We recommend using a list as a ring buffer. Just track the
         index where the next sample should be inserted in the list.
         """
-        pass
+        self.list = [None] * max_size
+        self.index = 0
+        self.window_length = window_length
+        self.max_size = max_size
 
     def append(self, state, action, reward):
-        raise NotImplementedError('This method should be overridden')
+        self.list[self.index] = tf.core.Sample(state, action, reward)
+        self.index += 1
+        if self.index >= self.max_size:
+            self.index = 0
 
     def end_episode(self, final_state, is_terminal):
         raise NotImplementedError('This method should be overridden')
 
     def sample(self, batch_size, indexes=None):
-        raise NotImplementedError('This method should be overridden')
+        samples = []
+        count = 0
+        while count < batch_size:
+            rand = random.randint()
+            if self.list[rand] is not None:
+                samples.append(self.list[rand])
+        return samples
 
     def clear(self):
-        raise NotImplementedError('This method should be overridden')
+        self.list = [None] * self.max_size
+        self.index = 0

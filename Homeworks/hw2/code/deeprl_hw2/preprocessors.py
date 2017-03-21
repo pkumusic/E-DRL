@@ -4,11 +4,10 @@ import numpy as np
 from PIL import Image
 
 from deeprl_hw2 import utils
-from deeprl_hw2.core import Preprocessor
 import numpy as np
 from collections import deque
 
-class HistoryPreprocessor(Preprocessor):
+class HistoryPreprocessor():
     """Keeps the last k states.
 
     Useful for domains where you need velocities, but the state
@@ -48,7 +47,7 @@ class HistoryPreprocessor(Preprocessor):
         return {'history_length': self.history_length}
 
 
-class AtariPreprocessor(Preprocessor):
+class AtariPreprocessor():
     """Converts images to greyscale and downscales.
 
     Based on the preprocessing step described in:
@@ -141,7 +140,7 @@ class AtariPreprocessor(Preprocessor):
             return reward
 
 
-class PreprocessorSequence(Preprocessor):
+class PreprocessorSequence():
     """You may find it useful to stack multiple prepcrocesosrs (such as the History and the AtariPreprocessor).
 
     You can easily do this by just having a class that calls each preprocessor in succession.
