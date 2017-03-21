@@ -35,7 +35,9 @@ class PC():
         return pc_reward
 
     def pc_reward_feature(self, feature):
-        print feature[0], feature[-1]
+        feature = abs(10e5 * feature)
+        print feature[1], feature[2]
+
         return 0
 
     def preprocess(self, state):
