@@ -90,7 +90,10 @@ class SimulatorProcessStateExchange(SimulatorProcessBase):
             c2s_socket.send(dumps(
                 (self.identity, state, reward, isOver)),
                 copy=False)
+            # action or (action, feature)
             action = loads(s2c_socket.recv(copy=False).bytes)
+            if type(action) == tuple:
+                (action, feature) = action
             reward, isOver = player.action(action)
             state = player.current_state()
 
