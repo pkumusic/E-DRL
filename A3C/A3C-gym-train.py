@@ -166,7 +166,7 @@ class Model(ModelDesc):
                 l = Conv2D('conv2', l, out_channel=64, kernel_shape=3)
             # conv2 output: [None, 11, 11, 64]
         l = FullyConnected('fc0', l, 512, nl=tf.identity)
-        l = tf.identity(l, name='fc0')
+        l = tf.identity(l, name='fuck')
         l = PReLU('prelu', l)
         policy = FullyConnected('fc-pi', l, out_dim=NUM_ACTIONS, nl=tf.identity)
         self.value = FullyConnected('fc-v', l, 1, nl=tf.identity)
@@ -219,7 +219,7 @@ class MySimulatorMaster(SimulatorMaster, Callback):
                     PREDICTOR_THREAD), batch_size=15)
         else:
             self.async_predictor = MultiThreadAsyncPredictor(
-                self.trainer.get_predict_funcs(['state'], ['logitsT', 'pred_value', 'fc0'],
+                self.trainer.get_predict_funcs(['state'], ['logitsT', 'pred_value', 'fuck'],
                                                PREDICTOR_THREAD), batch_size=15)
         self.async_predictor.run()
 
