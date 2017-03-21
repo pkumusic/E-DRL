@@ -35,7 +35,7 @@ class PC():
         return pc_reward
 
     def pc_reward_feature(self, feature):
-        print feature
+        print feature[0], feature[-1]
         return 0
 
     def preprocess(self, state):
