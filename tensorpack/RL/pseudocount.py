@@ -9,6 +9,7 @@ import numpy as np
 FRSIZE = 42
 MAXVAL = 255                # original max value for a state
 MAX_DOWNSAMPLED_VAL = 128   # downsampled max value for a state. 8 in the paper.
+FEATURE_MAX_VAL = 1000
 class PC():
     # class for process with pseudo count rewards
     def __init__(self, method):
@@ -35,10 +36,18 @@ class PC():
         return pc_reward
 
     def pc_reward_feature(self, feature):
-        feature = abs(10e5 * feature)
+        feature = map(lambda x:self.scale_num(x), feature)
         print feature[1], feature[2]
 
         return 0
+
+    def scale_num(self, num):
+        # Scale number to 1 - FEATURE_MAX_VAL
+        num = abs(num)
+        assert num != 0.0
+        while num < 1:
+            num *= FEATURE_MAX_VAL
+        return int(num)
 
     def preprocess(self, state):
         state = cv2.cvtColor(state, cv2.COLOR_BGR2GRAY)
