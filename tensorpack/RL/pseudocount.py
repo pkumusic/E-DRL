@@ -10,12 +10,14 @@ FRSIZE = 42
 MAXVAL = 255                # original max value for a state
 MAX_DOWNSAMPLED_VAL = 128   # downsampled max value for a state. 8 in the paper.
 FEATURE_MAX_VAL = 1000
+FEATURE_NUM = 500
 class PC():
     # class for process with pseudo count rewards
     def __init__(self, method):
         # initialize
         self.method = method
         self.flat_pixel_counter = np.zeros((FRSIZE*FRSIZE, MAX_DOWNSAMPLED_VAL+1)) # Counter for each (pos1, pos2, val), used for joint method
+        self.flat_feature_counter = np.zeros((FEATURE_NUM, FEATURE_MAX_VAL + 1))
         self.total_num_states = 0  # total number of seen states
         if self.method == 'CTS':
             print 'Using CTS Model'
@@ -37,9 +39,28 @@ class PC():
 
     def pc_reward_feature(self, feature):
         feature = map(lambda x:self.scale_num(x), feature)
-        print feature[1], feature[2]
-
-        return 0
+        if self.method == 'joint':
+            # Model each pixel as independent pixels.
+            # p = (c1/n) * (c2/n) * ... * (cn/n)
+            # pp = (c1+1)/(n+1) * (c2+1)/(n+1) ...
+            # N = (p/pp * (1-pp))/(1-p/pp) ~= (p/pp) / (1-p/pp)
+            state = feature
+            if self.total_num_states > 0:
+                nr = (self.total_num_states + 1.0) / self.total_num_states
+                pixel_count = self.flat_feature_counter[range(FEATURE_NUM), state]
+                self.flat_feature_counter[range(FEATURE_NUM), state] += 1
+                p_over_pp = np.prod(nr * pixel_count / (1.0 + pixel_count))
+                denominator = 1.0 - p_over_pp
+                if denominator <= 0.0:
+                    print "psc_add_image: dominator <= 0.0 : dominator=", denominator
+                    denominator = 1.0e-20
+                pc_count = p_over_pp / denominator
+                pc_reward = self.count2reward(pc_count)
+            else:
+                pc_count = 0.0
+                pc_reward = self.count2reward(pc_count)
+            self.total_num_states += 1
+            return pc_reward
 
     def scale_num(self, num):
         # Scale number to 1 - FEATURE_MAX_VAL
