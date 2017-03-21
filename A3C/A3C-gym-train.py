@@ -121,11 +121,38 @@ class Model(ModelDesc):
                 InputVar(tf.int64, (None,), 'action'),
                 InputVar(tf.float32, (None,), 'futurereward') ]
 
-    def _get_NN_prediction(self, image):
-        image = image / 255.0
+    # def _get_NN_prediction(self, image):
+    #     image = image / 255.0
+    #     with argscope(Conv2D, nl=tf.nn.relu):
+    #         if NETWORK_ARCH == '1':
+    #             l = Conv2D('conv0', image, out_channel=32, kernel_shape=5)
+    #             l = MaxPooling('pool0', l, 2)
+    #             l = Conv2D('conv1', l, out_channel=32, kernel_shape=5)
+    #             l = MaxPooling('pool1', l, 2)
+    #             l = Conv2D('conv2', l, out_channel=64, kernel_shape=4)
+    #             l = MaxPooling('pool2', l, 2)
+    #             l = Conv2D('conv3', l, out_channel=64, kernel_shape=3)
+    #         # conv3 output: [None, 10, 10, 64]
+    #         elif NETWORK_ARCH == 'nature':
+    #             l = Conv2D('conv0', image, out_channel=32, kernel_shape=8, stride=4)
+    #             l = Conv2D('conv1', l, out_channel=64, kernel_shape=4, stride=2)
+    #             l = Conv2D('conv2', l, out_channel=64, kernel_shape=3)
+    #         # conv2 output: [None, 11, 11, 64]
+    #     l = FullyConnected('fc0', l, 512, nl=tf.identity)
+    #     #l = tf.identity(l, name='fc0')
+    #     l = PReLU('prelu', l)
+    #     policy = FullyConnected('fc-pi', l, out_dim=NUM_ACTIONS, nl=tf.identity)
+    #     value = FullyConnected('fc-v', l, 1, nl=tf.identity)
+    #     return policy, value
+
+    def _build_graph(self, inputs):
+        state, action, futurereward = inputs
+
+        # Test on feature names
+        state = state / 255.0
         with argscope(Conv2D, nl=tf.nn.relu):
             if NETWORK_ARCH == '1':
-                l = Conv2D('conv0', image, out_channel=32, kernel_shape=5)
+                l = Conv2D('conv0', state, out_channel=32, kernel_shape=5)
                 l = MaxPooling('pool0', l, 2)
                 l = Conv2D('conv1', l, out_channel=32, kernel_shape=5)
                 l = MaxPooling('pool1', l, 2)
@@ -134,7 +161,7 @@ class Model(ModelDesc):
                 l = Conv2D('conv3', l, out_channel=64, kernel_shape=3)
             # conv3 output: [None, 10, 10, 64]
             elif NETWORK_ARCH == 'nature':
-                l = Conv2D('conv0', image, out_channel=32, kernel_shape=8, stride=4)
+                l = Conv2D('conv0', state, out_channel=32, kernel_shape=8, stride=4)
                 l = Conv2D('conv1', l, out_channel=64, kernel_shape=4, stride=2)
                 l = Conv2D('conv2', l, out_channel=64, kernel_shape=3)
             # conv2 output: [None, 11, 11, 64]
@@ -142,12 +169,9 @@ class Model(ModelDesc):
         #l = tf.identity(l, name='fc0')
         l = PReLU('prelu', l)
         policy = FullyConnected('fc-pi', l, out_dim=NUM_ACTIONS, nl=tf.identity)
-        value = FullyConnected('fc-v', l, 1, nl=tf.identity)
-        return policy, value
+        self.value = FullyConnected('fc-v', l, 1, nl=tf.identity)
 
-    def _build_graph(self, inputs):
-        state, action, futurereward = inputs
-        policy, self.value = self._get_NN_prediction(state)
+        #policy, self.value = self._get_NN_prediction(state)
         self.value = tf.squeeze(self.value, [1], name='pred_value') # (B,)
         self.logits = tf.nn.softmax(policy, name='logits')
 
@@ -195,7 +219,7 @@ class MySimulatorMaster(SimulatorMaster, Callback):
                     PREDICTOR_THREAD), batch_size=15)
         else:
             self.async_predictor = MultiThreadAsyncPredictor(
-                self.trainer.get_predict_funcs(['state'], ['logitsT', 'pred_value', 'logits'],
+                self.trainer.get_predict_funcs(['state'], ['logitsT', 'pred_value', 'fc0'],
                                                PREDICTOR_THREAD), batch_size=15)
         self.async_predictor.run()
 
