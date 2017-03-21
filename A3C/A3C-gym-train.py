@@ -140,8 +140,8 @@ class Model(ModelDesc):
             # conv2 output: [None, 11, 11, 64]
         conv2 = tf.identity(l, name='convolutional-2')
         l = FullyConnected('fc0', l, 512, nl=tf.identity)
-        fc = tf.identity(l, name='fully-connected')
         l = PReLU('prelu', l)
+        fc = tf.identity(l, name='fully-connected')
         policy = FullyConnected('fc-pi', l, out_dim=NUM_ACTIONS, nl=tf.identity)
         value = FullyConnected('fc-v', l, 1, nl=tf.identity)
         return policy, value
