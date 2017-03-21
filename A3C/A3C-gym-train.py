@@ -166,7 +166,7 @@ class Model(ModelDesc):
                 l = Conv2D('conv2', l, out_channel=64, kernel_shape=3)
             # conv2 output: [None, 11, 11, 64]
         l = FullyConnected('fc0', l, 512, nl=tf.identity)
-        #l = tf.identity(l, name='fc0')
+        l = tf.identity(l, name='fc0')
         l = PReLU('prelu', l)
         policy = FullyConnected('fc-pi', l, out_dim=NUM_ACTIONS, nl=tf.identity)
         self.value = FullyConnected('fc-v', l, 1, nl=tf.identity)
