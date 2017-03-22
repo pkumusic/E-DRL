@@ -93,8 +93,8 @@ class DQNAgent:
         ------
         Q-values for the state(s)
         """
-        q_values = self.model(state)
-        self.sess.run(q_values)
+        q_values = self.model.predict(state)
+        print q_values
 
     def select_action(self, state, **kwargs):
         """Select the action based on the current state.
@@ -162,13 +162,29 @@ class DQNAgent:
           resets. Can help exploration.
         """
         global_step = 0
+        ob = env.reset()
+        episode_length = 0
         while True:
+            global_step += 1
             if global_step % 100 == 0:
                 print 'global step: %d'%(global_step)
-            env.reset()
-
-
-            global_step += 1
+            act = self.select_action(self.preprocessor.process_state_for_network(ob))
+            new_ob, reward, done, info = env.step(act)
+            self.memory.append(self.preprocessor.process_state_for_memory(ob),
+                               act, reward,
+                               self.preprocessor.process_state_for_memory(new_ob),
+                               done)
+            episode_length += 1
+            if done or episode_length > max_episode_length:
+                ob = env.reset()
+                episode_length = 0
+            else:
+                ob = new_ob
+            if global_step % self.train_freq == 0:
+                # Training model
+                batch = self.memory.sample()
+                batch = self.preprocessor.process_batch(batch)
+                self.model.fit(batch)
             if global_step > num_iterations:
                 break
 

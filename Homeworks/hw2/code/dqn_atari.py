@@ -19,6 +19,7 @@ from deeprl_hw2.constants import *
 from deeprl_hw2.preprocessors import *
 from deeprl_hw2.utils import *
 from deeprl_hw2.policy import *
+from deeprl_hw2.core import ReplayMemory
 import gym
 
 
@@ -134,9 +135,11 @@ def main():  # noqa: D103
     atari_preprocessor = AtariPreprocessor(INPUT_SHAPE)
     history_preprocessor = HistoryPreprocessor(4)
     preprocessor = PreprocessorSequence([atari_preprocessor, history_preprocessor])
-    #state = preprocessor.process_state_for_network(ob)
+    state = preprocessor.process_state_for_network(ob)
+    state = state.reshape((1,)+state.shape)
+    print state.shape
     #print state.shape
-    memory = None
+    memory = ReplayMemory(MAX_MEMORY, WINDOW)
     policy = GreedyPolicy()
 
     dqn_agent = DQNAgent(model, preprocessor, memory, policy, GAMMA,
@@ -145,9 +148,8 @@ def main():  # noqa: D103
     optimizer = Adam(lr=0.00025, epsilon=10-3)
     loss_func = mean_huber_loss
     dqn_agent.compile(optimizer, loss_func)
-    dqn_agent.calc_q_values(ob)
-
-    #dqn_agent.fit(env, 1000,  MAX_EPISODE_LENGTH)
+    #dqn_agent.calc_q_values(state)
+    dqn_agent.fit(env, 1000,  MAX_EPISODE_LENGTH)
 
 
 

@@ -221,8 +221,8 @@ class ReplayMemory:
         self.window_length = window_length
         self.max_size = max_size
 
-    def append(self, state, action, reward):
-        self.list[self.index] = tf.core.Sample(state, action, reward)
+    def append(self, state, action, reward, next_state, terminal):
+        self.list[self.index] = Sample(state, action, reward, next_state, terminal)
         self.index += 1
         if self.index >= self.max_size:
             self.index = 0
