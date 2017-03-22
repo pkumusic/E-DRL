@@ -167,7 +167,7 @@ def main():  # noqa: D103
     history_preprocessor = HistoryPreprocessor(4)
     preprocessor = PreprocessorSequence([atari_preprocessor, history_preprocessor])
     memory = ReplayMemory(MAX_MEMORY, WINDOW)
-    policy = GreedyPolicy()
+    policy = GreedyEpsilonPolicy(0.05)
 
     dqn_agent = DQNAgent(model, num_actions, preprocessor, memory, policy, GAMMA,
                          TARGET_UPDATE_FREQ, INIT_MEMORY, TRAIN_FREQ, BATCH_SIZE)
@@ -176,7 +176,7 @@ def main():  # noqa: D103
     loss_func = mean_huber_loss
     dqn_agent.compile(optimizer, loss_func)
     #dqn_agent.calc_q_values(state)
-    dqn_agent.fit(env, 1000,  MAX_EPISODE_LENGTH)
+    dqn_agent.fit(env, 100000,  MAX_EPISODE_LENGTH)
 
 
 if __name__ == '__main__':

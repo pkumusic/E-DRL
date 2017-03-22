@@ -2,6 +2,7 @@ import tensorflow as tf
 """Main DQN agent."""
 
 import numpy as np
+import gym
 
 class DQNAgent:
     """Class implementing DQN.
@@ -80,7 +81,7 @@ class DQNAgent:
         keras.optimizers.Optimizer class. Specifically the Adam
         optimizer.
         """
-        self.model.compile(optimizer=optimizer, loss=loss_func)
+        self.model.compile(optimizer=optimizer, loss='mse')
 
 
     def calc_q_values(self, state):
@@ -166,10 +167,14 @@ class DQNAgent:
         episode_length = 0
         while True:
             global_step += 1
-            if global_step % 100 == 0:
-                print 'global step: %d'%(global_step)
-            ob_net = self.preprocessor.process_state_for_network(ob) # (1, 84, 84, 4)
-
+            if global_step % 10 == 0:
+                print 'global step: %d' % (global_step)
+            if global_step % 10000 == 0:
+                #print 'global step: %d'%(global_step)
+                eval_env = gym.make('SpaceInvaders-v0')
+                eval_env = gym.wrappers.Monitor(eval_env, 'eval%d'%(global_step))
+                print self.evaluate(eval_env, 1, 10000)
+            ob_net = self.preprocessor.process_state_for_network(ob)
             act = self.select_action(ob_net)
             new_ob, reward, done, info = env.step(act) # (210, 60, 3)
             new_ob_net = self.preprocessor.process_state_for_network(new_ob)
@@ -212,11 +217,15 @@ class DQNAgent:
             while True:
                 act = self.select_action(self.preprocessor.process_state_for_network(ob))
                 new_ob, reward, done, info = env.step(act)
+                ob = new_ob
                 total_reward += reward
                 if done:
                     rewards.append(total_reward)
                     break
-        return rewards
+        return np.mean(rewards)
+
+
+
 
     def batch_formatter(self, batch):
         state = []
