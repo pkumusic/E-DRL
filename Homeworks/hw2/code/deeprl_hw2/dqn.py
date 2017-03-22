@@ -229,8 +229,8 @@ class DQNAgent:
         next_state = []
 
         for sample in batch:
-            state.append(sample[0])
-            next_state.append(sample[4])
+            state.extend(sample[0])
+            next_state.extend(sample[4])
 
         state = np.asarray(state)
         next_state = np.asarray(next_state)
@@ -239,11 +239,11 @@ class DQNAgent:
         q_value_next = self.calc_q_values(next_state)
 
         for i in range(len(batch)):
-            if batch.item((i, 3)):
+            if batch[i][3]:
                 max_q = 0.0
             else:
-                print sample[4].shape
-                max_q = max(q_value_next.item(i))
-            q_value_next.itemset((i, batch.item((i, 1))), max_q * self.gamma + batch.item((i, 2)))
+                # print sample[4].shape
+                max_q = max(q_value_next[i])
+            q_value_next[i][batch[i][1]] = max_q * self.gamma + batch[i][2]
 
         return state, q_value_batch
