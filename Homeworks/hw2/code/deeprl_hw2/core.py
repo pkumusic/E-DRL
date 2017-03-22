@@ -40,7 +40,7 @@ class Sample:
         self.reward = reward
         self.next_state = next_state
         self.is_terminal = is_terminal
-    pass
+
 
 
 class Preprocessor:
@@ -64,6 +64,7 @@ class Preprocessor:
     episode begins so that state doesn't leak in from episode to
     episode.
     """
+
     def process_state_for_network(self, state):
         """Preprocess the given state before giving it to the network.
 
