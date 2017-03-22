@@ -91,7 +91,7 @@ class Preprocessor:
           modified in anyway.
 
         """
-        return self.processor.AtariPreprocessor.process_state_for_network(state)
+        return state
 
     def process_state_for_memory(self, state):
         """Preprocess the given state before giving it to the replay memory.
@@ -116,7 +116,7 @@ class Preprocessor:
           modified in any manner.
 
         """
-        return self.processor.AtariPreprocessor.process_state_for_memory(state)
+        return state
 
     def process_batch(self, samples):
         """Process batch of samples.
@@ -136,7 +136,7 @@ class Preprocessor:
           Samples after processing. Can be modified in anyways, but
           the list length will generally stay the same.
         """
-        return self.processor.AtariPreprocessor.process_batch(samples)
+        return samples
 
     def process_reward(self, reward):
         """Process the reward.
@@ -155,7 +155,7 @@ class Preprocessor:
         processed_reward: float
           The processed reward
         """
-        return self.processor.AtariPreprocessor.process_reward(reward)
+        return reward
 
     def reset(self):
         """Reset any internal state.

@@ -4,10 +4,11 @@ import numpy as np
 from PIL import Image
 
 from deeprl_hw2 import utils
+from deeprl_hw2.core import Preprocessor
 import numpy as np
 from collections import deque
 
-class HistoryPreprocessor():
+class HistoryPreprocessor(Preprocessor):
     """Keeps the last k states.
 
     Useful for domains where you need velocities, but the state
@@ -47,7 +48,7 @@ class HistoryPreprocessor():
         return {'history_length': self.history_length}
 
 
-class AtariPreprocessor():
+class AtariPreprocessor(Preprocessor):
     """Converts images to greyscale and downscales.
 
     Based on the preprocessing step described in:
@@ -98,7 +99,8 @@ class AtariPreprocessor():
         """
         img = Image.fromarray(state, 'RGB')
         img = img.convert('L')
-        return np.asarray(img)
+        img = img.resize(self.new_size)
+        return np.asarray(img, dtype='uint8')
 
     def process_state_for_network(self, state):
         """Scale, convert to greyscale and store as float32.
@@ -121,12 +123,12 @@ class AtariPreprocessor():
         batch = []
         for sample in samples:
             curr_batch = []
-            state = sample[0].resize(self.new_size)
-            next_state = sample[3].resize(self.new_size)
-            curr_batch.append(np.asarray(state, dtype='float32'))
+            state = np.asarray(sample[0], dtype='float32')
+            next_state = np.asarray(sample[3], dtype='float32')
+            curr_batch.append(state)
             curr_batch.append(sample[1])
             curr_batch.append(sample[2])
-            curr_batch.append(np.asarray(next_state, dtype='float32'))
+            curr_batch.append(next_state)
             batch.append(curr_batch)
         return batch
 
@@ -140,7 +142,7 @@ class AtariPreprocessor():
             return reward
 
 
-class PreprocessorSequence():
+class PreprocessorSequence(Preprocessor):
     """You may find it useful to stack multiple prepcrocesosrs (such as the History and the AtariPreprocessor).
 
     You can easily do this by just having a class that calls each preprocessor in succession.
