@@ -65,7 +65,8 @@ class PC():
     def scale_num(self, num):
         # Scale number to 1 - FEATURE_MAX_VAL
         num = abs(num)
-        assert num != 0.0
+        if num == 0.0:
+            return int(0)
         while num > FEATURE_MAX_VAL:
             num /= FEATURE_MAX_VAL
         while num < 1:
