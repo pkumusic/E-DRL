@@ -3,9 +3,8 @@ import tensorflow as tf
 
 import keras.layers.convolutional as C
 import keras.layers.core as core
-from keras.layers import Input, Dense, Flatten
+from keras.layers import Input, Dense
 from keras.models import Model
-from deeprl_hw2 import objectives
 
 class DQNAgent:
     """Class implementing DQN.
@@ -84,14 +83,8 @@ class DQNAgent:
         keras.optimizers.Optimizer class. Specifically the Adam
         optimizer.
         """
-        state = tf.placeholder()
-        next_state = tf.placeholder()
-        reward = tf.placeholder()
-        action = tf.placeholder()
-        y_true = max(self.calc_q_values(next_state)) * self.gamma + reward
-        y_pred = self.calc_q_values(state)[action]
-        loss = loss_func(y_true, y_pred)
-        self.model.compile(optimizer=optimizer, loss=loss)
+        self.model.compile(optimizer=optimizer, loss=loss_func)
+
 
     def calc_q_values(self, state):
         """Given a state (or batch of states) calculate the Q-values.
@@ -126,7 +119,8 @@ class DQNAgent:
         --------
         selected action
         """
-        return self.policy.select_action(state)
+        q_values = self.calc_q_values(state)
+        return self.policy.select_action(q_values, **kwargs)
 
     def update_policy(self):
         """Update your policy.
@@ -191,10 +185,10 @@ class DQNAgent:
                 ob = new_ob
             if global_step % self.train_freq == 0:
                 # Training model
-                batch = self.memory.sample()
+                batch = self.memory.sample(self.batch_size)
                 batch = self.preprocessor.process_batch(batch)
-                x, y_true = self.batch_formatter(batch)
-                self.model.train_on_batch(x, y_true)
+
+                self.model.fit(batch)
             if global_step > num_iterations:
                 break
 
@@ -212,13 +206,3 @@ class DQNAgent:
         visually inspect your policy.
         """
         pass
-
-    def batch_formatter(self, batch):
-        x = []
-        y_true = []
-
-        for sample in batch:
-            x.append(sample[0])
-            y_true.append(max(self.calc_q_values(sample[3])) * self.gamma + sample[2])
-
-        return x, y_true

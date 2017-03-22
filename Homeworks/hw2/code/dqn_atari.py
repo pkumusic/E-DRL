@@ -136,7 +136,6 @@ def main():  # noqa: D103
     history_preprocessor = HistoryPreprocessor(4)
     preprocessor = PreprocessorSequence([atari_preprocessor, history_preprocessor])
     state = preprocessor.process_state_for_network(ob)
-    state = state.reshape((1,)+state.shape)
     print state.shape
     #print state.shape
     memory = ReplayMemory(MAX_MEMORY, WINDOW)
