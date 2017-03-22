@@ -185,16 +185,16 @@ class DQNAgent:
                 ob = new_ob
             if global_step % self.train_freq == 0:
                 # Training model
-                batch = self.memory.sample(self.batch_size)
+                batch = self.memory.sample()
                 batch = self.preprocessor.process_batch(batch)
-
-                self.model.fit(batch)
+                x, y_true = self.batch_formatter(batch)
+                self.model.train_on_batch(x, y_true)
             if global_step > num_iterations:
                 break
 
     def evaluate(self, env, num_episodes, max_episode_length=None):
         """Test your agent with a provided environment.
-        
+
         You shouldn't update your network parameters here. Also if you
         have any layers that vary in behavior between train/test time
         (such as dropout or batch norm), you should set them to test.
@@ -206,3 +206,19 @@ class DQNAgent:
         visually inspect your policy.
         """
         pass
+
+    def batch_formatter(self, batch):
+        x = []
+        y_true = []
+
+        for sample in batch:
+            x.append(sample.state)
+            if sample.is_terminal:
+                max_q = 0.0
+            else:
+                max_q = max(self.calc_q_values(sample.next_state))
+            q_value = self.calc_q_values(sample.state)
+            q_value[sample.action] = max_q * self.gamma + sample.reward
+            y_true.append(q_value)
+
+        return x, y_true
