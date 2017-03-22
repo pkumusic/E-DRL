@@ -205,7 +205,21 @@ class DQNAgent:
         You can also call the render function here if you want to
         visually inspect your policy.
         """
-        pass
+        rewards = []
+        for i in xrange(num_episodes):
+            total_reward = 0
+            ob = env.reset()
+            while True:
+                act = self.select_action(self.preprocessor.process_state_for_network(ob))
+                new_ob, reward, done, info = env.step(act)
+                total_reward += reward
+                if done:
+                    rewards.append(total_reward)
+                    break
+        return rewards
+
+
+
 
     def batch_formatter(self, batch):
         x = []
