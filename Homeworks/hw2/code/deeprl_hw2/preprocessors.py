@@ -213,10 +213,11 @@ class AtariPreprocessor(Preprocessor):
         We recommend using the Python Image Library (PIL) to do the
         image conversions.
         """
-        img = Image.fromarray(state, 'RGB')
-        img = img.convert('L')
-        img = img.resize(self.new_size)
-        return np.asarray(img, dtype='uint8')
+        # img = Image.fromarray(state, 'RGB')
+        # img = img.convert('L')
+        # img = img.resize(self.new_size)
+        # return np.asarray(img, dtype='uint8')
+        pass
 
     def process_state_for_network(self, state):
         """Scale, convert to greyscale and store as float32.
@@ -244,6 +245,7 @@ class AtariPreprocessor(Preprocessor):
             curr_batch.append(state)
             curr_batch.append(sample.action)
             curr_batch.append(sample.reward)
+            curr_batch.append(sample.is_terminal)
             curr_batch.append(next_state)
             batch.append(curr_batch)
         return batch

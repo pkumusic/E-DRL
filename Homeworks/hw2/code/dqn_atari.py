@@ -127,17 +127,12 @@ def main():  # noqa: D103
     K.set_session(sess)
 
     env = gym.make(args.env)
-    env.reset()
-    ob, reward, done, info = env.step(0)
     #env = gym.wrappers.Monitor(env, args.output + '/gym')
     num_actions = env.action_space.n
     model = create_model(WINDOW, INPUT_SHAPE, num_actions)
     atari_preprocessor = AtariPreprocessor(INPUT_SHAPE)
     history_preprocessor = HistoryPreprocessor(4)
     preprocessor = PreprocessorSequence([atari_preprocessor, history_preprocessor])
-    state = preprocessor.process_state_for_network(ob)
-    print state.shape
-    #print state.shape
     memory = ReplayMemory(MAX_MEMORY, WINDOW)
     policy = GreedyPolicy()
 

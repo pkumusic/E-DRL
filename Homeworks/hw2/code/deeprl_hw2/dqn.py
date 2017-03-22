@@ -5,6 +5,7 @@ import keras.layers.convolutional as C
 import keras.layers.core as core
 from keras.layers import Input, Dense
 from keras.models import Model
+import numpy as np
 
 class DQNAgent:
     """Class implementing DQN.
@@ -171,11 +172,13 @@ class DQNAgent:
             global_step += 1
             if global_step % 100 == 0:
                 print 'global step: %d'%(global_step)
-            act = self.select_action(self.preprocessor.process_state_for_network(ob))
+            ob_net = self.preprocessor.process_state_for_network(ob)
+            act = self.select_action(ob_net)
             new_ob, reward, done, info = env.step(act)
-            self.memory.append(self.preprocessor.process_state_for_memory(ob),
+            new_ob_net = self.preprocessor.process_state_for_network(new_ob)
+            self.memory.append(ob_net,
                                act, reward,
-                               self.preprocessor.process_state_for_memory(new_ob),
+                               new_ob_net,
                                done)
             episode_length += 1
             if done or episode_length > max_episode_length:
@@ -185,7 +188,7 @@ class DQNAgent:
                 ob = new_ob
             if global_step % self.train_freq == 0:
                 # Training model
-                batch = self.memory.sample()
+                batch = self.memory.sample(self.batch_size)
                 batch = self.preprocessor.process_batch(batch)
                 x, y_true = self.batch_formatter(batch)
                 self.model.train_on_batch(x, y_true)
@@ -226,13 +229,16 @@ class DQNAgent:
         y_true = []
 
         for sample in batch:
-            x.append(sample.state)
-            if sample.is_terminal:
+            x.append(sample[0])
+            if sample[3]:
                 max_q = 0.0
             else:
-                max_q = max(self.calc_q_values(sample.next_state))
-            q_value = self.calc_q_values(sample.state)
-            q_value[sample.action] = max_q * self.gamma + sample.reward
+                print sample[4].shape
+                max_q = max(self.calc_q_values(sample[4]))
+            q_value = self.calc_q_values(sample[0])
+            print q_value
+            print sample[1]
+            q_value[0][sample[1]] = max_q * self.gamma + sample[2]
             y_true.append(q_value)
 
-        return x, y_true
+        return np.asarray(x), np.asarray(y_true)
