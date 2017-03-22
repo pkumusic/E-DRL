@@ -119,7 +119,8 @@ class DQNAgent:
         --------
         selected action
         """
-        pass
+        q_values = self.calc_q_values(state)
+        return self.policy.select_action(q_values, **kwargs)
 
     def update_policy(self):
         """Update your policy.
@@ -184,7 +185,7 @@ class DQNAgent:
                 ob = new_ob
             if global_step % self.train_freq == 0:
                 # Training model
-                batch = self.memory.sample()
+                batch = self.memory.sample(self.batch_size)
                 batch = self.preprocessor.process_batch(batch)
 
                 self.model.fit(batch)

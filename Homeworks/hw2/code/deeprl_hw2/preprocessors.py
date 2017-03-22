@@ -2,11 +2,127 @@
 
 import numpy as np
 from PIL import Image
-
-from deeprl_hw2 import utils
-from deeprl_hw2.core import Preprocessor
 import numpy as np
 from collections import deque
+
+class Preprocessor:
+    """Preprocessor base class.
+
+    This is a suggested interface for the preprocessing steps. You may
+    implement any of these functions. Feel free to add or change the
+    interface to suit your needs.
+
+    Preprocessor can be used to perform some fixed operations on the
+    raw state from an environment. For example, in ConvNet based
+    networks which use image as the raw state, it is often useful to
+    convert the image to greyscale or downsample the image.
+
+    Preprocessors are implemented as class so that they can have
+    internal state. This can be useful for things like the
+    AtariPreproccessor which maxes over k frames.
+
+    If you're using internal states, such as for keeping a sequence of
+    inputs like in Atari, you should probably call reset when a new
+    episode begins so that state doesn't leak in from episode to
+    episode.
+    """
+    def process_state_for_network(self, state):
+        """Preprocess the given state before giving it to the network.
+
+        Should be called just before the action is selected.
+
+        This is a different method from the process_state_for_memory
+        because the replay memory may require a different storage
+        format to reduce memory usage. For example, storing images as
+        uint8 in memory is a lot more efficient thant float32, but the
+        networks work better with floating point images.
+
+        Parameters
+        ----------
+        state: np.ndarray
+          Generally a numpy array. A single state from an environment.
+
+        Returns
+        -------
+        processed_state: np.ndarray
+          Generally a numpy array. The state after processing. Can be
+          modified in anyway.
+
+        """
+        return state
+
+    def process_state_for_memory(self, state):
+        """Preprocess the given state before giving it to the replay memory.
+
+        Should be called just before appending this to the replay memory.
+
+        This is a different method from the process_state_for_network
+        because the replay memory may require a different storage
+        format to reduce memory usage. For example, storing images as
+        uint8 in memory and the network expecting images in floating
+        point.
+
+        Parameters
+        ----------
+        state: np.ndarray
+          A single state from an environmnet. Generally a numpy array.
+
+        Returns
+        -------
+        processed_state: np.ndarray
+          Generally a numpy array. The state after processing. Can be
+          modified in any manner.
+
+        """
+        return state
+
+    def process_batch(self, samples):
+        """Process batch of samples.
+
+        If your replay memory storage format is different than your
+        network input, you may want to apply this function to your
+        sampled batch before running it through your update function.
+
+        Parameters
+        ----------
+        samples: list(tensorflow_rl.core.Sample)
+          List of samples to process
+
+        Returns
+        -------
+        processed_samples: list(tensorflow_rl.core.Sample)
+          Samples after processing. Can be modified in anyways, but
+          the list length will generally stay the same.
+        """
+        return samples
+
+    def process_reward(self, reward):
+        """Process the reward.
+
+        Useful for things like reward clipping. The Atari environments
+        from DQN paper do this. Instead of taking real score, they
+        take the sign of the delta of the score.
+
+        Parameters
+        ----------
+        reward: float
+          Reward to process
+
+        Returns
+        -------
+        processed_reward: float
+          The processed reward
+        """
+        return reward
+
+    def reset(self):
+        """Reset any internal state.
+
+        Will be called at the start of every new episode. Makes it
+        possible to do history snapshots.
+        """
+        pass
+
 
 class HistoryPreprocessor(Preprocessor):
     """Keeps the last k states.
@@ -111,7 +227,7 @@ class AtariPreprocessor(Preprocessor):
         img = Image.fromarray(state, 'RGB')
         img = img.convert('L')
         img = img.resize(self.new_size)
-        return np.asarray(img, dtype='float32')
+        return np.asarray(img, dtype='float32')[np.newaxis, :]
 
     def process_batch(self, samples):
         """The batches from replay memory will be uint8, convert to float32.
@@ -123,11 +239,11 @@ class AtariPreprocessor(Preprocessor):
         batch = []
         for sample in samples:
             curr_batch = []
-            state = np.asarray(sample[0], dtype='float32')
-            next_state = np.asarray(sample[3], dtype='float32')
+            state = np.asarray(sample.state, dtype='float32')
+            next_state = np.asarray(sample.next_state, dtype='float32')
             curr_batch.append(state)
-            curr_batch.append(sample[1])
-            curr_batch.append(sample[2])
+            curr_batch.append(sample.action)
+            curr_batch.append(sample.reward)
             curr_batch.append(next_state)
             batch.append(curr_batch)
         return batch
@@ -165,6 +281,6 @@ class PreprocessorSequence(Preprocessor):
 
     def process_batch(self, samples):
         for preprocessor in self.preprocessors:
-            samples = preprocessor.process_state_for_network(samples)
+            samples = preprocessor.process_batch(samples)
         return samples
 
