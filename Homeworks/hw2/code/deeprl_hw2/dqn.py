@@ -225,20 +225,25 @@ class DQNAgent:
 
 
     def batch_formatter(self, batch):
-        x = []
-        y_true = []
+        state = []
+        next_state = []
 
         for sample in batch:
-            x.append(sample[0])
-            if sample[3]:
+            state.append(sample[0])
+            next_state.append(sample[4])
+
+        state = np.asarray(state)
+        next_state = np.asarray(next_state)
+
+        q_value_batch = self.calc_q_values(state)
+        q_value_next = self.calc_q_values(next_state)
+
+        for i in range(len(batch)):
+            if batch.item((i, 3)):
                 max_q = 0.0
             else:
                 print sample[4].shape
-                max_q = max(self.calc_q_values(sample[4]))
-            q_value = self.calc_q_values(sample[0])
-            print q_value
-            print sample[1]
-            q_value[0][sample[1]] = max_q * self.gamma + sample[2]
-            y_true.append(q_value)
+                max_q = max(q_value_next.item(i))
+            q_value_next.itemset((i, batch.item((i, 1))), max_q * self.gamma + batch.item((i, 2)))
 
-        return np.asarray(x), np.asarray(y_true)
+        return state, q_value_batch
