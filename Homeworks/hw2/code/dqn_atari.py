@@ -3,7 +3,6 @@
 import argparse
 import os
 import random
-
 import numpy as np
 import tensorflow as tf
 from keras.layers import (Activation, Convolution2D, Dense, Flatten, Input,
@@ -11,6 +10,10 @@ from keras.layers import (Activation, Convolution2D, Dense, Flatten, Input,
 from keras.models import Model
 from keras.optimizers import Adam
 from keras import backend as K
+import keras.layers.convolutional as C
+import keras.layers.core as core
+from keras.layers import Input, Dense
+from keras.models import Model
 
 import deeprl_hw2 as tfrl
 from deeprl_hw2.dqn import DQNAgent
@@ -24,7 +27,7 @@ import gym
 
 
 def create_model(window, input_shape, num_actions,
-                 model_name='q_network'):  # noqa: D103
+                 model_name):  # noqa: D103
     """Create the Q-network model.
 
     Use Keras to construct a keras.models.Model instance (you can also
@@ -52,12 +55,21 @@ def create_model(window, input_shape, num_actions,
     keras.models.Model
       The Q-model.
     """
-    """inputs = Input(shape=(None, 84, 84, 4))
-        first_layer = C.Conv2D(filters=16, kernel_size=(8, 8), strides=4, activation='relu')(inputs)
-        second_layer = C.Conv2D(filters=32, kernel_size=(4, 4), strides=2, activation='relu')(first_layer)
-        output_layer = core.Dense(units=self.policy.get_config['num_actions'])(second_layer)
-        self.model = Model(inputs=inputs, outputs=output_layer)"""
+    if model_name == 0:
+        return linear_model(window, input_shape, num_actions)
+    elif model_name == 1:
+        return linear_double_model(window, input_shape, num_actions)
+    elif model_name == 2:
+        return deep_model(window, input_shape, num_actions)
+    elif model_name == 3:
+        return double_deep(window, input_shape, num_actions)
+    elif model_name == 4:
+        return dueling_deep(window, input_shape, num_actions)
+    else:
+        print "No suitable models found."
 
+
+def linear_model(window, input_shape, num_actions):
     input = Input(shape=(input_shape) + (window,), name='input')
     flattened_input = Flatten()(input)
     with tf.name_scope('output'):
@@ -65,6 +77,26 @@ def create_model(window, input_shape, num_actions,
     model = Model(inputs=input, outputs=output, name='linear_q_network')
     print model.summary()
     return model
+
+
+def deep_model(window, input_shape, num_actions):
+    print (input_shape) + (window,)
+    inputs = Input(shape=(input_shape) + (window,))
+    first_layer = C.Conv2D(filters=16, kernel_size=(8, 8), strides=4, activation='relu')(inputs)
+    second_layer = C.Conv2D(filters=32, kernel_size=(4, 4), strides=2, activation='relu')(first_layer)
+    output_layer = core.Dense(units=num_actions)(second_layer)
+    model = Model(inputs=inputs, outputs=output_layer)
+    return model
+
+
+def linear_double_model():
+    pass
+
+def double_deep():
+    pass
+
+def dueling_deep():
+    pass
 
 
 def get_output_folder(parent_dir, env_name):
@@ -129,7 +161,8 @@ def main():  # noqa: D103
     env = gym.make(args.env)
     #env = gym.wrappers.Monitor(env, args.output + '/gym')
     num_actions = env.action_space.n
-    model = create_model(WINDOW, INPUT_SHAPE, num_actions)
+    # 0 linear; 1 linear double; 2 deep; 3 double deep; 4 dueling deep
+    model = create_model(WINDOW, INPUT_SHAPE, num_actions, 2)
     atari_preprocessor = AtariPreprocessor(INPUT_SHAPE)
     history_preprocessor = HistoryPreprocessor(4)
     preprocessor = PreprocessorSequence([atari_preprocessor, history_preprocessor])
@@ -144,12 +177,6 @@ def main():  # noqa: D103
     dqn_agent.compile(optimizer, loss_func)
     #dqn_agent.calc_q_values(state)
     dqn_agent.fit(env, 1000,  MAX_EPISODE_LENGTH)
-
-
-
-
-
-
 
 
 if __name__ == '__main__':

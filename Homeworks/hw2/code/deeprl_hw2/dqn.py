@@ -1,10 +1,6 @@
 import tensorflow as tf
 """Main DQN agent."""
 
-import keras.layers.convolutional as C
-import keras.layers.core as core
-from keras.layers import Input, Dense
-from keras.models import Model
 import numpy as np
 
 class DQNAgent:
@@ -166,15 +162,16 @@ class DQNAgent:
           resets. Can help exploration.
         """
         global_step = 0
-        ob = env.reset()
+        ob = env.reset() # (210, 60, 3)
         episode_length = 0
         while True:
             global_step += 1
             if global_step % 100 == 0:
                 print 'global step: %d'%(global_step)
-            ob_net = self.preprocessor.process_state_for_network(ob)
+            ob_net = self.preprocessor.process_state_for_network(ob) # (1, 84, 84, 4)
+
             act = self.select_action(ob_net)
-            new_ob, reward, done, info = env.step(act)
+            new_ob, reward, done, info = env.step(act) # (210, 60, 3)
             new_ob_net = self.preprocessor.process_state_for_network(new_ob)
             self.memory.append(ob_net,
                                act, reward,
@@ -188,10 +185,10 @@ class DQNAgent:
                 ob = new_ob
             if global_step % self.train_freq == 0:
                 # Training model
-                batch = self.memory.sample(self.batch_size)
+                batch = self.memory.sample(self.batch_size) # list of samples (64, 84, 84, 4)
                 batch = self.preprocessor.process_batch(batch)
                 x, y_true = self.batch_formatter(batch)
-                self.model.train_on_batch(x, y_true)
+                print "***" + str(self.model.train_on_batch(x, y_true))
             if global_step > num_iterations:
                 break
 
@@ -221,9 +218,6 @@ class DQNAgent:
                     break
         return rewards
 
-
-
-
     def batch_formatter(self, batch):
         state = []
         next_state = []
@@ -244,6 +238,6 @@ class DQNAgent:
             else:
                 # print sample[4].shape
                 max_q = max(q_value_next[i])
-            q_value_next[i][batch[i][1]] = max_q * self.gamma + batch[i][2]
+            q_value_batch[i][batch[i][1]] = max_q * self.gamma + batch[i][2]
 
         return state, q_value_batch
