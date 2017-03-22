@@ -6,6 +6,7 @@ import keras.layers.core as core
 from keras.layers import Input, Dense
 from keras.models import Model
 import numpy as np
+import gym
 
 class DQNAgent:
     """Class implementing DQN.
@@ -84,7 +85,7 @@ class DQNAgent:
         keras.optimizers.Optimizer class. Specifically the Adam
         optimizer.
         """
-        self.model.compile(optimizer=optimizer, loss=loss_func)
+        self.model.compile(optimizer=optimizer, loss='mse')
 
 
     def calc_q_values(self, state):
@@ -170,8 +171,13 @@ class DQNAgent:
         episode_length = 0
         while True:
             global_step += 1
-            if global_step % 100 == 0:
-                print 'global step: %d'%(global_step)
+            if global_step % 10 == 0:
+                print 'global step: %d' % (global_step)
+            if global_step % 10000 == 0:
+                #print 'global step: %d'%(global_step)
+                eval_env = gym.make('SpaceInvaders-v0')
+                eval_env = gym.wrappers.Monitor(eval_env, 'eval%d'%(global_step))
+                print self.evaluate(eval_env, 1, 10000)
             ob_net = self.preprocessor.process_state_for_network(ob)
             act = self.select_action(ob_net)
             new_ob, reward, done, info = env.step(act)
@@ -215,11 +221,12 @@ class DQNAgent:
             while True:
                 act = self.select_action(self.preprocessor.process_state_for_network(ob))
                 new_ob, reward, done, info = env.step(act)
+                ob = new_ob
                 total_reward += reward
                 if done:
                     rewards.append(total_reward)
                     break
-        return rewards
+        return np.mean(rewards)
 
 
 
@@ -244,6 +251,6 @@ class DQNAgent:
             else:
                 # print sample[4].shape
                 max_q = max(q_value_next[i])
-            q_value_next[i][batch[i][1]] = max_q * self.gamma + batch[i][2]
+            q_value_batch[i][batch[i][1]] = max_q * self.gamma + batch[i][2]
 
         return state, q_value_batch
