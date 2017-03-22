@@ -64,10 +64,6 @@ class Preprocessor:
     episode begins so that state doesn't leak in from episode to
     episode.
     """
-
-    def __init__(self):
-        self.processor = preprocessors
-
     def process_state_for_network(self, state):
         """Preprocess the given state before giving it to the network.
 

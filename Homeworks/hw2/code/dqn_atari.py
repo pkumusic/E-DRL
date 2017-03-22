@@ -19,7 +19,7 @@ from deeprl_hw2.constants import *
 from deeprl_hw2.preprocessors import *
 from deeprl_hw2.utils import *
 from deeprl_hw2.policy import *
-from deeprl_hw2.core import ReplayMemory
+from deeprl_hw2.core import *
 import gym
 
 
@@ -142,7 +142,7 @@ def main():  # noqa: D103
     memory = ReplayMemory(MAX_MEMORY, WINDOW)
     policy = GreedyPolicy()
 
-    dqn_agent = DQNAgent(model, preprocessor, memory, policy, GAMMA,
+    dqn_agent = DQNAgent(model, num_actions, preprocessor, memory, policy, GAMMA,
                          TARGET_UPDATE_FREQ, INIT_MEMORY, TRAIN_FREQ, BATCH_SIZE)
 
     optimizer = Adam(lr=0.00025, epsilon=10-3)

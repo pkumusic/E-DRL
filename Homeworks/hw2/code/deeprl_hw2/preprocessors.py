@@ -163,4 +163,8 @@ class PreprocessorSequence(Preprocessor):
             state = preprocessor.process_state_for_network(state)
         return state
 
+    def process_batch(self, samples):
+        for preprocessor in self.preprocessors:
+            samples = preprocessor.process_state_for_network(samples)
+        return samples
 

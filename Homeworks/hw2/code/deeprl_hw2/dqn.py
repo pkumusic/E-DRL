@@ -46,6 +46,7 @@ class DQNAgent:
     """
     def __init__(self,
                  q_network,
+                 num_actions,
                  preprocessor,
                  memory,
                  policy,
@@ -55,6 +56,7 @@ class DQNAgent:
                  train_freq,
                  batch_size):
         self.model = q_network
+        self.num_actions = num_actions
         self.preprocessor = preprocessor
         self.memory = memory
         self.policy = policy
@@ -94,7 +96,7 @@ class DQNAgent:
         Q-values for the state(s)
         """
         q_values = self.model.predict(state)
-        print q_values
+        return q_values
 
     def select_action(self, state, **kwargs):
         """Select the action based on the current state.
@@ -184,6 +186,7 @@ class DQNAgent:
                 # Training model
                 batch = self.memory.sample()
                 batch = self.preprocessor.process_batch(batch)
+
                 self.model.fit(batch)
             if global_step > num_iterations:
                 break
