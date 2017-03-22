@@ -56,17 +56,20 @@ def create_model(window, input_shape, num_actions,
       The Q-model.
     """
     if model_name == 0:
-        return linear_model(window, input_shape, num_actions)
+        model = linear_model(window, input_shape, num_actions)
     elif model_name == 1:
-        return linear_double_model(window, input_shape, num_actions)
+        model = linear_double_model(window, input_shape, num_actions)
     elif model_name == 2:
-        return deep_model(window, input_shape, num_actions)
+        model = deep_model(window, input_shape, num_actions)
     elif model_name == 3:
-        return double_deep(window, input_shape, num_actions)
+        model = double_deep(window, input_shape, num_actions)
     elif model_name == 4:
-        return dueling_deep(window, input_shape, num_actions)
+        model = dueling_deep(window, input_shape, num_actions)
     else:
         print "No suitable models found."
+        exit()
+    print model.summary()
+    return model
 
 
 def linear_model(window, input_shape, num_actions):
@@ -75,7 +78,6 @@ def linear_model(window, input_shape, num_actions):
     with tf.name_scope('output'):
         output = Dense(num_actions, activation='linear')(flattened_input)
     model = Model(inputs=input, outputs=output, name='linear_q_network')
-    print model.summary()
     return model
 
 
@@ -84,8 +86,9 @@ def deep_model(window, input_shape, num_actions):
     inputs = Input(shape=(input_shape) + (window,))
     first_layer = C.Conv2D(filters=16, kernel_size=(8, 8), strides=4, activation='relu')(inputs)
     second_layer = C.Conv2D(filters=32, kernel_size=(4, 4), strides=2, activation='relu')(first_layer)
-    output_layer = core.Dense(units=num_actions)(second_layer)
-    model = Model(inputs=inputs, outputs=output_layer)
+    flattened = Flatten()(second_layer)
+    output_layer = core.Dense(units=num_actions)(flattened)
+    model = Model(inputs=inputs, outputs=output_layer, name='deep_model')
     return model
 
 
