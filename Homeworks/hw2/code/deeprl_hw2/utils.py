@@ -4,7 +4,18 @@ import semver
 import tensorflow as tf
 import gym
 from PIL import Image
+from keras.models import model_from_config
 
+
+def clone_model(model):
+    # Requires Keras 1.0.7 since get_config has breaking changes.
+    config = {
+        'class_name': model.__class__.__name__,
+        'config': model.get_config(),
+    }
+    clone = model_from_config(config)
+    clone.set_weights(model.get_weights())
+    return clone
 
 def get_uninitialized_variables(variables=None):
     """Return a list of uninitialized tf variables.
@@ -99,10 +110,11 @@ def get_hard_target_model_updates(target, source):
     list(tf.Tensor)
       List of tensor update ops.
     """
-    weights = []
-    for layer in source.layers:
-        weights.append(layer.get_weights())
-    return target, weights
+    target.set_weights(source.get_weights())
+    # weights = []
+    # for layer in source.layers:
+    #     weights.append(layer.get_weights())
+    # return target, weights
 
 
 def show_image(img, type='RGB'):

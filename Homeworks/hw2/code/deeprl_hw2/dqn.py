@@ -3,6 +3,7 @@ import tensorflow as tf
 
 import numpy as np
 import gym
+from utils import clone_model, get_hard_target_model_updates
 
 class DQNAgent:
     """Class implementing DQN.
@@ -81,10 +82,12 @@ class DQNAgent:
         keras.optimizers.Optimizer class. Specifically the Adam
         optimizer.
         """
-        self.model.compile(optimizer=optimizer, loss='mse')
+        self.target = clone_model(self.model)
+        self.target.compile(optimizer=optimizer, loss=loss_func)
+        self.model.compile(optimizer=optimizer, loss=loss_func)
 
 
-    def calc_q_values(self, state):
+    def calc_q_values(self, state, model):
         """Given a state (or batch of states) calculate the Q-values.
 
         Basically run your network on these states.
@@ -93,10 +96,10 @@ class DQNAgent:
         ------
         Q-values for the state(s)
         """
-        q_values = self.model.predict(state)
+        q_values = model.predict(state)
         return q_values
 
-    def select_action(self, state, **kwargs):
+    def select_action(self, state, model, **kwargs):
         """Select the action based on the current state.
 
         You will probably want to vary your behavior here based on
@@ -117,7 +120,7 @@ class DQNAgent:
         --------
         selected action
         """
-        q_values = self.calc_q_values(state)
+        q_values = self.calc_q_values(state, model)
         return self.policy.select_action(q_values, **kwargs)
 
     def update_policy(self):
@@ -174,8 +177,10 @@ class DQNAgent:
                 eval_env = gym.make('SpaceInvaders-v0')
                 eval_env = gym.wrappers.Monitor(eval_env, 'eval%d'%(global_step))
                 print self.evaluate(eval_env, 1, 10000)
+            if global_step % self.target_update_freq == 0:
+                get_hard_target_model_updates(self.target, self.model)
             ob_net = self.preprocessor.process_state_for_network(ob)
-            act = self.select_action(ob_net)
+            act = self.select_action(ob_net, self.model)
             new_ob, reward, done, info = env.step(act) # (210, 60, 3)
             new_ob_net = self.preprocessor.process_state_for_network(new_ob)
             self.memory.append(ob_net,
@@ -215,7 +220,7 @@ class DQNAgent:
             total_reward = 0
             ob = env.reset()
             while True:
-                act = self.select_action(self.preprocessor.process_state_for_network(ob))
+                act = self.select_action(self.preprocessor.process_state_for_network(ob), self.model)
                 new_ob, reward, done, info = env.step(act)
                 ob = new_ob
                 total_reward += reward
@@ -238,8 +243,8 @@ class DQNAgent:
         state = np.asarray(state)
         next_state = np.asarray(next_state)
 
-        q_value_batch = self.calc_q_values(state)
-        q_value_next = self.calc_q_values(next_state)
+        q_value_batch = self.calc_q_values(state, self.model)
+        q_value_next = self.calc_q_values(next_state, self.target)
 
         for i in range(len(batch)):
             if batch[i][3]:
@@ -250,3 +255,5 @@ class DQNAgent:
             q_value_batch[i][batch[i][1]] = max_q * self.gamma + batch[i][2]
 
         return state, q_value_batch
+
+
