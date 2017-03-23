@@ -7,13 +7,13 @@ from PIL import Image
 from keras.models import model_from_config
 
 
-def clone_model(model):
+def clone_model(model, custom_objects=None):
     # Requires Keras 1.0.7 since get_config has breaking changes.
     config = {
         'class_name': model.__class__.__name__,
         'config': model.get_config(),
     }
-    clone = model_from_config(config)
+    clone = model_from_config(config, custom_objects=custom_objects)
     clone.set_weights(model.get_weights())
     return clone
 

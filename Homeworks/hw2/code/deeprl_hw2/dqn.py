@@ -5,6 +5,31 @@ import numpy as np
 import gym
 from utils import clone_model, get_hard_target_model_updates
 import random
+from keras.engine.topology import Layer
+from keras import backend as K
+
+class MyLayer(Layer):
+    def __init__(self, **kwargs):
+        #self.output_dim = output_dim
+        super(MyLayer, self).__init__(**kwargs)
+
+    def build(self, input_shape):
+        super(MyLayer, self).build(input_shape)  # Be sure to call this somewhere!
+
+    def call(self, t):
+        [V, As] = t
+        return V + As - K.mean(As, axis=1, keepdims=True)
+
+    def compute_output_shape(self, input_shape):
+        return input_shape[1]
+
+    def get_config(self):
+        base_config = super(MyLayer, self).get_config()
+        return dict(list(base_config.items()))
+
+    @classmethod
+    def from_config(cls, config, custom_objects=None):
+        return cls(**config)
 
 class DQNAgent:
     """Class implementing DQN.
@@ -87,7 +112,7 @@ class DQNAgent:
         keras.optimizers.Optimizer class. Specifically the Adam
         optimizer.
         """
-        self.target = clone_model(self.model)
+        self.target = clone_model(self.model, custom_objects={'MyLayer':MyLayer})
         self.target.compile(optimizer=optimizer, loss=loss_func)
         self.model.compile(optimizer=optimizer, loss=loss_func)
 
