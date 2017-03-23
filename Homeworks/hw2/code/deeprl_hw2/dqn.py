@@ -227,6 +227,7 @@ class DQNAgent:
             ob_net = self.preprocessor.process_state_for_network(ob)
             act = self.select_action(ob_net, main_model)
             new_ob, reward, done, info = env.step(act) # (210, 60, 3)
+            reward = self.preprocessor.process_reward(reward)
             new_ob_net = self.preprocessor.process_state_for_network(new_ob)
             self.memory.append(ob_net,
                                act, reward,
