@@ -6,14 +6,17 @@ import random
 import numpy as np
 import tensorflow as tf
 from keras.layers import (Activation, Convolution2D, Dense, Flatten, Input,
-                          Permute)
+                          Permute, Lambda)
 from keras.models import Model
+from keras.engine.topology import Layer
+
 from keras.optimizers import Adam
 from keras import backend as K
 import keras.layers.convolutional as C
 import keras.layers.core as core
-from keras.layers import Input, Dense
+from keras.layers import Input, Dense, Merge
 from keras.models import Model
+from keras.backend import is_keras_tensor
 
 import deeprl_hw2 as tfrl
 from deeprl_hw2.dqn import DQNAgent
@@ -98,8 +101,16 @@ def linear_double_model():
 def double_deep():
     pass
 
-def dueling_deep():
-    pass
+def dueling_deep(window, input_shape, num_actions):
+    inputs = Input(shape=(input_shape) + (window,))
+    first_layer = C.Conv2D(filters=16, kernel_size=(8, 8), strides=4, activation='relu')(inputs)
+    second_layer = C.Conv2D(filters=32, kernel_size=(4, 4), strides=2, activation='relu')(first_layer)
+    flattened = Flatten()(second_layer)
+    V = Dense(units=1)(flattened)
+    As = Dense(units=num_actions)(flattened)
+    Q = V + As - K.mean(As, axis=1, keepdims=True)
+    model = Model(inputs=inputs, outputs=Q, name='dueling_deep')
+    return model
 
 
 def get_output_folder(parent_dir, env_name):
