@@ -8,7 +8,7 @@ import tensorflow as tf
 from keras.layers import (Activation, Convolution2D, Dense, Flatten, Input,
                           Permute, Lambda)
 from keras.models import Model
-from keras.engine.topology import Layer
+
 
 from keras.optimizers import Adam
 from keras import backend as K
@@ -62,6 +62,8 @@ def create_model(window, input_shape, num_actions,
         model = linear_model(window, input_shape, num_actions)
     elif model_name == 1:
         model = deep_model(window, input_shape, num_actions)
+    elif model_name == 2:
+        model = dueling_deep(window, input_shape, num_actions)
     else:
         print "No suitable models found."
         exit()
@@ -88,29 +90,6 @@ def deep_model(window, input_shape, num_actions):
     model = Model(inputs=inputs, outputs=output_layer, name='deep_model')
     return model
 
-
-def linear_double_model():
-    pass
-
-def double_deep():
-    pass
-
-class MyLayer(Layer):
-
-    def __init__(self, output_dim, **kwargs):
-        self.output_dim = output_dim
-        super(MyLayer, self).__init__(**kwargs)
-
-    def build(self, input_shape):
-        super(MyLayer, self).build(input_shape)  # Be sure to call this somewhere!
-
-    def call(self, t):
-        [V, As] = t
-        return V + As - K.mean(As, axis=1, keepdims=True)
-
-    def compute_output_shape(self, input_shape):
-        return input_shape[1]
-
 def dueling_deep(window, input_shape, num_actions):
     inputs = Input(shape=(input_shape) + (window,))
     first_layer = C.Conv2D(filters=16, kernel_size=(8, 8), strides=4, activation='relu')(inputs)
@@ -118,7 +97,8 @@ def dueling_deep(window, input_shape, num_actions):
     flattened = Flatten()(second_layer)
     V = Dense(units=1)(flattened)
     As = Dense(units=num_actions)(flattened)
-    Q = MyLayer(As.shape)([V,As])
+    from deeprl_hw2.dqn import MyLayer
+    Q = MyLayer()([V,As])
     #Q = V + As - K.mean(As, axis=1, keepdims=True)
     model = Model(inputs=inputs, outputs=Q, name='dueling_deep')
     return model
@@ -187,7 +167,7 @@ def main():  # noqa: D103
     #env = gym.wrappers.Monitor(env, args.output + '/gym')
     num_actions = env.action_space.n
     # 0 linear; 1 deep
-    model = create_model(WINDOW, INPUT_SHAPE, num_actions, 0)
+    model = create_model(WINDOW, INPUT_SHAPE, num_actions, 2)
     atari_preprocessor = AtariPreprocessor(INPUT_SHAPE)
     history_preprocessor = HistoryPreprocessor(4)
     preprocessor = PreprocessorSequence([atari_preprocessor, history_preprocessor])
