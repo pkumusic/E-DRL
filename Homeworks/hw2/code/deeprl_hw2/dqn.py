@@ -68,8 +68,8 @@ class DQNAgent:
       replay memory, for every Q-network update that you run.
     batch_size: int
       How many samples in each minibatch.
-    model_comp: int
-      1: single model; 2: double model; 3: dueling (only for deep network)
+    double: boolean
+      double model or single model
     """
     def __init__(self,
                  q_network,
@@ -82,7 +82,7 @@ class DQNAgent:
                  num_burn_in,
                  train_freq,
                  batch_size,
-                 model_comp):
+                 double):
         self.model = q_network
         self.num_actions = num_actions
         self.preprocessor = preprocessor
@@ -93,7 +93,7 @@ class DQNAgent:
         self.num_burn_in = num_burn_in
         self.train_freq = train_freq
         self.batch_size = batch_size
-        self.model_comp = model_comp
+        self.double = double
 
     def compile(self, optimizer, loss_func):
         """Setup all of the TF graph variables/ops.
@@ -112,10 +112,12 @@ class DQNAgent:
         keras.optimizers.Optimizer class. Specifically the Adam
         optimizer.
         """
-        self.target = clone_model(self.model, custom_objects={'MyLayer':MyLayer})
+        if self.model.name == 'dueling_deep':
+            self.target = clone_model(self.model, custom_objects={'MyLayer':MyLayer})
+        else:
+            self.target = clone_model(self.model)
         self.target.compile(optimizer=optimizer, loss=loss_func)
         self.model.compile(optimizer=optimizer, loss=loss_func)
-
 
     def calc_q_values(self, state, model):
         """Given a state (or batch of states) calculate the Q-values.
@@ -199,7 +201,7 @@ class DQNAgent:
         ob = env.reset() # (210, 60, 3)
         episode_length = 0
         while True:
-            if self.model_comp == 2:
+            if self.double:
                 pick_model = random.randint(0, 1)
                 if pick_model == 0:
                     main_model = self.model
@@ -207,7 +209,7 @@ class DQNAgent:
                 else:
                     main_model = self.target
                     help_model = self.model
-            elif self.model_comp == 1:
+            else:
                 main_model = self.model
                 help_model = self.target
 
@@ -219,7 +221,7 @@ class DQNAgent:
                 eval_env = gym.make('SpaceInvaders-v0')
                 eval_env = gym.wrappers.Monitor(eval_env, 'eval%d'%(global_step))
                 print self.evaluate(eval_env, 1, 10000)
-            if global_step % self.target_update_freq == 0 and self.model_comp == 1 and self.model.name=='deep_model':
+            if global_step % self.target_update_freq == 0 and not self.double and not self.model.name=='linear_q_network':
                 get_hard_target_model_updates(self.target, self.model)
 
             ob_net = self.preprocessor.process_state_for_network(ob)
@@ -242,7 +244,7 @@ class DQNAgent:
                 # Training model
                 batch = self.memory.sample(self.batch_size) # list of samples (64, 84, 84, 4)
                 batch = self.preprocessor.process_batch(batch)
-                x, y_true = self.batch_formatter(batch, main_model, help_model, self.model.name, self.model_comp)
+                x, y_true = self.batch_formatter(batch, main_model, help_model, self.model.name, self.double)
                 print "***" + str(main_model.train_on_batch(x, y_true))
 
             if global_step > num_iterations:

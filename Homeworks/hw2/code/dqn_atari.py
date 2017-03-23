@@ -166,17 +166,16 @@ def main():  # noqa: D103
     env = gym.make(args.env)
     #env = gym.wrappers.Monitor(env, args.output + '/gym')
     num_actions = env.action_space.n
-    # 0 linear; 1 deep
-    model = create_model(WINDOW, INPUT_SHAPE, num_actions, 2)
+    # 0 linear; 1 deep; 2 dueling
+    model = create_model(WINDOW, INPUT_SHAPE, num_actions, 1)
     atari_preprocessor = AtariPreprocessor(INPUT_SHAPE)
     history_preprocessor = HistoryPreprocessor(4)
     preprocessor = PreprocessorSequence([atari_preprocessor, history_preprocessor])
     memory = ReplayMemory(MAX_MEMORY, WINDOW)
     policy = GreedyEpsilonPolicy(0.05)
 
-    # 1: single, 2: double, 3: dueling
     dqn_agent = DQNAgent(model, num_actions, preprocessor, memory, policy, GAMMA,
-                         TARGET_UPDATE_FREQ, INIT_MEMORY, TRAIN_FREQ, BATCH_SIZE, model_comp=1)
+                         TARGET_UPDATE_FREQ, INIT_MEMORY, TRAIN_FREQ, BATCH_SIZE, double=False)
 
     optimizer = Adam(lr=0.00025, epsilon=10-3)
     loss_func = mean_huber_loss
