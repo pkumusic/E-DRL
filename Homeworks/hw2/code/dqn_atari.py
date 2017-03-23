@@ -89,6 +89,28 @@ def deep_model(window, input_shape, num_actions):
     return model
 
 
+def linear_double_model():
+    pass
+
+def double_deep():
+    pass
+
+class MyLayer(Layer):
+
+    def __init__(self, output_dim, **kwargs):
+        self.output_dim = output_dim
+        super(MyLayer, self).__init__(**kwargs)
+
+    def build(self, input_shape):
+        super(MyLayer, self).build(input_shape)  # Be sure to call this somewhere!
+
+    def call(self, t):
+        [V, As] = t
+        return V + As - K.mean(As, axis=1, keepdims=True)
+
+    def compute_output_shape(self, input_shape):
+        return input_shape[1]
+
 def dueling_deep(window, input_shape, num_actions):
     inputs = Input(shape=(input_shape) + (window,))
     first_layer = C.Conv2D(filters=16, kernel_size=(8, 8), strides=4, activation='relu')(inputs)
@@ -96,7 +118,8 @@ def dueling_deep(window, input_shape, num_actions):
     flattened = Flatten()(second_layer)
     V = Dense(units=1)(flattened)
     As = Dense(units=num_actions)(flattened)
-    Q = V + As - K.mean(As, axis=1, keepdims=True)
+    Q = MyLayer(As.shape)([V,As])
+    #Q = V + As - K.mean(As, axis=1, keepdims=True)
     model = Model(inputs=inputs, outputs=Q, name='dueling_deep')
     return model
 
