@@ -4,6 +4,7 @@ import tensorflow as tf
 import numpy as np
 import gym
 from utils import clone_model, get_hard_target_model_updates
+import random
 
 class DQNAgent:
     """Class implementing DQN.
@@ -42,6 +43,8 @@ class DQNAgent:
       replay memory, for every Q-network update that you run.
     batch_size: int
       How many samples in each minibatch.
+    model_comp: int
+      1: single model; 2: double model; 3: dueling (only for deep network)
     """
     def __init__(self,
                  q_network,
@@ -53,7 +56,8 @@ class DQNAgent:
                  target_update_freq,
                  num_burn_in,
                  train_freq,
-                 batch_size):
+                 batch_size,
+                 model_comp):
         self.model = q_network
         self.num_actions = num_actions
         self.preprocessor = preprocessor
@@ -64,6 +68,7 @@ class DQNAgent:
         self.num_burn_in = num_burn_in
         self.train_freq = train_freq
         self.batch_size = batch_size
+        self.model_comp = model_comp
 
     def compile(self, optimizer, loss_func):
         """Setup all of the TF graph variables/ops.
@@ -169,6 +174,18 @@ class DQNAgent:
         ob = env.reset() # (210, 60, 3)
         episode_length = 0
         while True:
+            if self.model_comp == 2:
+                pick_model = random.randint(0, 1)
+                if pick_model == 0:
+                    main_model = self.model
+                    help_model = self.target
+                else:
+                    main_model = self.target
+                    help_model = self.model
+            elif self.model_comp == 1:
+                main_model = self.model
+                help_model = self.target
+
             global_step += 1
             if global_step % 10 == 0:
                 print 'global step: %d' % (global_step)
@@ -177,28 +194,32 @@ class DQNAgent:
                 eval_env = gym.make('SpaceInvaders-v0')
                 eval_env = gym.wrappers.Monitor(eval_env, 'eval%d'%(global_step))
                 print self.evaluate(eval_env, 1, 10000)
-            if global_step % self.target_update_freq == 0:
+            if global_step % self.target_update_freq == 0 and self.model_comp == 1 and self.model.name=='deep_model':
                 get_hard_target_model_updates(self.target, self.model)
+
             ob_net = self.preprocessor.process_state_for_network(ob)
-            act = self.select_action(ob_net, self.model)
+            act = self.select_action(ob_net, main_model)
             new_ob, reward, done, info = env.step(act) # (210, 60, 3)
             new_ob_net = self.preprocessor.process_state_for_network(new_ob)
             self.memory.append(ob_net,
                                act, reward,
                                new_ob_net,
                                done)
+
             episode_length += 1
             if done or episode_length > max_episode_length:
                 ob = env.reset()
                 episode_length = 0
             else:
                 ob = new_ob
+
             if global_step % self.train_freq == 0:
                 # Training model
                 batch = self.memory.sample(self.batch_size) # list of samples (64, 84, 84, 4)
                 batch = self.preprocessor.process_batch(batch)
-                x, y_true = self.batch_formatter(batch)
-                print "***" + str(self.model.train_on_batch(x, y_true))
+                x, y_true = self.batch_formatter(batch, main_model, help_model, self.model.name, self.model_comp)
+                print "***" + str(main_model.train_on_batch(x, y_true))
+
             if global_step > num_iterations:
                 break
 
@@ -232,7 +253,7 @@ class DQNAgent:
 
 
 
-    def batch_formatter(self, batch):
+    def batch_formatter(self, batch, main_model, help_model, model_name, model_comp):
         state = []
         next_state = []
 
@@ -243,16 +264,39 @@ class DQNAgent:
         state = np.asarray(state)
         next_state = np.asarray(next_state)
 
-        q_value_batch = self.calc_q_values(state, self.model)
-        q_value_next = self.calc_q_values(next_state, self.target)
+        if model_name == 'linear_q_network' and model_comp == 1:
+            q_value_batch = self.calc_q_values(state, main_model)
+            q_value_next = self.calc_q_values(next_state, main_model)
+            for i in range(len(batch)):
+                if batch[i][3]:
+                    max_q = 0.0
+                else:
+                    # print sample[4].shape
+                    max_q = max(q_value_next[i])
+                q_value_batch[i][batch[i][1]] = max_q * self.gamma + batch[i][2]
 
-        for i in range(len(batch)):
-            if batch[i][3]:
-                max_q = 0.0
+        else:
+            q_value_batch = self.calc_q_values(state, main_model)
+            q_value_next = self.calc_q_values(next_state, help_model)
+
+            if model_comp == 1:
+                for i in range(len(batch)):
+                    if batch[i][3]:
+                        max_q = 0.0
+                    else:
+                        # print sample[4].shape
+                        max_q = max(q_value_next[i])
+                    q_value_batch[i][batch[i][1]] = max_q * self.gamma + batch[i][2]
             else:
-                # print sample[4].shape
-                max_q = max(q_value_next[i])
-            q_value_batch[i][batch[i][1]] = max_q * self.gamma + batch[i][2]
+                q_value_prime = self.calc_q_values(next_state, main_model)
+
+                for i in range(len(batch)):
+                    if batch[i][3]:
+                        max_q = 0.0
+                    else:
+                        a_prime = np.argmax(q_value_prime[i])
+                        max_q = q_value_next[i][a_prime]
+                    q_value_batch[i][batch[i][1]] = max_q * self.gamma + batch[i][2]
 
         return state, q_value_batch
 

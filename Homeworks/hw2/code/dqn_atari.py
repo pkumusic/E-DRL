@@ -61,13 +61,7 @@ def create_model(window, input_shape, num_actions,
     if model_name == 0:
         model = linear_model(window, input_shape, num_actions)
     elif model_name == 1:
-        model = linear_double_model(window, input_shape, num_actions)
-    elif model_name == 2:
         model = deep_model(window, input_shape, num_actions)
-    elif model_name == 3:
-        model = double_deep(window, input_shape, num_actions)
-    elif model_name == 4:
-        model = dueling_deep(window, input_shape, num_actions)
     else:
         print "No suitable models found."
         exit()
@@ -94,12 +88,6 @@ def deep_model(window, input_shape, num_actions):
     model = Model(inputs=inputs, outputs=output_layer, name='deep_model')
     return model
 
-
-def linear_double_model():
-    pass
-
-def double_deep():
-    pass
 
 def dueling_deep(window, input_shape, num_actions):
     inputs = Input(shape=(input_shape) + (window,))
@@ -175,16 +163,17 @@ def main():  # noqa: D103
     env = gym.make(args.env)
     #env = gym.wrappers.Monitor(env, args.output + '/gym')
     num_actions = env.action_space.n
-    # 0 linear; 1 linear double; 2 deep; 3 double deep; 4 dueling deep
-    model = create_model(WINDOW, INPUT_SHAPE, num_actions, 2)
+    # 0 linear; 1 deep
+    model = create_model(WINDOW, INPUT_SHAPE, num_actions, 0)
     atari_preprocessor = AtariPreprocessor(INPUT_SHAPE)
     history_preprocessor = HistoryPreprocessor(4)
     preprocessor = PreprocessorSequence([atari_preprocessor, history_preprocessor])
     memory = ReplayMemory(MAX_MEMORY, WINDOW)
     policy = GreedyEpsilonPolicy(0.05)
 
+    # 1: single, 2: double, 3: dueling
     dqn_agent = DQNAgent(model, num_actions, preprocessor, memory, policy, GAMMA,
-                         TARGET_UPDATE_FREQ, INIT_MEMORY, TRAIN_FREQ, BATCH_SIZE)
+                         TARGET_UPDATE_FREQ, INIT_MEMORY, TRAIN_FREQ, BATCH_SIZE, model_comp=1)
 
     optimizer = Adam(lr=0.00025, epsilon=10-3)
     loss_func = mean_huber_loss
