@@ -113,6 +113,7 @@ def run_submission(cfg, output, nr):
             player.restart_episode()
         score = play_one_episode(player, predfunc)#, task='save_image')
         print("Total:", score)
+    player.gymenv.monitor.close()
 
 def do_submit(output, api_key):
     gym.upload(output, api_key=api_key)
