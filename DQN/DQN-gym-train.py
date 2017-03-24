@@ -264,7 +264,7 @@ if __name__ == "__main__":
     FEATURE = args.feature
     logger.info("Using feature " + str(FEATURE) + " for density model")
     if args.linear == 't':
-        args.linear == True
+        LINEAR == True
     if args.linear:
         LINEAR = args.linear
         logger.info("Using Linear Q-Network For Homework")
