@@ -124,7 +124,7 @@ if __name__ == '__main__':
     parser.add_argument('--load', help='load model', required=True)
     parser.add_argument('--env', help='environment name', required=True)
     parser.add_argument('--episode', help='number of episodes to run',
-            type=int, default=1)
+            type=int, default=100)
     parser.add_argument('--output', help='output directory', default='gym-submit')
     parser.add_argument('--double', help='If use double DQN', default='t')
     parser.add_argument('--dueling', help='If use dueling method', default='f')
