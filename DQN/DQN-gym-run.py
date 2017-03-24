@@ -134,7 +134,8 @@ if __name__ == '__main__':
 
     ENV_NAME = args.env
     if args.linear == 't':
-        LINEAR == True
+        LINEAR = True
+        logger.info("Using Linear Q-Network For Homework")
     if args.double == 't':
         DOUBLE = True
     elif args.double == 'f':
