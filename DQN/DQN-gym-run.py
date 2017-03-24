@@ -113,7 +113,7 @@ def run_submission(cfg, output, nr):
             player.restart_episode()
         score = play_one_episode(player, predfunc)#, task='save_image')
         print("Total:", score)
-    player.gymenv.monitor.close()
+    player.finish()
 
 def do_submit(output, api_key):
     gym.upload(output, api_key=api_key)
@@ -124,7 +124,7 @@ if __name__ == '__main__':
     parser.add_argument('--load', help='load model', required=True)
     parser.add_argument('--env', help='environment name', required=True)
     parser.add_argument('--episode', help='number of episodes to run',
-            type=int, default=100)
+            type=int, default=1)
     parser.add_argument('--output', help='output directory', default='gym-submit')
     parser.add_argument('--double', help='If use double DQN', default='t')
     parser.add_argument('--dueling', help='If use dueling method', default='f')
