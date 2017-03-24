@@ -134,7 +134,7 @@ if __name__ == '__main__':
 
     ENV_NAME = args.env
     if args.linear == 't':
-        args.linear == True
+        LINEAR == True
     if args.double == 't':
         DOUBLE = True
     elif args.double == 'f':
