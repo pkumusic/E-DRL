@@ -86,7 +86,8 @@ def deep_model(window, input_shape, num_actions):
     first_layer = C.Conv2D(filters=16, kernel_size=(8, 8), strides=4, activation='relu')(inputs)
     second_layer = C.Conv2D(filters=32, kernel_size=(4, 4), strides=2, activation='relu')(first_layer)
     flattened = Flatten()(second_layer)
-    output_layer = core.Dense(units=num_actions)(flattened)
+    dense_layer = Dense(units=512)(flattened)
+    output_layer = core.Dense(units=num_actions)(dense_layer)
     model = Model(inputs=inputs, outputs=output_layer, name='deep_model')
     return model
 
@@ -95,8 +96,9 @@ def dueling_deep(window, input_shape, num_actions):
     first_layer = C.Conv2D(filters=16, kernel_size=(8, 8), strides=4, activation='relu')(inputs)
     second_layer = C.Conv2D(filters=32, kernel_size=(4, 4), strides=2, activation='relu')(first_layer)
     flattened = Flatten()(second_layer)
-    V = Dense(units=1)(flattened)
-    As = Dense(units=num_actions)(flattened)
+    dense_layer = Dense(units=512)(flattened)
+    V = Dense(units=1)(dense_layer)
+    As = Dense(units=num_actions)(dense_layer)
     from deeprl_hw2.dqn import MyLayer
     Q = MyLayer()([V,As])
     #Q = V + As - K.mean(As, axis=1, keepdims=True)

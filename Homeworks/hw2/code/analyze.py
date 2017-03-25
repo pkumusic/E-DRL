@@ -17,7 +17,7 @@ def draw_performance_mean(filePath, label):
     exp_mean_scores = []
     print filePath
     for d in data:
-        if d['global_step'] > 10e6:
+        if d['global_step'] > 3*1e6:
             continue
         #if 'expreplay/mean_score' in d:
         #    exp_mean_scores.append(d['expreplay/mean_score'])
