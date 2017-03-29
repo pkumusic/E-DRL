@@ -32,7 +32,7 @@ class GymEnv(RLEnvironment):
     """
     An OpenAI/gym wrapper. Can optionally auto restart.
     """
-    def __init__(self, name, pc_method=None, pc_mult=None, pc_thre=None, pc_time=None, dumpdir=None, viz=False, auto_restart=True, feature=None):
+    def __init__(self, name, pc_method=None, pc_mult=None, pc_thre=None, pc_time=None, dumpdir=None, viz=False, auto_restart=True, feature=None, pc_action=False):
         # pc_method: Pseudo-count exploration method
         self.pc_method = pc_method
         self.multiplier = 1
@@ -56,6 +56,7 @@ class GymEnv(RLEnvironment):
         self.auto_restart = auto_restart
         self.viz = viz
         self.feature = feature
+        self.pc_action = pc_action
 
     def original_current_state(self):
         return self._ob
@@ -79,10 +80,14 @@ class GymEnv(RLEnvironment):
         if self.feature and type(act) == list:
             # use feature and pass feature values from master.
             (act, feature) = act
+        old_ob = np.copy(self._ob)
         self._ob, r, isOver, info = self.gymenv.step(act)
         if self.pc_method:
             if not self.feature:
-                pc_reward = self.pc.pc_reward(self._ob)
+                if not self.pc_action:
+                    pc_reward = self.pc.pc_reward(self._ob)
+                else:
+                    pc_reward = self.pc.pc_reward_with_act(old_ob, act)
             else:
                 pc_reward = self.pc.pc_reward_feature(feature)
             pc_reward = pc_reward * self.multiplier

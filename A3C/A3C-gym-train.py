@@ -78,7 +78,8 @@ PC_METHOD = None # Pseudo count method
 NETWORK_ARCH = None # Network Architecture
 FEATURE = None
 PC_MULT,PC_THRE,PC_TIME = None, None, None
-POLICY_DIST = True # draw from policy distribution when testing, instead of epsilon greedy
+POLICY_DIST = False # draw from policy distribution when testing, instead of epsilon greedy
+PC_ACTION = False
 
 def get_player(viz=False, train=False, dumpdir=None):
     #TODO: (Next Plan)idea1 use CNN as features of our density model
@@ -88,7 +89,7 @@ def get_player(viz=False, train=False, dumpdir=None):
     #TODO: (Read more papers)idea2.5: Intuition from people. Exploration and Exploitation modes. Remember the good rewards and turn into Exploitation modes, explore other possibilities.
     #TODO: (Done)Evaluate with policy probability
     if PC_METHOD and train:
-        pl = GymEnv(ENV_NAME, dumpdir=dumpdir, pc_method=PC_METHOD, pc_mult=PC_MULT, pc_thre=PC_THRE, pc_time=PC_TIME, feature=FEATURE)
+        pl = GymEnv(ENV_NAME, dumpdir=dumpdir, pc_method=PC_METHOD, pc_mult=PC_MULT, pc_thre=PC_THRE, pc_time=PC_TIME, feature=FEATURE, pc_action=PC_ACTION)
     else:
         pl = GymEnv(ENV_NAME, dumpdir=dumpdir)
     def resize(img):
@@ -295,6 +296,7 @@ if __name__ == '__main__':
     parser.add_argument('--network', help='network architecture', choices=['nature','1'], default='nature')
     parser.add_argument('--feature', help='Feature to use in the density model', choices=[None, 'fully-connected', 'convolutional-2'], default=None)
     parser.add_argument('--pcfactor', help='Pseudo count factor. PC_MULT,PC_THRE,PC_TIME', default=None) #2.5,0.01,1000
+    parser.add_argument('--pc_action', help='Pseudo count function of (action and old state)', action='store_true')
     args = parser.parse_args()
 
     LOG_DIR = args.logdir
@@ -305,12 +307,16 @@ if __name__ == '__main__':
     logger.info("The log directory: " + LOG_DIR)
     PC_METHOD = args.pc
     FEATURE = args.feature
+    PC_ACTION = args.pc_action
     logger.info("Using feature " + str(FEATURE) + " for density model")
     if POLICY_DIST:
         logger.info("Draw from policy distribution when evaluation")
-
     if PC_METHOD:
         logger.info("Using Pseudo Count method: " + PC_METHOD)
+        if PC_ACTION:
+            logger.info("Pseudo count function of (old state, action)")
+        else:
+            logger.info("Pseudo count function of transmitted state")
         if not FEATURE:
             logger.info("Using image raw pixels as the input to pseudo count method.")
         else:

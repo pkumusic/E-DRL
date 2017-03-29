@@ -11,6 +11,7 @@ MAXVAL = 255                # original max value for a state
 MAX_DOWNSAMPLED_VAL = 128   # downsampled max value for a state. 8 in the paper.
 FEATURE_MAX_VAL = 1000
 FEATURE_NUM = 512
+from collections import defaultdict
 class PC():
     # class for process with pseudo count rewards
     def __init__(self, method):
@@ -25,6 +26,7 @@ class PC():
             #self.CTS = ConvolutionalDensityModel((FRSIZE, FRSIZE), L_shaped_context) # 12 iter/s for memory filling
             #self.CTS = LocationDependentDensityModel((FRSIZE, FRSIZE), L_shaped_context) # 12 iter/s
         self.n = 0
+        self.dict = defaultdict(int)
 
     def pc_reward(self, state):
         """
@@ -36,6 +38,15 @@ class PC():
         pc_reward = self.add(state)
 
         return pc_reward
+
+    def pc_reward_with_act(self, state, act):
+        state = self.preprocess(state)
+        # Brute force idea
+        #self.n += 1
+        hash = hash(state.tostring()+str(act))
+        self.dict[hash] += 1
+        count = self.dict[hash]
+        return self.count2reward(count)
 
     def pc_reward_feature(self, feature):
         feature = map(lambda x:self.scale_num(x), feature)
