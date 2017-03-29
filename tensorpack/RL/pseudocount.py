@@ -43,9 +43,9 @@ class PC():
         state = self.preprocess(state)
         # Brute force idea
         #self.n += 1
-        hash = hash(state.tostring()+str(act))
-        self.dict[hash] += 1
-        count = self.dict[hash]
+        sa_hash = hash(state.tostring()+str(act))
+        self.dict[sa_hash] += 1
+        count = self.dict[sa_hash]
         return self.count2reward(count)
 
     def pc_reward_feature(self, feature):
