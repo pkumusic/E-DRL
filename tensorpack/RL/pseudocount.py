@@ -44,8 +44,8 @@ class PC():
         # Brute force idea
         #self.n += 1
         sa_hash = hash(state.tostring()+str(act))
-        self.dict[sa_hash] += 1
         count = self.dict[sa_hash]
+        self.dict[sa_hash] += 1
         return self.count2reward(count)
 
     def pc_reward_feature(self, feature):
