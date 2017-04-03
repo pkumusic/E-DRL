@@ -88,6 +88,7 @@ class GymEnv(RLEnvironment):
                     pc_reward = self.pc.pc_reward(self._ob)
                 else:
                     pc_reward = self.pc.pc_reward_with_act(old_ob, act)
+                    print pc_reward
             else:
                 pc_reward = self.pc.pc_reward_feature(feature)
             pc_reward = pc_reward * self.multiplier
