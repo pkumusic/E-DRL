@@ -8,7 +8,7 @@ import cv2
 import numpy as np
 FRSIZE = 42
 MAXVAL = 255                # original max value for a state
-MAX_DOWNSAMPLED_VAL = 32   # downsampled max value for a state. 8 in the paper.
+MAX_DOWNSAMPLED_VAL = None   # downsampled max value for a state. 8 in the paper.
 FEATURE_MAX_VAL = 1000
 FEATURE_NUM = 512
 from collections import defaultdict
@@ -20,11 +20,16 @@ class PC():
         self.flat_pixel_counter = np.zeros((FRSIZE*FRSIZE, MAX_DOWNSAMPLED_VAL+1)) # Counter for each (pos1, pos2, val), used for joint method
         self.flat_feature_counter = np.zeros((FEATURE_NUM, FEATURE_MAX_VAL + 1))
         self.total_num_states = 0  # total number of seen states
+        global MAX_DOWNSAMPLED_VAL
         if self.method == 'CTS':
             print 'Using CTS Model'
+            MAX_DOWNSAMPLED_VAL = 8
             #self.CTS = ConvolutionalMarginalDensityModel((FRSIZE, FRSIZE))            # 100 iter/s for memory filling
             self.CTS = ConvolutionalDensityModel((FRSIZE, FRSIZE), L_shaped_context) # 12 iter/s for memory filling
             #self.CTS = LocationDependentDensityModel((FRSIZE, FRSIZE), L_shaped_context) # 12 iter/s
+        else:
+            MAX_DOWNSAMPLED_VAL = 128
+        print "Downsampled to " + str(MAX_DOWNSAMPLED_VAL)
         self.n = 0
         self.dict = defaultdict(int)
 
