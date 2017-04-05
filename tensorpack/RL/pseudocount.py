@@ -8,7 +8,7 @@ import cv2
 import numpy as np
 FRSIZE = 42
 MAXVAL = 255                # original max value for a state
-MAX_DOWNSAMPLED_VAL = 64   # downsampled max value for a state. 8 in the paper.
+MAX_DOWNSAMPLED_VAL = 32   # downsampled max value for a state. 8 in the paper.
 FEATURE_MAX_VAL = 1000
 FEATURE_NUM = 512
 from collections import defaultdict
