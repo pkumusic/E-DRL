@@ -54,6 +54,7 @@ class PC():
         return self.count2reward(count)
 
     def pc_reward_feature(self, feature):
+        print feature
         feature = map(lambda x:self.scale_num(x), feature)
         if self.method == 'joint':
             # Model each pixel as independent pixels.
