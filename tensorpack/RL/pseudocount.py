@@ -16,10 +16,6 @@ class PC():
     # class for process with pseudo count rewards
     def __init__(self, method):
         # initialize
-        self.method = method
-        self.flat_pixel_counter = np.zeros((FRSIZE*FRSIZE, MAX_DOWNSAMPLED_VAL+1)) # Counter for each (pos1, pos2, val), used for joint method
-        self.flat_feature_counter = np.zeros((FEATURE_NUM, FEATURE_MAX_VAL + 1))
-        self.total_num_states = 0  # total number of seen states
         global MAX_DOWNSAMPLED_VAL
         if self.method == 'CTS':
             print 'Using CTS Model'
@@ -30,6 +26,11 @@ class PC():
         else:
             MAX_DOWNSAMPLED_VAL = 128
         print "Downsampled to " + str(MAX_DOWNSAMPLED_VAL)
+        self.method = method
+        self.flat_pixel_counter = np.zeros((FRSIZE*FRSIZE, MAX_DOWNSAMPLED_VAL+1)) # Counter for each (pos1, pos2, val), used for joint method
+        self.flat_feature_counter = np.zeros((FEATURE_NUM, FEATURE_MAX_VAL + 1))
+        self.total_num_states = 0  # total number of seen states
+
         self.n = 0
         self.dict = defaultdict(int)
 
