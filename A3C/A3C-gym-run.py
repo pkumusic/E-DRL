@@ -80,6 +80,7 @@ def run_submission(cfg, output, nr):
             player.restart_episode()
         score = play_one_episode(player, predfunc, verbose=False)
         print("Total:", score)
+    player.finish()
 
 def do_submit(output, api_key):
     gym.upload(output, api_key=api_key)
@@ -112,3 +113,4 @@ if __name__ == '__main__':
             input_var_names=['state'],
             output_var_names=['logits'])
     run_submission(cfg, args.output, args.episode)
+    do_submit(args.output, args.api)
