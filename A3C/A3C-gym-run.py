@@ -78,7 +78,7 @@ def run_submission(cfg, output, nr):
     for k in range(nr):
         if k != 0:
             player.restart_episode()
-        score = play_one_episode(player, predfunc, verbose=False)
+        score = play_one_episode(player, predfunc, verbose=False, policy_dist=True)
         print("Total:", score)
     player.finish()
 
