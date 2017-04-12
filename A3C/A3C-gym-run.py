@@ -103,9 +103,9 @@ if __name__ == '__main__':
 
     if args.gpu:
         os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
-    if args.api:
-        logger.info("Submitting to gym")
-        do_submit(args.output, )
+    #if args.api:
+    #    logger.info("Submitting to gym")
+    #    do_submit(args.output, )
 
     cfg = PredictConfig(
             model=Model(),
