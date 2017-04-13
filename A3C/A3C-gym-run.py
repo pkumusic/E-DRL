@@ -12,6 +12,7 @@ import six
 
 from tensorpack import *
 from tensorpack.RL import *
+import gym
 
 IMAGE_SIZE = (84, 84)
 FRAME_HISTORY = 4
@@ -94,6 +95,7 @@ if __name__ == '__main__':
             type=int, default=100)
     parser.add_argument('--output', help='output directory', default='gym-submit')
     parser.add_argument('--api', help='submission API', default=None)
+    parser.add_argument('--submit', help='Just submit', default=False)
     args = parser.parse_args()
 
     ENV_NAME = args.env
@@ -103,9 +105,10 @@ if __name__ == '__main__':
 
     if args.gpu:
         os.environ['CUDA_VISIBLE_DEVICES'] = args.gpu
-    #if args.api:
-    #    logger.info("Submitting to gym")
-    #    do_submit(args.output, )
+    if args.submit == 't':
+        logger.info("Submitting to gym")
+        do_submit(args.output, args.api)
+
 
     cfg = PredictConfig(
             model=Model(),
