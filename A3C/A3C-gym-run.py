@@ -108,6 +108,7 @@ if __name__ == '__main__':
     if args.submit == 't':
         logger.info("Submitting to gym")
         do_submit(args.output, args.api)
+        exit()
 
 
     cfg = PredictConfig(
