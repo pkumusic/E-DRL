@@ -79,6 +79,7 @@ NETWORK_ARCH = None # Network Architecture
 FEATURE = None
 PC_MULT,PC_THRE,PC_TIME = None, None, None
 POLICY_DIST = False # draw from policy distribution when testing, instead of epsilon greedy
+# After testing, False results in better evaluation scores.
 PC_ACTION = False
 
 def get_player(viz=False, train=False, dumpdir=None):
