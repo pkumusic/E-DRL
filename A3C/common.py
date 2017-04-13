@@ -22,7 +22,7 @@ def play_one_episode(player, func, verbose=False, policy_dist=False):
         spc = player.get_action_space()
         if not policy_dist:
             act = func([[s]])[0][0].argmax()
-            if random.random() < 0.05:
+            if random.random() < 0.01:
                 act = spc.sample()
             if verbose:
                 print(act)
