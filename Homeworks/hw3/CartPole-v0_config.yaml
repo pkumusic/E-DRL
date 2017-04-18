@@ -1,0 +1,146 @@
+backend: tensorflow
+class_name: Model
+config:
+  input_layers:
+  - [input_1, 0, 0]
+  layers:
+  - class_name: InputLayer
+    config:
+      batch_input_shape: !!python/tuple [null, 4]
+      dtype: float32
+      name: input_1
+      sparse: false
+    inbound_nodes: []
+    name: input_1
+  - class_name: Dense
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      name: dense_1
+      trainable: true
+      units: 16
+      use_bias: true
+    inbound_nodes:
+    - - - input_1
+        - 0
+        - 0
+        - {}
+    name: dense_1
+  - class_name: Activation
+    config: {activation: relu, name: activation_1, trainable: true}
+    inbound_nodes:
+    - - - dense_1
+        - 0
+        - 0
+        - {}
+    name: activation_1
+  - class_name: Dense
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      name: dense_2
+      trainable: true
+      units: 16
+      use_bias: true
+    inbound_nodes:
+    - - - activation_1
+        - 0
+        - 0
+        - {}
+    name: dense_2
+  - class_name: Activation
+    config: {activation: relu, name: activation_2, trainable: true}
+    inbound_nodes:
+    - - - dense_2
+        - 0
+        - 0
+        - {}
+    name: activation_2
+  - class_name: Dense
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      name: dense_3
+      trainable: true
+      units: 16
+      use_bias: true
+    inbound_nodes:
+    - - - activation_2
+        - 0
+        - 0
+        - {}
+    name: dense_3
+  - class_name: Activation
+    config: {activation: relu, name: activation_3, trainable: true}
+    inbound_nodes:
+    - - - dense_3
+        - 0
+        - 0
+        - {}
+    name: activation_3
+  - class_name: Dense
+    config:
+      activation: linear
+      activity_regularizer: null
+      bias_constraint: null
+      bias_initializer:
+        class_name: Zeros
+        config: {}
+      bias_regularizer: null
+      kernel_constraint: null
+      kernel_initializer:
+        class_name: VarianceScaling
+        config: {distribution: uniform, mode: fan_avg, scale: 1.0, seed: null}
+      kernel_regularizer: null
+      name: dense_4
+      trainable: true
+      units: 2
+      use_bias: true
+    inbound_nodes:
+    - - - activation_3
+        - 0
+        - 0
+        - {}
+    name: dense_4
+  - class_name: Activation
+    config: {activation: softmax, name: activation_4, trainable: true}
+    inbound_nodes:
+    - - - dense_4
+        - 0
+        - 0
+        - {}
+    name: activation_4
+  name: model_1
+  output_layers:
+  - [activation_4, 0, 0]
+keras_version: 2.0.2
