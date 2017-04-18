@@ -32,6 +32,35 @@ def load_model(model_config_path, model_weights_path=None):
 
     return model
 
+def convertToOneHot(vector, num_classes=None):
+    """
+    Converts an input 1-D vector of integers into an output
+    2-D array of one-hot vectors, where an i'th input value
+    of j will set a '1' in the i'th row, j'th column of the
+    output array.
+
+    Example:
+        v = np.array((1, 0, 4))
+        one_hot_v = convertToOneHot(v)
+        print one_hot_v
+
+        [[0 1 0 0 0]
+         [1 0 0 0 0]
+         [0 0 0 0 1]]
+    """
+
+    assert isinstance(vector, np.ndarray)
+    assert len(vector) > 0
+
+    if num_classes is None:
+        num_classes = np.max(vector)+1
+    else:
+        assert num_classes > 0
+        assert num_classes >= np.max(vector)
+
+    result = np.zeros(shape=(len(vector), num_classes))
+    result[np.arange(len(vector)), vector] = 1
+    return result.astype(int)
 
 def generate_expert_training_data(expert, env, num_episodes=100, render=True):
     """Generate training dataset.
@@ -55,7 +84,26 @@ def generate_expert_training_data(expert, env, num_episodes=100, render=True):
       second contains a one-hot encoding of all of the actions chosen
       by the expert for those states.
     """
-    return np.zeros((4,)), np.zeros((2,))
+    states  = []
+    actions = []
+    for i in range(num_episodes):
+        print('Starting episode {}'.format(i))
+        state = env.reset()
+        if render:
+            env.render()
+        is_done = False
+        while not is_done:
+            action = np.argmax(
+                expert.predict_on_batch(state[np.newaxis, ...])[0])
+            states.append(state)
+            actions.append(action)
+            state, _, is_done, _ = env.step(action)
+            if render:
+                env.render()
+    states = np.array(states)
+    actions = np.array(actions)
+    actions = convertToOneHot(actions)
+    return states, actions
 
 
 def test_cloned_policy(env, cloned_policy, num_episodes=50, render=True):
