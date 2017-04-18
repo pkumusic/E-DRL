@@ -77,6 +77,7 @@ ENV_NAME = None
 PC_METHOD = None # Pseudo count method
 NETWORK_ARCH = None # Network Architecture
 FEATURE = None
+#FEATURE_EPOCH = None # If None, always use the up-to-date CNN
 PC_MULT,PC_THRE,PC_TIME = None, None, None
 POLICY_DIST = False # draw from policy distribution when testing, instead of epsilon greedy
 # After testing, False results in better evaluation scores.
@@ -296,6 +297,7 @@ if __name__ == '__main__':
     parser.add_argument('--pc', help='pseudo count method', choices=[None, 'joint', 'CTS'], default=None)
     parser.add_argument('--network', help='network architecture', choices=['nature','1'], default='nature')
     parser.add_argument('--feature', help='Feature to use in the density model', choices=[None, 'fully-connected', 'convolutional-2'], default=None)
+    #parser.add_argument('--fixed_epoch', help='How many epochs we fix the CNN for pc and then update', default=None)
     parser.add_argument('--pcfactor', help='Pseudo count factor. PC_MULT,PC_THRE,PC_TIME', default=None) #2.5,0.01,1000
     parser.add_argument('--pc_action', help='Pseudo count function of (action and old state)', action='store_true')
     args = parser.parse_args()
