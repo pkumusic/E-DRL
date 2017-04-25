@@ -58,7 +58,6 @@ class PC():
         feature = self.standardize_feature(feature)
         # discretize features
         feature = self.discretize_feature(feature)
-        print feature
         if self.method == 'joint':
             # Model each pixel as independent pixels.
             # p = (c1/n) * (c2/n) * ... * (cn/n)
@@ -80,6 +79,7 @@ class PC():
                 pc_count = 0.0
                 pc_reward = self.count2reward(pc_count)
             self.total_num_states += 1
+            print pc_reward
             return pc_reward
 
     def standardize_feature(self, feature):
