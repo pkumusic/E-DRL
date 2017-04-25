@@ -9,7 +9,6 @@ import numpy as np
 FRSIZE = 42
 MAXVAL = 255                # original max value for a state
 MAX_DOWNSAMPLED_VAL = None   # downsampled max value for a state. 8 in the paper.
-FEATURE_MAX_VAL = 1000
 FEATURE_NUM = 512
 from collections import defaultdict
 class PC():
@@ -28,7 +27,7 @@ class PC():
             MAX_DOWNSAMPLED_VAL = 32
         print "Downsampled to " + str(MAX_DOWNSAMPLED_VAL)
         self.flat_pixel_counter = np.zeros((FRSIZE*FRSIZE, MAX_DOWNSAMPLED_VAL+1)) # Counter for each (pos1, pos2, val), used for joint method
-        self.flat_feature_counter = np.zeros((FEATURE_NUM, FEATURE_MAX_VAL + 1))
+        self.flat_feature_counter = np.zeros((FEATURE_NUM, MAX_DOWNSAMPLED_VAL + 1))
         self.total_num_states = 0  # total number of seen states
 
         self.n = 0
@@ -55,9 +54,9 @@ class PC():
         return self.count2reward(count)
 
     def pc_reward_feature(self, feature):
-
+        # scale feature to 0 - 1
         feature = self.standardize_feature(feature)
-        print feature
+        # discretize features
         if self.method == 'joint':
             # Model each pixel as independent pixels.
             # p = (c1/n) * (c2/n) * ... * (cn/n)
@@ -87,18 +86,24 @@ class PC():
         feature = (feature - min_feature) / (max_feature - min_feature)
         return feature
 
-    def scale_num(self, num):
-        # Scale number to 1 - FEATURE_MAX_VAL
-        num = abs(num)
-        if num == 0.0:
-            return int(0)
-        while num > FEATURE_MAX_VAL:
-            num /= FEATURE_MAX_VAL
-        while num < 1:
-            num *= FEATURE_MAX_VAL
-        num = int(num)
-        assert 1 <= num <= FEATURE_MAX_VAL
-        return num
+    def discretize_feature(self, feature):
+        feature = np.asarray(MAX_DOWNSAMPLED_VAL * feature, dtype=int)
+        return feature
+
+
+
+    # def scale_num(self, num):
+    #     # Scale number to 1 - FEATURE_MAX_VAL
+    #     num = abs(num)
+    #     if num == 0.0:
+    #         return int(0)
+    #     while num > FEATURE_MAX_VAL:
+    #         num /= FEATURE_MAX_VAL
+    #     while num < 1:
+    #         num *= FEATURE_MAX_VAL
+    #     num = int(num)
+    #     assert 1 <= num <= FEATURE_MAX_VAL
+    #     return num
 
     def preprocess(self, state):
         state = cv2.cvtColor(state, cv2.COLOR_BGR2GRAY)
