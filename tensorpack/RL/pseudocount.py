@@ -80,6 +80,12 @@ class PC():
             self.total_num_states += 1
             return pc_reward
 
+    def standardize_feature(self, feature):
+        min_feature = np.min(feature)
+        max_feature = np.max(feature)
+        feature = (feature - min_feature) / (max_feature - min_feature)
+        return feature
+
     def scale_num(self, num):
         # Scale number to 1 - FEATURE_MAX_VAL
         num = abs(num)
