@@ -57,6 +57,8 @@ class PC():
         # scale feature to 0 - 1
         feature = self.standardize_feature(feature)
         # discretize features
+        feature = self.discretize_feature(feature)
+        print feature
         if self.method == 'joint':
             # Model each pixel as independent pixels.
             # p = (c1/n) * (c2/n) * ... * (cn/n)
