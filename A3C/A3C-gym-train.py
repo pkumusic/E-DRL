@@ -192,7 +192,7 @@ class MySimulatorMaster(SimulatorMaster, Callback):
         self.queue = queue.Queue(maxsize=BATCH_SIZE*8*2)
 
     def _setup_graph(self):
-        print self.epoch_num
+        print 'number of epoch', self.epoch_num
         self.sess = self.trainer.sess
         if not FEATURE:
             self.async_predictor = MultiThreadAsyncPredictor(
