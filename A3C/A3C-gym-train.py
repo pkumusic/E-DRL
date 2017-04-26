@@ -21,6 +21,7 @@ from tensorpack.predict.common import PredictConfig, get_predict_func
 from tensorpack import *
 from tensorpack.models.model_desc import ModelDesc, InputVar
 from tensorpack.train.config import TrainConfig
+from tensorpack.tfutils.sessinit import SessionInit
 from tensorpack.tfutils.common import *
 from tensorpack.tfutils.tower import get_current_tower_context
 from tensorpack.callbacks.group import Callbacks
@@ -204,7 +205,7 @@ class MySimulatorMaster(SimulatorMaster, Callback):
         if FEATURE:
             logger.info("Initialize density network")
             cfg = PredictConfig(
-                    session_init=self.sess,
+                    session_init=SessionInit(self.sess),
                     model=Model(),
                     input_var_names=['state'],
                     output_var_names=[FEATURE])
@@ -215,7 +216,7 @@ class MySimulatorMaster(SimulatorMaster, Callback):
             if self.epoch_num % 1 == 0:
                 logger.info("update density network at epoch %d."%(self.epoch_num))
                 cfg = PredictConfig(
-                    session_init=self.sess,
+                    session_init=SessionInit(self.sess),
                     model = Model(),
                     input_var_names=['state'],
                     output_var_names=[FEATURE])
