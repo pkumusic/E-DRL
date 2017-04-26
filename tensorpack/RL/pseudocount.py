@@ -148,6 +148,7 @@ class PC():
             #     img = self.CTS.sample()
             #     plt.imshow(img)
             #     plt.show()
+            print pc_reward
             return pc_reward
 
     #
@@ -158,9 +159,9 @@ class PC():
         :return: N = p(1-pp)/(pp-p) = (1-pp)/(pp/p-1) ~= 1/(pp/p-1)
         pp/p = e^(log_pp) / e^(log_p) = e ^ (log_pp - log_p)
         """
-        assert log_pp >= log_p
+        #assert log_pp >= log_p
         pp = np.exp(log_pp)
-        assert pp <= 1
+        #assert pp <= 1
         pp_over_p = np.exp(log_pp - log_p)
         N = (1.0-pp) / (pp_over_p - 1)
         return N
