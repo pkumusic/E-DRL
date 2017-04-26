@@ -33,6 +33,12 @@ class PC():
         self.n = 0
         self.dict = defaultdict(int)
 
+    def clear(self):
+        self.flat_pixel_counter = np.zeros((FRSIZE*FRSIZE, MAX_DOWNSAMPLED_VAL+1))
+        self.self.total_num_states = 0
+        return
+
+
     def pc_reward(self, state):
         """
         The final API used by others.

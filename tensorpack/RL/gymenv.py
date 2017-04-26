@@ -57,6 +57,7 @@ class GymEnv(RLEnvironment):
         self.viz = viz
         self.feature = feature
         self.pc_action = pc_action
+        self.step = 0
 
     def original_current_state(self):
         return self._ob
@@ -83,6 +84,11 @@ class GymEnv(RLEnvironment):
         old_ob = np.copy(self._ob)
         self._ob, r, isOver, info = self.gymenv.step(act)
         if self.pc_method:
+            # Clear counter every 10 epoch
+            self.step += 1
+            if self.step == 60000:
+                self.step = 0
+                self.pc.clear()
             if not self.feature:
                 if not self.pc_action:
                     pc_reward = self.pc.pc_reward(self._ob)
