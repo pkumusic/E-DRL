@@ -204,8 +204,10 @@ class MySimulatorMaster(SimulatorMaster, Callback):
         self.async_predictor.run()
         if FEATURE:
             logger.info("Initialize density network")
+            sessinit = SessionInit()
+            sessinit.init(self.sess)
             cfg = PredictConfig(
-                    session_init=SessionInit(self.sess),
+                    session_init=sessinit,
                     model=Model(),
                     input_var_names=['state'],
                     output_var_names=[FEATURE])
@@ -215,8 +217,10 @@ class MySimulatorMaster(SimulatorMaster, Callback):
         if FEATURE:
             if self.epoch_num % 1 == 0:
                 logger.info("update density network at epoch %d."%(self.epoch_num))
+                sessinit = SessionInit()
+                sessinit.init(self.sess)
                 cfg = PredictConfig(
-                    session_init=SessionInit(self.sess),
+                    session_init=sessinit,
                     model = Model(),
                     input_var_names=['state'],
                     output_var_names=[FEATURE])
