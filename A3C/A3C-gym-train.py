@@ -227,7 +227,7 @@ class MySimulatorMaster(SimulatorMaster, Callback):
         if self.epoch_num % 1 == 0:
             logger.info("update density network at epoch %d."%(self.epoch_num))
             cfg = PredictConfig(
-                model = Model,
+                model = Model(),
                 input_var_names=['state'],
                 output_var_names=[FEATURE],
             )
