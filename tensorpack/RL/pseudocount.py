@@ -21,8 +21,8 @@ class PC():
             print 'Using CTS Model'
             MAX_DOWNSAMPLED_VAL = 8
             #self.CTS = ConvolutionalMarginalDensityModel((FRSIZE, FRSIZE))            # 100 iter/s for memory filling
-            self.CTS = ConvolutionalDensityModel((FRSIZE, FRSIZE), L_shaped_context) # 12 iter/s for memory filling
-            #self.CTS = LocationDependentDensityModel((FRSIZE, FRSIZE), L_shaped_context) # 12 iter/s
+            #self.CTS = ConvolutionalDensityModel((FRSIZE, FRSIZE), L_shaped_context) # 12 iter/s for memory filling
+            self.CTS = LocationDependentDensityModel((FRSIZE, FRSIZE), L_shaped_context) # 12 iter/s
         else:
             MAX_DOWNSAMPLED_VAL = 32
         print "Downsampled to " + str(MAX_DOWNSAMPLED_VAL)
