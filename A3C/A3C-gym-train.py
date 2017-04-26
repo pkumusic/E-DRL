@@ -201,7 +201,6 @@ class MySimulatorMaster(SimulatorMaster, Callback):
         #     self.async_predictor = MultiThreadAsyncPredictor(
         #         self.trainer.get_predict_funcs(['state'], ['logitsT', 'pred_value', FEATURE],
         #                                        PREDICTOR_THREAD), batch_size=15)
-        self.async_predictor.run()
         if FEATURE:
             logger.info("Initialize density network")
             cfg = PredictConfig(
@@ -210,6 +209,8 @@ class MySimulatorMaster(SimulatorMaster, Callback):
                     input_var_names=['state'],
                     output_var_names=[FEATURE])
             self.offline_predictor = get_predict_func(cfg)
+        self.async_predictor.run()
+
 
     def _trigger_epoch(self):
         if FEATURE:
