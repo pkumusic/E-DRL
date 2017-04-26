@@ -209,6 +209,16 @@ class MySimulatorMaster(SimulatorMaster, Callback):
                     output_var_names=[FEATURE])
             self.offline_predictor = get_predict_func(cfg)
 
+    def _trigger_epoch(self):
+        if FEATURE:
+            if self.epoch_num % 1 == 0:
+                logger.info("update density network at epoch %d."%(self.epoch_num))
+                cfg = PredictConfig(
+                    model = Model(),
+                    input_var_names=['state'],
+                    output_var_names=[FEATURE])
+                self.offline_predictor = get_predict_func(cfg)
+
     def _on_state(self, state, ident):
         def cb(outputs):
             #if not FEATURE:
@@ -224,14 +234,6 @@ class MySimulatorMaster(SimulatorMaster, Callback):
             else:
                 feature = self.offline_predictor([[state]])[0][0]
                 self.send_queue.put([ident, dumps([action, feature])])
-        if FEATURE:
-            if self.epoch_num % 1 == 0:
-                logger.info("update density network at epoch %d."%(self.epoch_num))
-                cfg = PredictConfig(
-                    model = Model(),
-                    input_var_names=['state'],
-                    output_var_names=[FEATURE])
-                self.offline_predictor = get_predict_func(cfg)
         self.async_predictor.put_task([state], cb)
 
     def _on_episode_over(self, ident):
