@@ -148,7 +148,6 @@ class PC():
             #     img = self.CTS.sample()
             #     plt.imshow(img)
             #     plt.show()
-            print pc_reward
             return pc_reward
 
     #
