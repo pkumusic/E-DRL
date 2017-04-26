@@ -204,6 +204,7 @@ class MySimulatorMaster(SimulatorMaster, Callback):
         if FEATURE:
             logger.info("Initialize density network")
             cfg = PredictConfig(
+                    session_init=self.sess,
                     model=Model(),
                     input_var_names=['state'],
                     output_var_names=[FEATURE])
@@ -214,6 +215,7 @@ class MySimulatorMaster(SimulatorMaster, Callback):
             if self.epoch_num % 1 == 0:
                 logger.info("update density network at epoch %d."%(self.epoch_num))
                 cfg = PredictConfig(
+                    session_init=self.sess,
                     model = Model(),
                     input_var_names=['state'],
                     output_var_names=[FEATURE])
