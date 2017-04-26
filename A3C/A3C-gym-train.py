@@ -193,14 +193,13 @@ class MySimulatorMaster(SimulatorMaster, Callback):
 
     def _setup_graph(self):
         self.sess = self.trainer.sess
-        if not FEATURE:
-            self.async_predictor = MultiThreadAsyncPredictor(
-                    self.trainer.get_predict_funcs(['state'], ['logitsT', 'pred_value'],
-                    PREDICTOR_THREAD), batch_size=15)
-        else:
-            self.async_predictor = MultiThreadAsyncPredictor(
-                self.trainer.get_predict_funcs(['state'], ['logitsT', 'pred_value', FEATURE],
-                                               PREDICTOR_THREAD), batch_size=15)
+        self.async_predictor = MultiThreadAsyncPredictor(
+                self.trainer.get_predict_funcs(['state'], ['logitsT', 'pred_value'],
+                PREDICTOR_THREAD), batch_size=15)
+        # else:
+        #     self.async_predictor = MultiThreadAsyncPredictor(
+        #         self.trainer.get_predict_funcs(['state'], ['logitsT', 'pred_value', FEATURE],
+        #                                        PREDICTOR_THREAD), batch_size=15)
         self.async_predictor.run()
         if FEATURE:
             logger.info("Initialize density network")
