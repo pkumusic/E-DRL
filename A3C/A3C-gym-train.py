@@ -222,7 +222,7 @@ class MySimulatorMaster(SimulatorMaster, Callback):
             if not FEATURE:
                 self.send_queue.put([ident, dumps(action)])
             else:
-                feature = self.offline_predictor(state)
+                feature = self.offline_predictor([[state]])[0][0]
                 self.send_queue.put([ident, dumps([action, feature])])
         if FEATURE:
             if self.epoch_num % 1 == 0:
