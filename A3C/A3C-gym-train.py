@@ -17,7 +17,7 @@ from six.moves import queue
 from tensorpack.tfutils import symbolic_functions as symbf
 
 import argparse
-from tensorpack.predict.common import PredictConfig
+from tensorpack.predict.common import PredictConfig, get_predict_func
 from tensorpack import *
 from tensorpack.models.model_desc import ModelDesc, InputVar
 from tensorpack.train.config import TrainConfig
@@ -202,13 +202,19 @@ class MySimulatorMaster(SimulatorMaster, Callback):
                 self.trainer.get_predict_funcs(['state'], ['logitsT', 'pred_value', FEATURE],
                                                PREDICTOR_THREAD), batch_size=15)
         self.async_predictor.run()
+        cfg = PredictConfig(
+                model=Model,
+                input_var_names=['state'],
+                output_var_names=[FEATURE],
+            )
+        self.offline_predictor = get_predict_func(cfg)
 
     def _on_state(self, state, ident):
         def cb(outputs):
-            if not FEATURE:
-                distrib, value = outputs.result()
-            else:
-                distrib, value, feature = outputs.result()
+            #if not FEATURE:
+            distrib, value = outputs.result()
+            #else:
+            #    distrib, value, feature = outputs.result()
             assert np.all(np.isfinite(distrib)), distrib
             action = np.random.choice(len(distrib), p=distrib)
             client = self.clients[ident]
@@ -216,7 +222,16 @@ class MySimulatorMaster(SimulatorMaster, Callback):
             if not FEATURE:
                 self.send_queue.put([ident, dumps(action)])
             else:
+                feature = self.offline_predictor(state)
                 self.send_queue.put([ident, dumps([action, feature])])
+        if self.epoch_num % 1 == 0:
+            logger.info("update density network at epoch %d."%(self.epoch_num))
+            cfg = PredictConfig(
+                model = Model,
+                input_var_names=['state'],
+                output_var_names=[FEATURE],
+            )
+            self.offline_predictor = get_predict_func(cfg)
         self.async_predictor.put_task([state], cb)
 
     def _on_episode_over(self, ident):
@@ -297,6 +312,7 @@ if __name__ == '__main__':
     parser.add_argument('--pc', help='pseudo count method', choices=[None, 'joint', 'CTS'], default=None)
     parser.add_argument('--network', help='network architecture', choices=['nature','1'], default='nature')
     parser.add_argument('--feature', help='Feature to use in the density model', choices=[None, 'fully-connected', 'convolutional-2'], default=None)
+
     #parser.add_argument('--fixed_epoch', help='How many epochs we fix the CNN for pc and then update', default=None)
     parser.add_argument('--pcfactor', help='Pseudo count factor. PC_MULT,PC_THRE,PC_TIME', default=None) #2.5,0.01,1000
     parser.add_argument('--pc_action', help='Pseudo count function of (action and old state)', action='store_true')
