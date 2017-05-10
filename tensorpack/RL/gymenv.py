@@ -32,13 +32,15 @@ class GymEnv(RLEnvironment):
     """
     An OpenAI/gym wrapper. Can optionally auto restart.
     """
-    def __init__(self, name, pc_method=None, pc_mult=None, pc_thre=None, pc_time=None, dumpdir=None, viz=False, auto_restart=True, feature=None, pc_action=False):
+    def __init__(self, name, pc_method=None, pc_mult=None, pc_thre=None, pc_time=None, dumpdir=None, viz=False, auto_restart=True, feature=None, pc_action=False, pc_downsample_value=None, pc_clean=False):
         # pc_method: Pseudo-count exploration method
         self.pc_method = pc_method
         self.multiplier = 1
         self.pc_mult = pc_mult
+        self.pc_downsample_value
+        self.pc_clean = pc_clean
         if pc_method:
-            self.pc = PC(pc_method)
+            self.pc = PC(pc_method, pc_downsample_value)
             if self.pc_mult:
                 self.pc_repeat_time = 0
                 self.pc_max_repeat_time = pc_time
@@ -86,9 +88,10 @@ class GymEnv(RLEnvironment):
         if self.pc_method:
             # Clear counter every 10 epoch
             self.step += 1
-            if self.step == 60000:
-                self.step = 0
-                self.pc.clear()
+            if self.pc_clean:
+                if self.step == 60000:
+                    self.step = 0
+                    self.pc.clear()
             if not self.feature:
                 if not self.pc_action:
                     pc_reward = self.pc.pc_reward(self._ob)

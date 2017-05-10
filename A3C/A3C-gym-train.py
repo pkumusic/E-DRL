@@ -83,6 +83,8 @@ PC_MULT,PC_THRE,PC_TIME = None, None, None
 POLICY_DIST = False # draw from policy distribution when testing, instead of epsilon greedy
 # After testing, False results in better evaluation scores.
 PC_ACTION = False
+PC_DOWNSAMPLE_VALUE = None
+PC_CLEAN = False
 
 def get_player(viz=False, train=False, dumpdir=None):
     #TODO: (Next Plan)idea1 use CNN as features of our density model
@@ -92,7 +94,7 @@ def get_player(viz=False, train=False, dumpdir=None):
     #TODO: (Read more papers)idea2.5: Intuition from people. Exploration and Exploitation modes. Remember the good rewards and turn into Exploitation modes, explore other possibilities.
     #TODO: (Done)Evaluate with policy probability
     if PC_METHOD and train:
-        pl = GymEnv(ENV_NAME, dumpdir=dumpdir, pc_method=PC_METHOD, pc_mult=PC_MULT, pc_thre=PC_THRE, pc_time=PC_TIME, feature=FEATURE, pc_action=PC_ACTION)
+        pl = GymEnv(ENV_NAME, dumpdir=dumpdir, pc_method=PC_METHOD, pc_mult=PC_MULT, pc_thre=PC_THRE, pc_time=PC_TIME, feature=FEATURE, pc_action=PC_ACTION, pc_downsample_value=PC_DOWNSAMPLE_VALUE, pc_clean=PC_CLEAN)
     else:
         pl = GymEnv(ENV_NAME, dumpdir=dumpdir)
     def resize(img):
@@ -322,6 +324,8 @@ if __name__ == '__main__':
     #parser.add_argument('--fixed_epoch', help='How many epochs we fix the CNN for pc and then update', default=None)
     parser.add_argument('--pcfactor', help='Pseudo count factor. PC_MULT,PC_THRE,PC_TIME', default=None) #2.5,0.01,1000
     parser.add_argument('--pc_action', help='Pseudo count function of (action and old state)', action='store_true')
+    parser.add_argument('--pc_downsample_value', help='Pseudo count downsample max value', default='32')
+    parser.add_argument('--pc_clean', help='Clean Pseudo count every 10 epoch', action='store_true')
     args = parser.parse_args()
 
     LOG_DIR = args.logdir
@@ -333,15 +337,20 @@ if __name__ == '__main__':
     PC_METHOD = args.pc
     FEATURE = args.feature
     PC_ACTION = args.pc_action
+    PC_DOWNSAMPLE_VALUE = int(args.pc_downsample_value)
+    PC_CLEAN = args.pc_clean
     logger.info("Using feature " + str(FEATURE) + " for density model")
     if POLICY_DIST:
         logger.info("Draw from policy distribution when evaluation")
     if PC_METHOD:
         logger.info("Using Pseudo Count method: " + PC_METHOD)
+        logger.info("Pseudo count downsample value: " + str(PC_DOWNSAMPLE_VALUE))
         if PC_ACTION:
             logger.info("Pseudo count function of (old state, action)")
         else:
             logger.info("Pseudo count function of transmitted state")
+        if PC_CLEAN:
+            logger.info("clean counter every 10 epochs")
         if not FEATURE:
             logger.info("Using image raw pixels as the input to pseudo count method.")
         else:
