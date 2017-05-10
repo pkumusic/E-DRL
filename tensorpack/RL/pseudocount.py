@@ -180,6 +180,6 @@ class PC():
             reward = beta * ((count+alpha) ** power)
         else:
             reward = beta * ((2 * np.log(self.total_num_states) / (count + alpha)) ** (-power))
-            print reward
+            #print reward
         return reward
 
