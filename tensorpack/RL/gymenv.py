@@ -37,7 +37,7 @@ class GymEnv(RLEnvironment):
         self.pc_method = pc_method
         self.multiplier = 1
         self.pc_mult = pc_mult
-        self.pc_downsample_value
+        self.pc_downsample_value = pc_downsample_value
         self.pc_clean = pc_clean
         if pc_method:
             self.pc = PC(pc_method, pc_downsample_value)
