@@ -13,9 +13,10 @@ FEATURE_NUM = 512
 from collections import defaultdict
 class PC():
     # class for process with pseudo count rewards
-    def __init__(self, method, downsample_value):
+    def __init__(self, method, downsample_value=32, UCB1=False):
         # initialize
         self.method = method
+        self.UCB1 = UCB1
         global MAX_DOWNSAMPLED_VAL
         if self.method == 'CTS':
             print 'Using CTS Model'
@@ -175,5 +176,10 @@ class PC():
 
     def count2reward(self, count, beta=0.05, alpha=0.01, power=-0.5):
         # r = beta (N + alpha)^power
-        return beta * ((count+alpha) ** power)
+        if not self.UCB1:
+            reward = beta * ((count+alpha) ** power)
+        else:
+            reward = (2 * np.log(self.total_num_states) / (count + alpha)) ** (-power)
+            print reward
+        return reward
 
