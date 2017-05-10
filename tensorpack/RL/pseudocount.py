@@ -24,7 +24,7 @@ class PC():
             #self.CTS = ConvolutionalDensityModel((FRSIZE, FRSIZE), L_shaped_context) # 12 iter/s for memory filling
             self.CTS = LocationDependentDensityModel((FRSIZE, FRSIZE), L_shaped_context) # 12 iter/s
         else:
-            MAX_DOWNSAMPLED_VAL = 32
+            MAX_DOWNSAMPLED_VAL = 128
         print "Downsampled to " + str(MAX_DOWNSAMPLED_VAL)
         self.flat_pixel_counter = np.zeros((FRSIZE*FRSIZE, MAX_DOWNSAMPLED_VAL+1)) # Counter for each (pos1, pos2, val), used for joint method
         self.flat_feature_counter = np.zeros((FEATURE_NUM, MAX_DOWNSAMPLED_VAL + 1))
