@@ -35,7 +35,7 @@ class PC():
 
     def clear(self):
         self.flat_pixel_counter = np.zeros((FRSIZE*FRSIZE, MAX_DOWNSAMPLED_VAL+1))
-        self.self.total_num_states = 0
+        self.total_num_states = 0
         return
 
 
