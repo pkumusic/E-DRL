@@ -179,7 +179,8 @@ class PC():
         if not self.UCB1:
             reward = beta * ((count+alpha) ** power)
         else:
-            reward = beta * ((2 * np.log(self.total_num_states) / (count + alpha)) ** (-power))
+            #reward = beta * ((2 * np.log(self.total_num_states) / (count + alpha)) ** (-power))
+            reward = 0.02 * ((count + alpha) ** power)
             #print reward
         return reward
 
