@@ -2,7 +2,7 @@
 Exploration Strategies for Deep Reinforcement Learning
 
 ## Highlights:
-* Achieved 2500 score (ranked 1) on OpenAI gym Montezuma's Revenge game. [Screenshot](https://github.com/pkumusic/E-DRL/blob/master/montezuma's%20revenge.png)[Demo](https://gym.openai.com/evaluations/eval_zxZ4J4nTRw2snOY7umcfqw)
+* Achieved 2500 score (ranked 1) on OpenAI gym Montezuma's Revenge game. [Screenshot](https://github.com/pkumusic/E-DRL/blob/master/montezuma's%20revenge.png)  [Demo](https://gym.openai.com/evaluations/eval_zxZ4J4nTRw2snOY7umcfqw)
 
 
 ## Weely Discussion
